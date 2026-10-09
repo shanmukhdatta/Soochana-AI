@@ -93,3 +93,8 @@ def analyze_batch(req: BatchRequest):
 # RiskPulse Module A; original Risk Engine endpoints remain unchanged.
 from app.module_a.router import router as module_a_router
 app.include_router(module_a_router)
+
+
+# RiskPulse Module B; original Risk Engine and Module A remain unchanged.
+from app.module_b.router import router as module_b_router
+app.include_router(module_b_router)

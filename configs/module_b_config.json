@@ -1,0 +1,10 @@
+{
+  "version":"module-b-v1",
+  "portfolio_file":"data/module_b/synthetic_portfolio.json",
+  "scenario_file":"data/module_b/scenario_library.json",
+  "default_currency":"USD",
+  "assumptions_status":"illustrative_not_calibrated",
+  "stress_horizons":{"market_prices":"instantaneous","loan_expected_credit_loss":"12_month"},
+  "equity_impact_to_severity_ui_heuristic":{"mild_max_score":3,"moderate_max_score":7,"severe_min_score":8},
+  "note":"Documenting the frozen prototype conventions, not overwriting existing risk engine configuration."
+}
