@@ -3,7 +3,7 @@
 **Date & Time**: 2026-10-10T01:18:00+05:30  
 **Project**: RiskPulse AI (S&P Global & CRISIL Code to Connect Hackathon 2026)  
 **Workspace**: `c:\Users\lokes\datta\c2c`  
-**Git Commit**: [`683281add4efc9528a0a90f912f6a53fcf0dbeeb`](file:///c:/Users/lokes/datta/c2c)  
+**Git Commit**: [`5aedce74e605e85d62acefb739d75311cbc1d6f7`](file:///c:/Users/lokes/datta/c2c)  
 **Backend Port**: `http://127.0.0.1:8000` (FastAPI, SQLite WAL, FinBERT + XGBoost)  
 **Frontend Dev Server**: `http://127.0.0.1:5173` (React 18.3.1, TypeScript 5.7.3, Vite 6.0.5)  
 
