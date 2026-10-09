@@ -1502,8 +1502,16 @@ function ModuleB({
   );
 }
 
+function getInitialPage(): Page {
+  const hash = window.location.hash.replace('#', '') as Page;
+  if (['overview', 'events', 'moduleA', 'moduleB'].includes(hash)) return hash;
+  const p = new URLSearchParams(window.location.search).get('page') as Page;
+  if (['overview', 'events', 'moduleA', 'moduleB'].includes(p)) return p;
+  return 'overview';
+}
+
 export default function App() {
-  const [page, setPage] = useState<Page>('overview');
+  const [page, setPage] = useState<Page>(getInitialPage());
   const [summary, setSummary] = useState<Load<Summary>>(initial());
   const [signalPage, setSignalPage] = useState<Load<SignalsPage>>(initial());
   const [health, setHealth] = useState('unknown');
@@ -1519,6 +1527,24 @@ export default function App() {
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
+  const handleNav = (p: Page) => {
+    setPage(p);
+    if (window.location.hash !== `#${p}`) {
+      window.location.hash = p;
+    }
+  };
+
+  useEffect(() => {
+    const handleHash = () => {
+      const h = window.location.hash.replace('#', '') as Page;
+      if (['overview', 'events', 'moduleA', 'moduleB'].includes(h)) {
+        setPage(h);
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
   const refresh = useCallback(async () => {
     setRefreshing(true);
     const [a, b, c, d, e, f, g] = await Promise.allSettled([
@@ -1533,6 +1559,9 @@ export default function App() {
 
     setSummary(a.status === 'fulfilled' ? { value: a.value, error: null, pending: false } : { value: null, error: errorMessage(a.reason), pending: false });
     setSignalPage(b.status === 'fulfilled' ? { value: b.value, error: null, pending: false } : { value: null, error: errorMessage(b.reason), pending: false });
+    if (b.status === 'fulfilled' && b.value.items.length > 0) {
+      setSelected(prev => prev ?? (b.value.items.find(x => x.status === 'completed' && x.inference) ?? b.value.items[0]));
+    }
     setHealth(c.status === 'fulfilled' ? c.value.status : 'unavailable');
     setIngestion(d.status === 'fulfilled' ? d.value.status : 'unavailable');
     setIdx(e.status === 'fulfilled' ? { value: e.value, error: null, pending: false } : { value: null, error: errorMessage(e.reason), pending: false });
@@ -1551,18 +1580,18 @@ export default function App() {
   const signals = signalPage.value?.items ?? [];
   const choose = (s: Signal) => {
     setSelected(s);
-    setPage('events');
+    handleNav('events');
   };
   const goProposal = (p: Proposal) => {
     setProposal(p);
-    setPage('moduleB');
+    handleNav('moduleB');
   };
   const hasProblem = summary.error || signalPage.error;
 
   return (
     <Shell
       page={page}
-      onPage={setPage}
+      onPage={handleNav}
       summary={summary.value}
       health={health}
       ingestion={ingestion}
