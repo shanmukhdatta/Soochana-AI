@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {countStatus,countSource,safeNumber,formatPercentFraction,fmtMoney,safeSourceUrl,scenarioForExecution,eventCategoryCounts,recentSignalMeans,sentimentLabel} from '../src/lib/helpers.mjs';
+test('counts status and sources safely',()=>{const s={status_counts:[{status:'completed',count:8},{status:'pending',count:21}],source_counts:[{source_type:'financial_news',count:2}]};assert.equal(countStatus(s,'completed'),8);assert.equal(countStatus(s,'dead'),0);assert.equal(countSource(s,'social_media'),0);assert.equal(countSource(s,'financial_news'),2)});
+test('never treats null or nonfinite values as scores',()=>{assert.equal(safeNumber(null),null);assert.equal(safeNumber(NaN),null);assert.equal(formatPercentFraction(null),'—');assert.equal(sentimentLabel(undefined),'Not analyzed')});
+test('scales weights as fractions not implied percentage points',()=>{assert.equal(formatPercentFraction(.066666,2),'6.67%');assert.equal(formatPercentFraction(.1,1),'10.0%')});
+test('formats signed financial changes and compact magnitudes',()=>{assert.equal(fmtMoney(-1600000),'−$1.60m');assert.equal(fmtMoney(3500),'$3.5k')});
+test('blocks unsafe source links',()=>{assert.equal(safeSourceUrl('javascript:alert(1)'),null);assert.equal(safeSourceUrl('https://example.com/a'),'https://example.com/a');assert.equal(safeSourceUrl(undefined),null)});
+test('resolves issuer placeholder without mutating input',()=>{const s={name:'shock',issuer_shocks:{__ISSUER__:{rate_bps:15}}};const r=scenarioForExecution(s,'AAPL');assert.equal(r.issuer_shocks.AAPL.rate_bps,15);assert.ok(s.issuer_shocks.__ISSUER__);assert.ok(!('__ISSUER__' in r.issuer_shocks))});
+test('refuses unresolved issuer-specific scenarios',()=>{assert.throws(()=>scenarioForExecution({issuer_shocks:{__ISSUER__:{}}},''),/requires a valid issuer/)});
+test('does not count non-completed inference',()=>{const x=[{status:'completed',inference:{sentiment:{score:.3},impact:{score:6},event:{class_name:'Credit Event'}}},{status:'pending',inference:null}];assert.equal(recentSignalMeans(x).count,1);assert.equal(eventCategoryCounts(x)['Credit Event'],1)});

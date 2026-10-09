@@ -1,0 +1,10 @@
+export function countStatus(summary: unknown, status: string): number;
+export function countSource(summary: unknown, source: string): number;
+export function safeNumber(value: unknown): number | null;
+export function sentimentLabel(score: number | null | undefined): string;
+export function formatPercentFraction(value: number | null | undefined, digits?: number): string;
+export function fmtMoney(value: number | null | undefined): string;
+export function safeSourceUrl(raw: unknown): string | null;
+export function scenarioForExecution(scenario: unknown, issuerTicker: string): Record<string, unknown>;
+export function eventCategoryCounts(signals: unknown[]): Record<string, number>;
+export function recentSignalMeans(signals: unknown[]): { sentiment: number | null; impact: number | null; count: number };
