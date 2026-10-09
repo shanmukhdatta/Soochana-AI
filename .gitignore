@@ -18,3 +18,11 @@ models/**/*.pt
 models/**/*.pth
 models/**/*.onnx
 *.zip
+
+# Ingestion ignore rules
+data/ingestion/*.db
+data/ingestion/*.db-wal
+data/ingestion/*.db-shm
+data/ingestion/*.scheduler.lock
+.env.ingestion
+*.local.env
