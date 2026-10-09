@@ -1,0 +1,34 @@
+{
+  "schema_version": "ingestion-v1",
+  "enabled_sources": ["marketaux", "bluesky"],
+  "poll_interval_seconds": 900,
+  "http_timeout_seconds": 35,
+  "max_rows_per_source_per_poll": 45,
+  "max_inference_per_poll": 8,
+  "max_attempts": 3,
+  "retry_base_seconds": 90,
+  "lease_seconds": 900,
+  "max_item_age_hours": 48,
+  "allow_unknown_language": false,
+  "gdelt": {
+    "base_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+    "timespan": "",
+    "max_records_per_query": 25,
+    "queries": [
+      "Microsoft OR Apple OR Nvidia OR Tesla",
+      "Amazon OR Google OR Qualcomm",
+      "Costco OR PepsiCo OR Gilead",
+      "Starbucks OR Comcast OR CSX"
+    ]
+  },
+  "bluesky": {
+    "base_url": "https://api.bsky.app/xrpc/app.bsky.feed.searchPosts",
+    "max_records_per_query": 12,
+    "queries": ["$AAPL", "$MSFT", "$NVDA", "$TSLA", "$AMZN", "$GOOGL", "$QCOM", "$COST", "$PEP", "$AMGN", "$GILD", "$CSX", "$BKNG", "$SBUX", "$CMCSA"]
+  },
+  "marketaux": {
+    "base_url": "https://api.marketaux.com/v1/news/all",
+    "symbols": ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "QCOM", "COST", "PEP", "AMGN", "GILD", "CSX", "BKNG", "SBUX", "CMCSA"],
+    "max_records_per_query": 10
+  }
+}

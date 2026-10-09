@@ -1,0 +1,17 @@
+{
+  "AAPL": ["Apple", "Apple Inc"],
+  "MSFT": ["Microsoft", "Microsoft Corporation"],
+  "NVDA": ["Nvidia", "NVIDIA Corporation"],
+  "QCOM": ["Qualcomm"],
+  "GOOGL": ["Alphabet", "Google"],
+  "CMCSA": ["Comcast"],
+  "AMZN": ["Amazon"],
+  "TSLA": ["Tesla"],
+  "BKNG": ["Booking Holdings", "Booking.com"],
+  "SBUX": ["Starbucks"],
+  "COST": ["Costco", "Costco Wholesale"],
+  "PEP": ["PepsiCo", "Pepsi"],
+  "GILD": ["Gilead Sciences", "Gilead"],
+  "AMGN": ["Amgen"],
+  "CSX": ["CSX Corporation", "CSX Transportation"]
+}
