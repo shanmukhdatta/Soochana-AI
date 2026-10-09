@@ -1,0 +1,62 @@
+{
+  "version": "module-a-v1",
+  "tickers": [
+    "AAPL",
+    "MSFT",
+    "NVDA",
+    "QCOM",
+    "GOOGL",
+    "CMCSA",
+    "AMZN",
+    "TSLA",
+    "BKNG",
+    "SBUX",
+    "COST",
+    "PEP",
+    "GILD",
+    "AMGN",
+    "CSX"
+  ],
+  "sector_map": {
+    "AAPL": "Technology",
+    "MSFT": "Technology",
+    "NVDA": "Technology",
+    "QCOM": "Technology",
+    "GOOGL": "Communication Services",
+    "CMCSA": "Communication Services",
+    "AMZN": "Consumer Discretionary",
+    "TSLA": "Consumer Discretionary",
+    "BKNG": "Consumer Discretionary",
+    "SBUX": "Consumer Discretionary",
+    "COST": "Consumer Staples",
+    "PEP": "Consumer Staples",
+    "GILD": "Health Care",
+    "AMGN": "Health Care",
+    "CSX": "Industrials"
+  },
+  "position_deviation_limit": 0.02,
+  "sector_deviation_limit": 0.05,
+  "one_way_turnover_limit": 0.1,
+  "minimum_trade_turnover": 0.001,
+  "signal_tilt_coefficient": 0.025,
+  "news_lookback_days": 7,
+  "signal_half_life_days": 3.0,
+  "evidence_prior_weight": 0.5,
+  "transaction_cost_bps": 10.0,
+  "max_signals_per_request": 200,
+  "source_weights": {
+    "financial_news": 1.0,
+    "social_media": 0.55,
+    "manual": 0.5,
+    "other": 0.3
+  },
+  "event_multipliers": {
+    "Geopolitical": 1.1,
+    "Macroeconomic": 1.0,
+    "Credit Event": 1.1,
+    "Merger / Acquisition": 1.0,
+    "Product Launch": 0.9
+  },
+  "execution_rule": "Trade at the close of a scheduled session using only articles dated strictly before that session (UTC).",
+  "backtest_holdout": "Use only Step-2 test-split predicted model outputs; never realized_impact or impact_score_1_10"
+}

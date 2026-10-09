@@ -1,0 +1,17 @@
+{
+  "architectures": [
+    "BertForSequenceClassification"
+  ],
+  "model_type": "bert",
+  "vocab_size": 30873,
+  "num_labels": 5,
+  "id2label": {
+    "0": "Geopolitical",
+    "1": "Macroeconomic",
+    "2": "Credit Event",
+    "3": "Merger / Acquisition",
+    "4": "Product Launch"
+  },
+  "problem_type": "single_label_classification",
+  "hidden_size": 768
+}

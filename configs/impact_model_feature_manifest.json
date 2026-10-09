@@ -1,0 +1,59 @@
+{
+  "created_utc": "2026-10-07T15:10:25.408944+00:00",
+  "stage": "Impact Engine Step 2 - leakage-safe feature enrichment",
+  "base_score": 0.021967076942109524,
+  "target_column": "realized_impact",
+  "numeric_features": [
+    "sentiment_score",
+    "abs_sentiment",
+    "event_prob_geopolitical",
+    "event_prob_macroeconomic",
+    "event_prob_credit_event",
+    "event_prob_merger_acquisition",
+    "event_prob_product_launch",
+    "event_confidence",
+    "stock_volatility_20d_ann",
+    "volume_ratio_20d",
+    "stock_return_5d",
+    "stock_return_20d",
+    "spy_return_20d",
+    "spy_volatility_20d_ann"
+  ],
+  "categorical_features": [
+    "event_predicted_class",
+    "sector",
+    "market_regime"
+  ],
+  "model_features": [
+    "sentiment_score",
+    "abs_sentiment",
+    "event_prob_geopolitical",
+    "event_prob_macroeconomic",
+    "event_prob_credit_event",
+    "event_prob_merger_acquisition",
+    "event_prob_product_launch",
+    "event_confidence",
+    "stock_volatility_20d_ann",
+    "volume_ratio_20d",
+    "stock_return_5d",
+    "stock_return_20d",
+    "spy_return_20d",
+    "spy_volatility_20d_ann",
+    "event_predicted_class",
+    "sector",
+    "market_regime"
+  ],
+  "forbidden_future_features": [
+    "abnormal_return_1d",
+    "benchmark_return_1d",
+    "car_3d",
+    "impact_score_1_10",
+    "realized_impact",
+    "session_news_count",
+    "stock_return_1d"
+  ],
+  "notes": {
+    "market_features": "latest completed market session strictly before the news publication calendar date",
+    "market_regime": "thresholds calibrated from training-period SPY history only"
+  }
+}

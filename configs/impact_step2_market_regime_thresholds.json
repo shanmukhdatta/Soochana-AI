@@ -1,0 +1,7 @@
+{
+  "calibration_source": "SPY history before frozen training end",
+  "training_end_date": "2021-04-15",
+  "spy_return_20d_q33": -0.0014017912708248485,
+  "spy_return_20d_q67": 0.026819229263706824,
+  "spy_volatility_20d_ann_q75": 0.19568399976553735
+}

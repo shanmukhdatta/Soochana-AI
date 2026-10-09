@@ -1,0 +1,4 @@
+# Install AFTER the existing requirements.txt. No model dependencies changed.
+scipy>=1.11,<2
+# For Kaggle Step-2 parquet conversion:
+pyarrow>=15,<24

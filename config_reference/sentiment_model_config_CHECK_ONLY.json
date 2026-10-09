@@ -1,0 +1,11 @@
+{
+  "architectures": [
+    "FinBertSentimentRegressor"
+  ],
+  "model_type": "bert",
+  "vocab_size": 30522,
+  "num_labels": 1,
+  "problem_type": "regression",
+  "sentiment_head": "Dropout -> Linear(hidden_size,1) -> tanh",
+  "hidden_size": 768
+}
