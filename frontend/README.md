@@ -1,6 +1,6 @@
 # RiskPulse AI — Signal Atlas React Dashboard
 
-**RiskPulse AI Dashboard** is a clean, modern, white financial risk intelligence workspace built with Vite, React 19, and TypeScript. It features a dual-mode interface designed for both executive screening (**Quick View**) and quantitative audit (**Analyst View**), as well as the **Bujji Financial AI Assistant**.
+**RiskPulse AI Dashboard** is a clean, modern, white financial risk intelligence workspace built with Vite, React 18, and TypeScript. It features a dual-mode interface designed for both executive screening (**Quick View**) and quantitative audit (**Analyst View**), as well as the **Bujji Financial AI Assistant**.
 
 **Scope:** Dedicated frontend client communicating with the RiskPulse AI FastAPI backend. It does not replace the backend, retrain machine learning models, ingest external providers directly in the browser, or execute live exchange transactions.
 
@@ -11,9 +11,9 @@
 With FastAPI running at `http://127.0.0.1:8000`, run:
 
 ```powershell
-cd C:\Users\lokes\datta\c2c\frontend
+cd nitj-shanmukhdatta-hackthon\frontend
 Copy-Item .env.example .env
-npm install
+npm ci
 npm test
 npm run check:contracts
 npm run build
