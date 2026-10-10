@@ -72,7 +72,7 @@ The optimal portfolio weight vector $\mathbf{w}^* = [w_1^*, \dots, w_{15}^*]^T$ 
 $$\min_{\mathbf{w}} \quad \frac{1}{2} \sum_{i=1}^{15} \left( w_i - w_{i, \text{target}} \right)^2$$
 where:
 $$w_{i,\text{target}} = \frac{1}{15} + \beta \left(a_i-\frac{1}{15}\sum_{j=1}^{15}a_j\right), \quad \beta=0.025.$$
-Here $a_i$ is the ticker's deduplicated, age-weighted sentiment/event/impact aggregate from \`app/module_a/signals.py\`. The strategy creates centered target weights and the SLSQP optimizer projects them into the allowed portfolio constraints. This is a heuristic event signal, not a learned directional-return target.
+Here $a_i$ is the ticker's deduplicated, age-weighted sentiment/event/impact aggregate from `app/module_a/signals.py`. The strategy creates centered target weights and the SLSQP optimizer projects them into the allowed portfolio constraints. This is a heuristic event signal, not a learned directional-return target.
 
 ### 3.3 Financial & Regulatory Constraints (`app/module_a/constraints.py`)
 The quadratic program is solved subject to strict investment constraints:
@@ -148,5 +148,5 @@ using analytical standard normal CDF $\Phi(d)$ with continuous dividend yield $q
 Allows risk managers to scale individual position exposures with multiplier $\alpha_j \in [0.0, 2.0]$:
 $$\Delta \text{Loss}_{\text{net}} = \sum_{j=1}^{30} \alpha_j \cdot \text{Loss}_j(\mathbf{x}_{\text{scenario}}) - \sum_{j=1}^{30} \text{Loss}_j(\mathbf{x}_{\text{scenario}})$$
 
-#### Reverse Stress Testing (\`app/module_b/reverse_stress.py\`)
+#### Reverse Stress Testing (`app/module_b/reverse_stress.py`)
 For a chosen budget and a scenario multiplier, the implementation samples a finite grid starting at 0 through a configured maximum multiplier (defaults: maximum 4, 81 points). It reports the **first sampled loss-budget breach**, not an exact threshold. Derivative hedges can make losses non-monotonic; therefore, the implementation deliberately uses a grid **rather than bisection**. Invalid shocked instrument values can truncate the grid.
