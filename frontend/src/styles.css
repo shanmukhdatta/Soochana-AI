@@ -52,9 +52,15 @@ button:disabled {
   opacity: 0.45;
 }
 
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
   outline: 2px solid var(--iris);
   outline-offset: 2px;
+}
+
+select:focus, select:focus-visible {
+  outline: none;
+  border-color: var(--iris);
+  box-shadow: 0 0 0 1px var(--iris);
 }
 
 a {
@@ -1071,9 +1077,15 @@ a:hover {
   min-height: 22px;
 }
 
-.compact-select select option, .form-label select option {
-  background: #212537;
-  color: var(--text);
+.compact-select select, .form-label select, select {
+  color-scheme: light;
+}
+
+.compact-select select option, .form-label select option, select option {
+  color-scheme: light;
+  background: #ffffff;
+  background-color: #ffffff;
+  color: #121516;
 }
 
 .event-grid {
