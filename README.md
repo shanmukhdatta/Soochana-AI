@@ -118,8 +118,8 @@ RiskPulse AI incorporates specific datasets across training, real-source ingesti
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/<college>-<candidate-name>-hackathon.git
-cd <college>-<candidate-name>-hackathon
+git clone https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon.git
+cd nitj-shanmukhdatta-hackthon
 ```
 
 ### Step 2: Backend Setup
@@ -254,8 +254,11 @@ Reviewers can experience the full capabilities of RiskPulse AI through the follo
    - Observe the separation between **Instantaneous Mark-to-Market P&L** and **Incremental 12-Month Expected Credit Loss**.
    - Modify position exposure sliders in the **What-If Analysis** panel to evaluate hedging strategies.
    - Run the **Reverse Stress Test** to determine the minimum macroeconomic shock that would breach institution capital buffers.
-5. **Analyst View & Bujji Assistant:**
-   - Toggle the top-bar switch from **Quick View** to **Analyst View** to access raw feature weights, parameter sliders ($\lambda$ turnover aversion, capital buffer thresholds), and loss breakdowns.
+5. **Testing Quick View vs. Analyst View:**
+   - **Quick View (Executive Perspective):** Streamlines the interface to eliminate visual clutter. Evaluates 29 live signals via headline sentiment pills and 1–10 impact ratings, with 1-click rebalancing and macro stress summaries.
+   - **Analyst View (Quantitative Perspective):** Reveals full 10-class softmax probability distributions across the event taxonomy, continuous sentiment intensities $[-1.0, +1.0]$, 15-day rolling volatilities ($\sigma_{15}$), interactive turnover penalty sliders ($\lambda$), position-level What-If exposure adjustment sliders ($0.0\times$ to $2.0\times$), and automated Reverse Stress bisection search.
+   - **Testing in Dashboard:** Click the **Quick View / Analyst View** segmented toggle in the top-right header (or append `?mode=analyst` or `?mode=quick` to your URL). All selections, filters, and simulation outputs stay synchronized across both views without resetting.
+6. **Bujji Financial Assistant:**
    - Click the floating circular assistant icon at the bottom-right to open **Bujji**, and ask financial questions such as *"Why are MTM and ECL reported separately?"* or *"Explain how the 15% single-stock cap works."*
 
 ---
@@ -287,10 +290,11 @@ To maintain scientific and financial integrity, the known limitations of RiskPul
 ## 9. Author & Acknowledgments
 
 ### Project Submission Details
-- **Candidate Full Name:** `[Candidate Full Name]`
-- **Institution / College:** `[College Name]`
-- **Official College Email:** `[college.email@domain.edu]`
-- **Recommended Repository Name:** `<college>-<candidate-name>-hackathon`
+- **Candidate Full Name:** Shanmukh Datta
+- **Institution / College:** National Institute of Technology Jalandhar (NITJ)
+- **Official Email:** `shanmukhadattaboda069@gmail.com`
+- **Submission Repository URL:** `https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon.git`
+- **Repository Name:** `nitj-shanmukhdatta-hackthon`
 
 ### Acknowledgments & Attribution
 - **ProsusAI FinBERT:** Developed by ProsusAI and hosted on Hugging Face (`ProsusAI/finbert`), licensed under Apache 2.0.

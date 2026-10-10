@@ -29,8 +29,8 @@ type ViewMode = 'quick' | 'analyst';
 import { HomeLanding } from './components/HomeLanding';
 
 // Architecture narrative: From market information to risk intelligence. The problem. What the challenge asks: Core technical requirements vs Additional implementation. Explore live intelligence.
-function Home({onStart,onTab}:{onStart:()=>void;onTab:(p:Page)=>void}){
-  return <HomeLanding onStart={onStart} onTab={onTab}/>;
+function Home({onStart,onTab,onMode}:{onStart:()=>void;onTab:(p:Page)=>void;onMode?:(m:ViewMode)=>void}){
+  return <HomeLanding onStart={onStart} onTab={onTab} onMode={onMode}/>;
 }
 
 function Shell({page,onPage,mode,onMode,children,summary,loading,refresh,selectedTicker}:{page:Page;onPage:(p:Page)=>void;mode:ViewMode;onMode:(m:ViewMode)=>void;children:React.ReactNode;summary:Summary|null;health:string;ingestion:string;loading:boolean;refresh:()=>void;selectedTicker:string}){
@@ -311,7 +311,7 @@ export default function App(){
  const goProposal=(p:Proposal)=>{setProposal(p);setPage('moduleB')};
  const hasProblem=summary.error||signalPage.error;
  return <>
-  {page==='home'?<Home onStart={()=>setPage('events')} onTab={setPage}/>:<Shell page={page} onPage={setPage} mode={mode} onMode={setMode} summary={summary.value} health={health} ingestion={ingestion} loading={refreshing} refresh={()=>void refresh()} selectedTicker={selected?.ticker??''}>
+  {page==='home'?<Home onStart={()=>setPage('events')} onTab={setPage} onMode={setMode}/>:<Shell page={page} onPage={setPage} mode={mode} onMode={setMode} summary={summary.value} health={health} ingestion={ingestion} loading={refreshing} refresh={()=>void refresh()} selectedTicker={selected?.ticker??''}>
   <div className="dataset-strip"><span><Dot tone={hasProblem?'amber':'green'}/>{hasProblem?'Backend connection incomplete':'Backend responses loaded'}</span><span><Clock3 size={13}/> {lastUpdated?`UI refreshed ${asDate(lastUpdated)}`:'Waiting for first response'}</span><span><LockKeyhole size={13}/> Simulation / research only</span></div>
   <ErrorBanner message={hasProblem?`Backend read failed: ${hasProblem}. Start FastAPI on 127.0.0.1:8000; dev Vite proxies /api.`:null}/>
   {page==='overview'?<Overview summary={summary.value} signals={signals} goSignal={choose} goPage={setPage} health={health} ingestion={ingestion}/>:page==='events'?<><SignalSummary summary={summary.value} signals={signals}/><Events signals={signals} selected={selected} onSelect={setSelected} onModuleB={goProposal} tickers={idx.value?.tickers??[]} analyzeManual={api.analyze}/></>:page==='moduleA'?<ModuleA index={idx.value} indexError={idx.error} rebalance={rebalance} setRebalance={setRebalance} mode={mode}/>:<ModuleB portfolio={portfolio.value} library={library.value} proposal={proposal} clearProposal={()=>setProposal(null)} mode={mode}/>}

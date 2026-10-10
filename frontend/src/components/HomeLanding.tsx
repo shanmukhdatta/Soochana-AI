@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   Activity, ArrowRight, ArrowUpRight, BrainCircuit,
-  ChevronDown, Layers, Sparkles, TrendingUp, ShieldAlert
+  ChevronDown, Layers, Sparkles, TrendingUp, ShieldAlert, ShieldCheck
 } from 'lucide-react';
 import type { Page } from '../types';
 import { api } from '../api';
@@ -9,9 +9,10 @@ import { api } from '../api';
 interface HomeLandingProps {
   onStart: () => void;
   onTab: (tab: Page) => void;
+  onMode?: (mode: 'quick' | 'analyst') => void;
 }
 
-export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
+export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
   // Interactive Walkthrough state
   const [selectedExample, setSelectedExample] = useState<'aapl' | 'msft'>('aapl');
   const [activeStep, setActiveStep] = useState<number>(1);
@@ -72,6 +73,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
             <a href="#how-it-works" className="landing-link">How It Works</a>
             <a href="#ai-engine" className="landing-link">AI Engine</a>
             <a href="#applications" className="landing-link">Applications</a>
+            <a href="#view-modes" className="landing-link">View Modes</a>
             <a href="#interactive-demo" className="landing-link">Interactive Demo</a>
           </nav>
 
@@ -793,11 +795,156 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
       </section>
 
       {/* ──────────────────────────────────────────────────────────── */}
+      {/* SECTION 6: DUAL AUDIENCE INTERFACE MODES                     */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      <section className="landing-section" id="view-modes">
+        <div className="landing-container">
+          <div className="section-eyebrow">06 / DUAL OPERATING MODES</div>
+          <h2 className="section-heading">
+            Designed for two distinct perspectives:<br />Quick View vs. Analyst View
+          </h2>
+
+          <p className="section-lead">
+            Financial decision-makers and quantitative modelers have fundamentally different objectives.
+            RiskPulse AI provides two tailored interface modes running over the exact same live pipeline and shared state.
+          </p>
+
+          <p className="section-sublead">
+            Reviewers can switch between views at any time using the <strong>Quick View / Analyst View</strong> segmented toggle in the top-right header of the dashboard (or via the <code>?mode=quick</code> and <code>?mode=analyst</code> URL parameters).
+          </p>
+
+          {/* Mode Comparison Grid */}
+          <div className="modes-showcase-grid">
+            {/* Quick View Card */}
+            <div className="mode-card mode-quick-card">
+              <div className="mode-card-header">
+                <span className="mode-card-badge badge-quick">EXECUTIVE &amp; PM PERSPECTIVE</span>
+                <h3>Quick View</h3>
+                <span className="mode-card-sub">Streamlined situational awareness without visual or cognitive clutter</span>
+              </div>
+
+              <div className="mode-representation">
+                <strong>What it represents:</strong> Built for Portfolio Managers, Chief Risk Officers (CROs), and busy executives who need rapid risk triage, headline signals, and fast decision support without navigating complex mathematical parameter matrices.
+              </div>
+
+              <ul className="mode-features-list">
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>Curated Signal Cards:</strong> Clean event headlines, continuous sentiment color bars, and 1–10 market impact ratings with source badges.</div>
+                </li>
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>High-Level Summary Totals:</strong> Instant visibility into aggregate portfolio metrics: proposed turnover (Δw), backtest performance, and total stress loss.</div>
+                </li>
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>Single-Click Workflows:</strong> 1-click index rebalancing proposal generation and 1-click macro stress scenario execution.</div>
+                </li>
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>Uncluttered UI:</strong> Secondary mathematical parameters (like 10-class probability arrays and shock vectors) are tucked away to prevent information fatigue.</div>
+                </li>
+              </ul>
+
+              <div className="mode-testing-box">
+                <h4>How to test Quick View in the dashboard:</h4>
+                <ol>
+                  <li>Click the button below to launch the dashboard in <strong>Quick View</strong>.</li>
+                  <li>Scan the 29 pre-loaded live news and social signals to observe headline sentiment and impact deciles.</li>
+                  <li>In <strong>Index Lab</strong>, click <code>Run Signal-Based Rebalance</code> for immediate weight recommendations.</li>
+                </ol>
+              </div>
+
+              <button
+                type="button"
+                className="landing-btn-secondary"
+                style={{ width: '100%', justifyContent: 'center' }}
+                onClick={() => {
+                  onMode?.('quick');
+                  onTab('events');
+                }}
+              >
+                <span>Launch Quick View Mode →</span>
+              </button>
+            </div>
+
+            {/* Analyst View Card */}
+            <div className="mode-card mode-analyst-card">
+              <div className="mode-card-header">
+                <span className="mode-card-badge badge-analyst">QUANTITATIVE &amp; AUDITOR PERSPECTIVE</span>
+                <h3>Analyst View</h3>
+                <span className="mode-card-sub">Full mathematical inspectability, probability vectors &amp; interactive shock levers</span>
+              </div>
+
+              <div className="mode-representation">
+                <strong>What it represents:</strong> Built for Quantitative Analysts, Risk Engineers, and Hackathon Evaluators who demand mathematical transparency, inspectable model confidence distributions, and direct control over risk parameters.
+              </div>
+
+              <ul className="mode-features-list">
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>10-Class Softmax Probabilities:</strong> Complete event taxonomy distribution bars (Earnings, Credit Event, Product Launch, etc.) showing exact model entropy.</div>
+                </li>
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>Granular Feature Decomposition:</strong> Unveils continuous sentiment scores [−1.0 to +1.0], 15-day rolling volatility (σ₁₅), and market regime state flags.</div>
+                </li>
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>Interactive Optimizer Sliders:</strong> Live turnover penalty tuning (λ parameter) and inspectable 15% single-stock / 35% sector concentration checks.</div>
+                </li>
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>Multi-Asset Accounting Separation:</strong> Discrete valuation for Trading Book MTM (Bonds duration/convexity, Swaps DV01, Options Delta-Gamma) vs Banking Book 12-Month ECL.</div>
+                </li>
+                <li>
+                  <span className="mode-bullet">✓</span>
+                  <div><strong>What-If &amp; Reverse Stress Tools:</strong> Interactive position-level exposure sliders (0.0× to 2.0×) and automated bisection search for capital breach limits.</div>
+                </li>
+              </ul>
+
+              <div className="mode-testing-box">
+                <h4>How to test Analyst View in the dashboard:</h4>
+                <ol>
+                  <li>Click the button below to launch the dashboard in <strong>Analyst View</strong>.</li>
+                  <li>In <strong>AI Signals</strong>, inspect the full 10-category probability distributions on event cards.</li>
+                  <li>In <strong>Stress Lab</strong>, adjust position sliders in the <code>What-If Analysis</code> panel or execute a <code>Reverse Stress Test</code>.</li>
+                </ol>
+              </div>
+
+              <button
+                type="button"
+                className="landing-btn-primary"
+                style={{ width: '100%', justifyContent: 'center' }}
+                onClick={() => {
+                  onMode?.('analyst');
+                  onTab('events');
+                }}
+              >
+                <span>Launch Analyst View Mode →</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Shared State Guarantee Banner */}
+          <div className="shared-state-banner">
+            <ShieldCheck size={26} color="#10b981" style={{ flexShrink: 0 }} />
+            <div>
+              <strong>Synchronized State Guarantee</strong>
+              <p>
+                Quick View and Analyst View are <em>not</em> separate mock pages or disconnected tabs—they share the exact same underlying React state and live FastAPI data. You can select a signal or run a rebalance in Quick View, toggle to Analyst View, and inspect the underlying mathematical breakdown without losing your place or restarting your session.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ──────────────────────────────────────────────────────────── */}
       {/* SECTION 7: INTERACTIVE ILLUSTRATIVE WALKTHROUGH              */}
       {/* ──────────────────────────────────────────────────────────── */}
-      <section className="landing-section" id="interactive-demo">
+      <section className="landing-section bg-alt" id="interactive-demo">
         <div className="landing-container">
-          <div className="section-eyebrow">06 / GUIDED DEMONSTRATION</div>
+          <div className="section-eyebrow">07 / GUIDED DEMONSTRATION</div>
           <h2 className="section-heading">
             Interactive Walkthrough: The Information Journey
           </h2>
@@ -1001,7 +1148,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
       {/* ──────────────────────────────────────────────────────────── */}
       <section className="landing-section bg-alt" id="platform-summary">
         <div className="landing-container text-center">
-          <div className="section-eyebrow text-center">07 / ARCHITECTURE AT A GLANCE</div>
+          <div className="section-eyebrow text-center">08 / ARCHITECTURE AT A GLANCE</div>
           <h2 className="section-heading text-center">
             From information to interpretable risk intelligence.
           </h2>
@@ -1094,6 +1241,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
             <a href="#how-it-works">How It Works</a>
             <a href="#ai-engine">AI Engine</a>
             <a href="#applications">Applications</a>
+            <a href="#view-modes">View Modes</a>
             <button type="button" className="footer-btn-link" onClick={onStart}>Dashboard</button>
           </div>
           <div className="footer-disclaimer">

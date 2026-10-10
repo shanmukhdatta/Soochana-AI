@@ -13,3 +13,13 @@ test('bujji financial assistant is mounted with welcome message, starters and di
   assert.ok(css.includes('.bujji-launcher'));
   assert.ok(css.includes('.bujji-panel'));
 });
+
+test('home landing page explains Quick View and Analyst View modes with dashboard testing guidance',()=>{
+  const homeSrc=fs.readFileSync(new URL('../src/components/HomeLanding.tsx',import.meta.url),'utf8');
+  assert.ok(homeSrc.includes('Quick View vs. Analyst View'));
+  assert.ok(homeSrc.includes('EXECUTIVE &amp; PM PERSPECTIVE'));
+  assert.ok(homeSrc.includes('QUANTITATIVE &amp; AUDITOR PERSPECTIVE'));
+  assert.ok(homeSrc.includes('How to test Quick View in the dashboard:'));
+  assert.ok(homeSrc.includes('How to test Analyst View in the dashboard:'));
+  assert.ok(homeSrc.includes('Synchronized State Guarantee'));
+});

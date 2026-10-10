@@ -316,7 +316,32 @@ select option,.mono-app select option,.form-label select option,.compact-select 
 .footer-links{display:flex;gap:20px;flex-wrap:wrap}
 .footer-links a,.footer-btn-link{color:#666;font-size:13px;text-decoration:none;font-weight:500;background:none;border:none;padding:0;cursor:pointer}
 .footer-links a:hover,.footer-btn-link:hover{color:#111}
-.footer-disclaimer p{margin:0;font-size:12px;color:#888;line-height:1.6}
+/* Operating Modes (Quick View vs Analyst View) */
+.modes-showcase-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:36px 0 24px}
+.mode-card{background:#fff;border:1px solid #e5e7e9;border-radius:14px;padding:32px;display:flex;flex-direction:column;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.02);transition:border-color .15s,box-shadow .15s}
+.mode-card:hover{border-color:#111;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+.mode-card.mode-quick-card{border-top:3px solid #6366f1}
+.mode-card.mode-analyst-card{border-top:3px solid #0f172a}
+.mode-card-header{margin-bottom:18px}
+.mode-card-badge{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:4px;display:inline-block;margin-bottom:10px}
+.badge-quick{background:#eef2ff;color:#4338ca}
+.badge-analyst{background:#f1f5f9;color:#0f172a}
+.mode-card h3{margin:0 0 6px;font-size:24px;font-weight:750;letter-spacing:-.02em;color:#111}
+.mode-card-sub{font-size:13.5px;color:#666;line-height:1.5}
+.mode-representation{background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px 14px;margin:16px 0 20px;font-size:13px;color:#444;line-height:1.55}
+.mode-representation strong{color:#111}
+.mode-features-list{list-style:none;padding:0;margin:0 0 24px;display:flex;flex-direction:column;gap:11px}
+.mode-features-list li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#4b5563;line-height:1.5}
+.mode-features-list li strong{color:#111}
+.mode-bullet{color:#10b981;font-weight:800;flex-shrink:0;font-size:14px}
+.mode-testing-box{background:#f8f9fa;border:1px dashed #d1d5db;border-radius:10px;padding:16px;margin-top:auto;margin-bottom:20px}
+.mode-testing-box h4{margin:0 0 8px;font-size:11.5px;font-weight:750;text-transform:uppercase;letter-spacing:.06em;color:#111}
+.mode-testing-box p{margin:0 0 10px;font-size:12.5px;color:#555;line-height:1.5}
+.mode-testing-box ol{margin:0;padding-left:18px;font-size:12px;color:#555;line-height:1.6}
+.mode-testing-box code{background:#eef0f2;padding:2px 6px;border-radius:4px;font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.shared-state-banner{background:#fff;border:1px solid #e5e7e9;border-left:3px solid #10b981;border-radius:10px;padding:18px 22px;display:flex;align-items:center;gap:16px;margin-top:16px}
+.shared-state-banner strong{font-size:14px;color:#111;display:block;margin-bottom:3px}
+.shared-state-banner p{margin:0;font-size:12.5px;color:#555;line-height:1.5}
 
 /* Responsive Rules */
 @media(max-width:1100px){
@@ -336,7 +361,7 @@ select option,.mono-app select option,.form-label select option,.compact-select 
   .hero-sources-col,.hero-apps-col{grid-template-columns:1fr}
   .constraints-showcase,.instruments-grid{grid-template-columns:1fr}
   .nlp-results-grid,.dual-app-preview,.arch-table-grid{grid-template-columns:1fr}
-  .branch-destinations{grid-template-columns:1fr}
+  .branch-destinations,.modes-showcase-grid{grid-template-columns:1fr}
 }
 @media(max-width:600px){
   .landing-nav-inner{padding:0 10px!important;gap:4px!important;height:56px!important;width:100%!important;box-sizing:border-box!important}

@@ -16,7 +16,7 @@ This document consolidates all formal verification logs, test commands, benchmar
 | Test Suite / Audit | Scope | Result | Passing Rate |
 |---|---|---|---|
 | **Backend Unit & Integration (`pytest`)** | Core engine, ingestion, Module A, Module B, Bujji assistant | **PASS** | 120 / 120 (100%) |
-| **Frontend Unit & Logic (`node:test`)** | State management, calculations, security links, UI components | **PASS** | 13 / 13 (100%) |
+| **Frontend Unit & Logic (`node:test`)** | State management, calculations, security links, UI components, view modes | **PASS** | 14 / 14 (100%) |
 | **API Contract Validation** | 15 backend route declarations, token styles, token prohibitions | **PASS** | 15 / 15 (100%) |
 | **Production Bundle Compilation** | TypeScript compilation (`tsc -b`) and Vite production packaging | **PASS** | 0 errors, 0 lints |
 | **Full E2E Integration Audit (`audit-e2e.mjs`)** | 8-phase end-to-end audit against live running servers | **PASS** | 8 / 8 checks (100%) |
@@ -76,8 +76,9 @@ npm --prefix frontend test
 ✔ advanced actions remain in Analyst View (0.1317ms)
 ✔ quick mode simplifies but preserves analyst stress controls (0.1076ms)
 ✔ bujji financial assistant is mounted with welcome message, starters and disclaimer (0.1235ms)
-ℹ tests 13
-ℹ pass 13
+✔ home landing page explains Quick View and Analyst View modes with dashboard testing guidance (0.4741ms)
+ℹ tests 14
+ℹ pass 14
 ℹ fail 0
 ```
 
