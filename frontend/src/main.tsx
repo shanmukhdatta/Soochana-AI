@@ -1,10 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import App from './App';
-import ReviewerDemo from './ReviewerDemo';
 import './styles.css';
+import './mono.css';
 
-const demo = import.meta.env.VITE_STATIC_DEMO === 'true';
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>{demo ? <ReviewerDemo/> : <App/>}</React.StrictMode>
+// The authentic full frontend is always rendered. The demo build uses an
+// evidence-only, explicitly unavailable-model API adapter instead of FastAPI.
+createRoot(document.getElementById('root')!).render(
+  <React.StrictMode><App/></React.StrictMode>
 );
