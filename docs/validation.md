@@ -2,8 +2,8 @@
 
 **Project:** RiskPulse AI — Explainable Financial Risk Intelligence  
 **Competition:** S&P Global & CRISIL Campus Hackathon 2026  
-**Status:** All Automated Verification Suites Passing (100%)  
-**Verification Date:** October 2026  
+**Status:** Prior recorded verification evidence; not a fresh clean-clone rerun  
+**Verification Date:** October 2026 (recorded; machine/environment and original weight availability must be independently checked)  
 
 ---
 
