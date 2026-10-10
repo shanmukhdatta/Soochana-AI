@@ -8,6 +8,8 @@
 [![React 19](https://img.shields.io/badge/Frontend-React%2019%20%2B%20Vite-61DAFB.svg)](https://react.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+> **Reproducibility notice (October 2026):** The event-classifier and sentiment-regressor checkpoint weights are not tracked in this repository. A fresh clone cannot run full real NLP inference until those authentic checkpoints are provided. The recorded event-model result (accuracy 0.99457; macro-F1 0.97976) comes from the original notebook, **not a model rerun in this repository review**. Its training initialization differs from the committed runtime event-model configuration; see [event-classifier provenance](training/event_classifier/README.md). Recorded software verification is documented separately in [validation](docs/validation.md). Do not interpret example portfolio outputs as real-world investment performance.
+
 ---
 
 ## 1. Project Overview / Problem Statement & Approach
@@ -22,9 +24,9 @@ The structured risk signals produced by the engine are connected downstream to t
 
 | Dimension | Core Hackathon Challenge Requirements | RiskPulse AI Implemented Extensions |
 |---|---|---|
-| **Data Ingestion** | Multiple unstructured information sources | **Dual-source live pipeline:** Marketaux Financial News API + Bluesky Social (AT Protocol) with text normalization, ticker regex extraction, entity aliasing, and SQLite persistence. |
+| **Data Ingestion** | Multiple unstructured information sources | **Dual-source ingestion pipeline (live APIs optional):** Marketaux Financial News API + Bluesky Social (AT Protocol) with text normalization, ticker regex extraction, entity aliasing, and SQLite persistence. |
 | **Sentiment Analysis** | Sentiment score extraction | **FinBERT Continuous Regressor:** BERT regression architecture (`FinBertSentimentRegressor`) with linear projection and Tanh activation outputting continuous sentiment intensity $\hat{s} \in [-1.0, +1.0]$. |
-| **Event Classification** | Financial event classification | **FinBERT 5-Class Classifier:** 5-class financial event taxonomy (`Geopolitical`, `Macroeconomic`, `Credit Event`, `Merger / Acquisition`, `Product Launch`) with softmax probability distributions. Configuration references `yiyanghkust/finbert-tone`. |
+| **Event Classification** | Financial event classification | **Five-class financial event classifier (checkpoint provenance under review):** 5-class financial event taxonomy (`Geopolitical`, `Macroeconomic`, `Credit Event`, `Merger / Acquisition`, `Product Launch`) with softmax probability distributions. Runtime configuration references `yiyanghkust/finbert-tone`; the recorded fine-tuning notebook initializes a different base checkpoint. The provenance discrepancy must be resolved before claiming the currently deployed weights reproduce the notebook results. |
 | **Impact Severity** | Impact severity estimation | **XGBoost Severity Engine:** Gradient-boosted decision trees predicting market reaction decile ($1 \dots 10$) conditional on continuous sentiment, 5 event probabilities, 20-day rolling volatility, 20-day volume ratio, returns, and sector/regime features. |
 | **Output Schema** | Machine-readable results | **Standardized JSON Schema:** Standardized risk signal payloads detailing ticker, confidence, category, decile severity, sentiment intensity, and provenance URL. |
 | **Downstream Applications** | At least one financial portfolio application | **Two institutional modules:**<br>• **Module A:** 15-stock constrained quadratic index optimization with 357-day historical walk-forward backtesting.<br>• **Module B:** 30-position multi-asset stress laboratory with What-If exposure adjustment and bisection reverse stress testing. |
@@ -91,9 +93,10 @@ RiskPulse AI incorporates specific datasets across training, real-source ingesti
 
 ### 1. Model Training & Evaluation Data
 - **Base Transformer Provenance:** Event classifier config references `yiyanghkust/finbert-tone` (Apache 2.0); sentiment regressor utilizes BERT-base architecture fine-tuned on financial text.
-- **Sentiment & Event Taxonomy Fine-Tuning:** Fine-tuned on labeled financial headlines and corporate event disclosures categorized into 5 verified financial taxonomy classes (`Geopolitical`, `Macroeconomic`, `Credit Event`, `Merger / Acquisition`, `Product Launch`).
+- **Sentiment Training:** The supplied sentiment notebooks use continuous FiQA sentiment scores and a FinBERT regression head. Original fine-tuned weights and processed splits are not committed; see `training/sentiment/`.
+- **Event Taxonomy Training:** Six sourced collections are gathered and cleaned into five classes (`Geopolitical`, `Macroeconomic`, `Credit Event`, `Merger / Acquisition`, `Product Launch`). Recorded original notebook outputs show 26,172 raw candidate records and 16,576 cleaned real examples split as 13,260 train / 1,658 validation / 1,658 test. This training was **real-only**, not synthetic-augmented. See `training/event_classifier/README.md` and `recorded_results/notebook_evidence.json`.
 - **Impact Severity Feature Matrix:** Calibrated on historical corporate event filings matched with subsequent 1-day and 3-day equity return quantiles to define decile impact boundaries (`configs/impact_decile_thresholds.json`).
-- *Note on Model Weights:* Due to GitHub's 100 MB per-file upload limit, raw 438 MB transformer weights (`model.safetensors`) are excluded from Git via `.gitignore`. Model architectures, tokenizer configs, vocabularies, and the XGBoost severity engine (`models/impact_engine/*.joblib`, 535 KB) are tracked in the repository. The backend supports local model loading and deterministic mock execution (`SKIP_MODEL_LOAD=true`).
+- *Model availability:* Fine-tuned event and sentiment transformer weights are **not included**. The repository contains configs, tokenizers and the impact model, but those files alone cannot reproduce full NLP inference. Supply the authentic trained checkpoints from an authorized location and run `python -m scripts.check_models`. `SKIP_MODEL_LOAD=true` disables the real inference engine; it is **not** a mock that returns genuine risk predictions. Do not infer that a successful frontend build or unit test proves model inference.
 
 ### 2. Live Public News & Social Ingestion
 - **Marketaux News API:** Real-time financial news headlines and metadata. Free-tier API token required for live fetching; 2 pre-collected news items are bundled in `data/ingestion/riskpulse.db`.
@@ -146,12 +149,13 @@ Set up environment variables:
 # Copy example configuration template
 cp .env.example .env
 ```
-*Note:* The default `.env` is configured to run out-of-the-box. The local SQLite database (`data/ingestion/riskpulse.db`) contains 29 pre-loaded news and social signals, meaning the system starts and operates without requiring external API keys.
+*Important:* The sample SQLite database contains pre-collected entries, but the default `SKIP_MODEL_LOAD=false` requires the genuine fine-tuned transformer weight files, which are **not bundled**. Without them the risk inference endpoints report HTTP 503. For UI inspection without weights, set `SKIP_MODEL_LOAD=true` in `.env`; the risk inference endpoints remain unavailable rather than producing fabricated scores. The included data and the independent downstream test scripts can still be inspected.
 
-Verify model configurations:
+After placing both authentic NLP checkpoints in their configured model directories, verify file presence:
 ```bash
 python -m scripts.check_models
 ```
+This command will fail on a fresh clone until the omitted transformer weights are supplied. Passing it checks file presence, not full loading or checkpoint identity. For authorized Hugging Face model repositories, see `scripts/fetch_models.py`.
 
 ### Step 3: Frontend Setup
 In a separate terminal, install dependencies:
@@ -201,14 +205,14 @@ node frontend/scripts/audit-e2e.mjs
 
 ## 5. Key Results & Domain Impact
 
-All metrics below reflect genuine, measured outputs from automated verification suites:
+The following table summarizes **previously recorded verification evidence**, not tests executed during this README revision. Distinguish software tests, illustrative example responses, and held-out model quality. Re-run the commands under Quickstart before claiming a fresh result:
 
 ### Verified Implementation Results
 
 | Component | Verified Capability | Supporting Evidence |
 |---|---|---|
-| **Risk Engine Health** | Model orchestration, lifespan startup, atomic batching | `GET /health` returns `status: "ready"`; 120/120 passing pytest suite. |
-| **Three-Model Inference** | Real-time sentiment regression, event classification, impact decile | Deterministic manual inference: Product Launch (99.7% conf), Sentiment +0.606, Impact 6/10. |
+| **Risk Engine Health** | Model orchestration, lifespan startup, atomic batching | Previously recorded 120/120 pytest tests; `/health` returns `ready` **only when authentic NLP weights load successfully**. Without the weights, it returns HTTP 503. |
+| **Three-Model Inference** | Real-time sentiment regression, event classification, impact decile | Example inference recorded in earlier evidence; not rerun in this repository review. Real NLP checkpoints are absent from GitHub. See `data/module_b/live_verification_results.json` for another captured request/response. |
 | **Dual-Source Ingestion** | Live & pre-collected ingestion from news (Marketaux) and social (Bluesky) | 29 active signals (2 news, 27 social) stored in `data/ingestion/riskpulse.db`. |
 | **Module A Rebalancing** | 15-stock quadratic optimization subject to strict constraints | Target weights sum to exactly $1.0000$; stock deviation $\le \pm 2\%$; sector deviation $\le \pm 5\%$; turnover $\le 10\%$. |
 | **Module A Backtesting** | Walk-forward simulation over 357 historical market sessions | `POST /module-a/backtest` executes across 357 market sessions without lookahead leakage. |
@@ -218,9 +222,9 @@ All metrics below reflect genuine, measured outputs from automated verification 
 | **Bujji Assistant** | In-context financial education and model explainability | Free-tier Groq Qwen/Llama integration with deterministic offline fallback modes. |
 
 ### Domain Impact for Financial Institutions
-- **Early Warning Risk Signals:** Identifies market-moving corporate events from public social chatter and news before they manifest in closing volatility.
-- **Regulatory-Compliant Tilting:** Module A demonstrates how qualitative risk intelligence can be harnessed without violating strict concentration or turnover mandates.
-- **Accounting Horizon Integrity:** Module B resolves the common industry pitfall of aggregating trading book market losses and banking book credit allowances into a misleading single sum, providing CROs and portfolio managers with transparent risk insights.
+- **Early Warning Risk Signals:** Designed to organize candidate risk events from public news and social data; prospective early-warning lead-time gains have **not** been independently demonstrated.
+- **Constraint-Aware Tilting (illustrative, not a compliance certification):** Module A demonstrates how qualitative risk intelligence can be harnessed without violating strict concentration or turnover mandates.
+- **Separated Risk Horizons:** Module B reports instantaneous trading-book MTM and incremental 12-month loan ECL separately. It is a synthetic educational portfolio, not a validated institutional risk or accounting platform.
 
 ---
 
@@ -279,9 +283,9 @@ To maintain scientific and financial integrity, the known limitations of RiskPul
 
 ## 8. Demo, Presentation & Repository Links
 
-- **Live Application Deployment:** `Deployment pending`
-- **Official Demo Video (10-minute walkthrough):** `Pending recording`
-- **Slide Presentation (5–7 slides):** `docs/presentation.pdf` *(Pending final candidate deck export)*
+- **YouTube Demo Video:** `TODO: add unlisted publicly viewable YouTube URL`
+- **Slide Presentation (5–7 slides):** `TODO: add docs/presentation.pdf and link it here`
+- **Live Application Deployment:** `Not supplied; use local Quickstart`
 - **System Architecture Diagram:** [`docs/architecture.png`](docs/architecture.png)
 - **Detailed Methodology & Mathematics:** [`docs/methodology.md`](docs/methodology.md)
 - **Validation & Test Audit Report:** [`docs/validation.md`](docs/validation.md)
