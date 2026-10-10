@@ -7,7 +7,6 @@ const money=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency
 const pct=(n:number)=>((n||0)*100).toFixed(2)+'%';
 const info=evidence.recordedInference;
 const weights=evidence.historicalRebalance;
-const portfolio=evidence.portfolio;
 const scenario=evidence.recordedScenario;
 const stress=evidence.recordedStress;
 const stocks=evidence.indexConfig.tickers as string[];
