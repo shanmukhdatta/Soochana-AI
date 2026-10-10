@@ -13,7 +13,7 @@ interface HomeLandingProps {
 
 export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
   // Interactive Walkthrough state
-  const [selectedExample, setSelectedExample] = useState<'aapl' | 'meta'>('aapl');
+  const [selectedExample, setSelectedExample] = useState<'aapl' | 'msft'>('aapl');
   const [activeStep, setActiveStep] = useState<number>(1);
   const [liveAnalyzing, setLiveAnalyzing] = useState(false);
   const [liveResult, setLiveResult] = useState<{ sentiment: number; eventClass: string; impact: number } | null>(null);
@@ -30,8 +30,8 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
     try {
       const text = selectedExample === 'aapl'
         ? "Apple announces next-generation Silicon processor lineup and expands enterprise hardware subscription ecosystem."
-        : "Meta Platforms expands custom AI infrastructure investments and reports cloud compute capital expenditure projections.";
-      const ticker = selectedExample === 'aapl' ? 'AAPL' : 'META';
+        : "Microsoft announces major expansion of enterprise cloud compute clusters and datacenter infrastructure to meet commercial AI demand.";
+      const ticker = selectedExample === 'aapl' ? 'AAPL' : 'MSFT';
       const res = await api.analyze({
         text,
         ticker,
@@ -48,7 +48,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
       // Fallback illustrative numbers if backend is offline
       setLiveResult(selectedExample === 'aapl'
         ? { sentiment: 0.61, eventClass: 'Product Launch', impact: 7 }
-        : { sentiment: 0.24, eventClass: 'Macroeconomic', impact: 5 }
+        : { sentiment: 0.48, eventClass: 'Product Launch', impact: 7 }
       );
       setActiveStep(3);
     } finally {
@@ -100,7 +100,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
           </div>
 
           <h1 className="landing-hero-title">
-            Financial information is everywhere.<br />
+            Financial information<br className="mobile-break" /> is everywhere.<br />
             <span className="text-secondary">Clarity isn't.</span>
           </h1>
 
@@ -135,7 +135,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
 
               <div className="hero-source-card float-medium">
                 <div className="card-tag">EQUITY SYMBOL</div>
-                <strong>Meta (META)</strong>
+                <strong>Microsoft (MSFT)</strong>
                 <small>Illustrative company reference</small>
               </div>
 
@@ -819,10 +819,10 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
               </button>
               <button
                 type="button"
-                className={`toggle-btn ${selectedExample === 'meta' ? 'active' : ''}`}
-                onClick={() => { setSelectedExample('meta'); setLiveResult(null); setActiveStep(1); }}
+                className={`toggle-btn ${selectedExample === 'msft' ? 'active' : ''}`}
+                onClick={() => { setSelectedExample('msft'); setLiveResult(null); setActiveStep(1); }}
               >
-                Meta (META) · Infrastructure &amp; CapEx
+                Microsoft (MSFT) · Cloud Infrastructure &amp; CapEx
               </button>
             </div>
           </div>
@@ -870,13 +870,13 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
                 <div className="narrative-box">
                   <div className="narrative-meta">
                     <span>Source: Public Financial Ingestion</span>
-                    <span>Ticker: <strong>{selectedExample === 'aapl' ? 'AAPL' : 'META'}</strong></span>
+                    <span>Ticker: <strong>{selectedExample === 'aapl' ? 'AAPL' : 'MSFT'}</strong></span>
                     <span>Timestamp: Live Calendar Date UTC</span>
                   </div>
                   <p className="narrative-text">
                     {selectedExample === 'aapl'
                       ? "“A public financial article discusses an upcoming Apple product launch, detailing expanded hardware ecosystem subscriptions and silicon architecture upgrades.”"
-                      : "“Financial market coverage analyzes Meta’s latest strategic capital expenditure guidance for custom AI inference clusters and datacenter expansions.”"
+                      : "“Financial market coverage analyzes Microsoft’s major expansion of enterprise cloud compute clusters and datacenter infrastructure to meet commercial AI demand.”"
                     }
                   </p>
                 </div>
@@ -906,7 +906,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
                   <div className="nlp-res-card">
                     <span className="nlp-label">FinBERT Continuous Sentiment</span>
                     <strong className="nlp-val text-pos">
-                      {liveResult ? `${liveResult.sentiment.toFixed(2)}` : (selectedExample === 'aapl' ? '+0.61' : '+0.24')}
+                      {liveResult ? `${liveResult.sentiment >= 0 ? '+' : ''}${liveResult.sentiment.toFixed(2)}` : (selectedExample === 'aapl' ? '+0.61' : '+0.48')}
                     </strong>
                     <p>Continuous scale from −1.0 (strongly negative) to +1.0 (strongly positive).</p>
                   </div>
@@ -914,7 +914,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
                   <div className="nlp-res-card">
                     <span className="nlp-label">FinBERT Event Classification</span>
                     <strong className="nlp-val">
-                      {liveResult ? liveResult.eventClass : (selectedExample === 'aapl' ? 'Product Launch' : 'Macroeconomic')}
+                      {liveResult ? liveResult.eventClass : (selectedExample === 'aapl' ? 'Product Launch' : 'Product Launch')}
                     </strong>
                     <p>Categorized from 5 supported classes with full probability vector.</p>
                   </div>
@@ -936,7 +936,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
                 <div className="impact-display-card">
                   <div className="impact-score-big">
                     <span>Impact Severity Rating:</span>
-                    <strong>{liveResult ? `${liveResult.impact} / 10` : (selectedExample === 'aapl' ? '7 / 10' : '5 / 10')}</strong>
+                    <strong>{liveResult ? `${liveResult.impact} / 10` : (selectedExample === 'aapl' ? '7 / 10' : '7 / 10')}</strong>
                   </div>
                   <p>
                     The gradient-boosted engine evaluates the sentiment score, class probabilities, and pre-event
@@ -961,7 +961,7 @@ export function HomeLanding({ onStart, onTab }: HomeLandingProps) {
                   <div className="app-preview-card">
                     <h4>Module A Application</h4>
                     <p>
-                      The positive sentiment and 7/10 severity for {selectedExample === 'aapl' ? 'AAPL' : 'META'}
+                      The positive sentiment and 7/10 severity for {selectedExample === 'aapl' ? 'AAPL' : 'MSFT'}
                       increases the constituent's tactical attractiveness, proposing a constrained +1.4% allocation tilt
                       subject to sector caps and 10% turnover limits.
                     </p>
