@@ -1,6 +1,10 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 import App from './App';
+import ReviewerDemo from './ReviewerDemo';
 import './styles.css';
-import './mono.css';
-createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
+
+const demo = import.meta.env.VITE_STATIC_DEMO === 'true';
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>{demo ? <ReviewerDemo/> : <App/>}</React.StrictMode>
+);
