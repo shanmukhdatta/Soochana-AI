@@ -2,8 +2,10 @@ import { execSync } from 'node:child_process';
 import path from 'node:path';
 import fs from 'node:fs';
 
-const ARTIFACT_DIR = 'C:\\Users\\lokes\\.gemini\\antigravity-ide\\brain\\b5d2f269-2530-4897-bfa3-1d1d0da4ec4c';
-const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+// Set CHROME_PATH to an installed Chrome/Chromium executable if not on PATH.
+// Screenshots are stored in a repository-local ignored folder by default.
+const ARTIFACT_DIR = path.resolve(process.env.AUDIT_SCREENSHOT_DIR || path.join('frontend', 'audit_screenshots'));
+const CHROME_PATH = process.env.CHROME_PATH || 'chrome';
 
 if (!fs.existsSync(ARTIFACT_DIR)) {
   fs.mkdirSync(ARTIFACT_DIR, { recursive: true });
@@ -41,4 +43,4 @@ for (const t of targets) {
     console.error(`  ❌ Failed: ${t.name}:`, err.message);
   }
 }
-console.log('\nAll audit screenshots captured.');
+console.log('\nScreenshot capture attempt finished; inspect failures above.');
