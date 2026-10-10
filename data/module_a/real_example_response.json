@@ -1,0 +1,180 @@
+{
+  "as_of": "2024-05-16T23:00:00Z",
+  "strategy": "full_event_aware",
+  "current_weights": {
+    "AAPL": 0.06666666666666667,
+    "MSFT": 0.06666666666666667,
+    "NVDA": 0.06666666666666667,
+    "QCOM": 0.06666666666666667,
+    "GOOGL": 0.06666666666666667,
+    "CMCSA": 0.06666666666666667,
+    "AMZN": 0.06666666666666667,
+    "TSLA": 0.06666666666666667,
+    "BKNG": 0.06666666666666667,
+    "SBUX": 0.06666666666666667,
+    "COST": 0.06666666666666667,
+    "PEP": 0.06666666666666667,
+    "GILD": 0.06666666666666667,
+    "AMGN": 0.06666666666666667,
+    "CSX": 0.06666666666666667
+  },
+  "target_weights": {
+    "AAPL": 0.07088272184136866,
+    "MSFT": 0.06636551986847367,
+    "NVDA": 0.06636551986847367,
+    "QCOM": 0.06636551986847367,
+    "GOOGL": 0.06636551986847367,
+    "CMCSA": 0.06636551986847367,
+    "AMZN": 0.06636551986847367,
+    "TSLA": 0.06636551986847367,
+    "BKNG": 0.06636551986847367,
+    "SBUX": 0.06636551986847367,
+    "COST": 0.06636551986847367,
+    "PEP": 0.06636551986847367,
+    "GILD": 0.06636551986847367,
+    "AMGN": 0.06636551986847367,
+    "CSX": 0.06636551986847367
+  },
+  "one_way_turnover": 0.004216055174701999,
+  "estimated_transaction_cost_fraction": 8.432110349403999e-06,
+  "signal_counts": {
+    "AAPL": 1,
+    "MSFT": 0,
+    "NVDA": 0,
+    "QCOM": 0,
+    "GOOGL": 0,
+    "CMCSA": 0,
+    "AMZN": 0,
+    "TSLA": 0,
+    "BKNG": 0,
+    "SBUX": 0,
+    "COST": 0,
+    "PEP": 0,
+    "GILD": 0,
+    "AMGN": 0,
+    "CSX": 0
+  },
+  "changes": [
+    {
+      "ticker": "AAPL",
+      "before": 0.06666666666666667,
+      "after": 0.07088272184136866,
+      "change_percentage_points": 0.4216055174701999,
+      "signal": 0.18068807891579988,
+      "explanation": "increase constrained by portfolio limits; aggregated sentiment/importance signal +0.181 from 1 distinct headline(s)"
+    },
+    {
+      "ticker": "MSFT",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "NVDA",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "QCOM",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "GOOGL",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "CMCSA",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "AMZN",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "TSLA",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "BKNG",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "SBUX",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "COST",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "PEP",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "GILD",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "AMGN",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    },
+    {
+      "ticker": "CSX",
+      "before": 0.06666666666666667,
+      "after": 0.06636551986847367,
+      "change_percentage_points": -0.030114679819299994,
+      "signal": 0.0,
+      "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+    }
+  ],
+  "warnings": []
+}

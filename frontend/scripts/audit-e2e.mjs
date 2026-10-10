@@ -181,25 +181,33 @@ async function runAudit() {
 
   // 7. Security Audit
   console.log('\n[7/8] Auditing Security & Build Artifacts...');
-  const distDir = path.resolve(process.cwd(), 'dist/assets');
+  const distDir = fs.existsSync(path.resolve(process.cwd(), 'dist/assets'))
+    ? path.resolve(process.cwd(), 'dist/assets')
+    : path.resolve(process.cwd(), 'frontend/dist/assets');
   const jsFiles = fs.readdirSync(distDir).filter(f => f.endsWith('.js'));
   let bundleContent = '';
   for (const f of jsFiles) {
     bundleContent += fs.readFileSync(path.join(distDir, f), 'utf8');
   }
-  assert.ok(!bundleContent.includes('3npK4vk3eKCpA28mAwtE699lvYG8WCZsvRnifAJa'), 'Marketaux token must NEVER leak into frontend bundle');
+  const marketauxToken = process.env.MARKETAUX_API_TOKEN || '';
+  if (marketauxToken) {
+    assert.ok(!bundleContent.includes(marketauxToken), 'Marketaux token must NEVER leak into frontend bundle');
+  }
   assert.ok(!bundleContent.includes('test_ingestion_admin_token'), 'Admin token must NEVER leak into frontend bundle');
   assert.ok(!bundleContent.includes('INGESTION_ADMIN_TOKEN'), 'Admin token key name must not leak into bundle');
   console.log('  ✔ Bundle verified: ZERO secrets, zero API keys, zero admin tokens in frontend distribution');
 
   // Verify external links security in source
-  const appSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/App.tsx'), 'utf8');
+  const frontendDir = fs.existsSync(path.resolve(process.cwd(), 'src/App.tsx'))
+    ? process.cwd()
+    : path.resolve(process.cwd(), 'frontend');
+  const appSrc = fs.readFileSync(path.resolve(frontendDir, 'src/App.tsx'), 'utf8');
   assert.ok(appSrc.includes('rel="noopener noreferrer"'), 'External links must use rel="noopener noreferrer"');
   console.log('  ✔ External links use rel="noopener noreferrer"');
 
   // 8. Responsive Design & Accessibility Audit
   console.log('\n[8/8] Auditing CSS Responsive Breakpoints & Accessibility...');
-  const cssSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/styles.css'), 'utf8');
+  const cssSrc = fs.readFileSync(path.resolve(frontendDir, 'src/styles.css'), 'utf8');
   assert.ok(cssSrc.includes('@media(max-width:1250px)'), 'Breakpoints: 1250px grid collapsing present');
   assert.ok(cssSrc.includes('@media(max-width:900px)'), 'Breakpoints: 900px compact sidebar layout present');
   assert.ok(cssSrc.includes('@media(max-width:620px)'), 'Breakpoints: 620px/390px mobile navigation and single-column layout present');

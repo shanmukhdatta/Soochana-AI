@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RiskPulse AI Architecture Diagram</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #0B0F17;
+    color: #F8FAFC;
+    padding: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .canvas {
+    width: 1480px;
+    background: #111827;
+    border: 1px solid #1F2937;
+    border-radius: 20px;
+    padding: 44px 48px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid #1F2937;
+    padding-bottom: 24px;
+    margin-bottom: 36px;
+  }
+  .title-area h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+  }
+  .title-area p {
+    font-size: 14px;
+    color: #94A3B8;
+  }
+  .badge {
+    background: #1E293B;
+    border: 1px solid #334155;
+    color: #38BDF8;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    border-radius: 9999px;
+  }
+  .pipeline-grid {
+    display: grid;
+    grid-template-columns: 240px 40px 320px 40px 240px 40px 420px;
+    align-items: center;
+    gap: 0;
+  }
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #64748B;
+    font-size: 22px;
+  }
+  .arrow svg {
+    width: 28px;
+    height: 28px;
+    stroke: #475569;
+    stroke-width: 2;
+    fill: none;
+  }
+  .card {
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 16px 18px;
+    position: relative;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .card-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .tag-blue { background: #0369A1; color: #E0F2FE; }
+  .tag-purple { background: #6D28D9; color: #EDE9FE; }
+  .tag-emerald { background: #047857; color: #D1FAE5; }
+  .tag-amber { background: #B45309; color: #FEF3C7; }
+  .tag-cyan { background: #0E7490; color: #CFFAFE; }
+  .tag-rose { background: #BE123C; color: #FFE4E6; }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #F8FAFC;
+    margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: #94A3B8;
+    line-height: 1.45;
+  }
+  .card-subtext {
+    font-size: 11px;
+    color: #64748B;
+    margin-top: 6px;
+    font-family: monospace;
+  }
+  .nested-container {
+    background: #0F172A;
+    border: 1px dashed #334155;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 8px;
+  }
+  .nested-item {
+    font-size: 11px;
+    color: #CBD5E1;
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+  }
+  .bottom-tier {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid #1F2937;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .tier-box {
+    background: #162032;
+    border: 1px solid #293548;
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tier-info h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+  }
+  .tier-info p {
+    font-size: 12px;
+    color: #94A3B8;
+  }
+  .tier-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: #1E293B;
+    border: 1px solid #334155;
+    color: #E2E8F0;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="header">
+    <div class="title-area">
+      <h1>RiskPulse AI — Explainable Financial Risk Intelligence</h1>
+      <p>End-to-End System Architecture Pipeline: From Raw News/Social Feeds to Risk-Adjusted Index Rebalancing & Multi-Asset Stress Testing</p>
+    </div>
+    <div class="badge">S&P Global & CRISIL Hackathon 2026</div>
+  </div>
+
+  <div class="pipeline-grid">
+    <!-- COL 1: Ingestion & Storage -->
+    <div class="column">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-tag tag-blue">Data Source 1</span>
+        </div>
+        <div class="card-title">Marketaux News API</div>
+        <div class="card-desc">Real-time financial journalism, Reuters/SeekingAlpha feeds, entity metadata.</div>
+        <div class="card-subtext">2 articles ingested</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-tag tag-cyan">Data Source 2</span>
+        </div>
+        <div class="card-title">Bluesky Social (ATP)</div>
+        <div class="card-desc">Decentralized public financial social discourse, cashtag regex matcher.</div>
+        <div class="card-subtext">27 posts ingested</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-tag tag-emerald">Persistence</span>
+        </div>
+        <div class="card-title">Text Normalizer & SQLite</div>
+        <div class="card-desc">Deduplication, ticker alias extraction, provenance logging.</div>
+        <div class="card-subtext">data/ingestion/riskpulse.db</div>
+      </div>
+    </div>
+
+    <!-- ARROW 1 -->
+    <div class="arrow">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- COL 2: 3-Stage ML Risk Engine -->
+    <div class="column">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-tag tag-purple">ML Model 1</span>
+        </div>
+        <div class="card-title">FinBERT Sentiment Regressor</div>
+        <div class="card-desc">Continuous sentiment score mapped onto [-1.0, +1.0] intensity scale.</div>
+        <div class="card-subtext">ProsusAI/finbert + Dense Head</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-tag tag-purple">ML Model 2</span>
+        </div>
+        <div class="card-title">FinBERT Event Classifier</div>
+        <div class="card-desc">10-class softmax distribution across taxonomy (Earnings, Credit, Product...).</div>
+        <div class="card-subtext">10 Financial Taxonomies</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-tag tag-purple">ML Model 3</span>
+        </div>
+        <div class="card-title">XGBoost Impact Severity</div>
+        <div class="card-desc">Trained on market quantiles; predicts market reaction severity (Decile 1–10).</div>
+        <div class="card-subtext">Inputs: Probabilities + &sigma;<sub>15</sub> + Regime</div>
+      </div>
+    </div>
+
+    <!-- ARROW 2 -->
+    <div class="arrow">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- COL 3: Structured Risk Signal -->
+    <div class="column">
+      <div class="card" style="border-color: #38BDF8; background: #0F2238;">
+        <div class="card-header">
+          <span class="card-tag tag-blue">Core Output</span>
+        </div>
+        <div class="card-title">Structured Risk Signal</div>
+        <div class="card-desc">Machine-readable JSON schema delivered to downstream engines:</div>
+        <div class="nested-container">
+          <div class="nested-item"><span>Target Ticker</span><span style="color:#38BDF8">AAPL / AMZN</span></div>
+          <div class="nested-item"><span>Sentiment Intensity</span><span style="color:#4ADE80">+0.606 / -0.081</span></div>
+          <div class="nested-item"><span>Event Category</span><span>Product Launch</span></div>
+          <div class="nested-item"><span>Event Confidence</span><span>99.7%</span></div>
+          <div class="nested-item"><span>Impact Severity</span><span style="color:#FBBF24">7 / 10 (High)</span></div>
+          <div class="nested-item"><span>Historical &sigma;<sub>15</sub></span><span>0.0142</span></div>
+          <div class="nested-item"><span>Provenance URL</span><span>SeekingAlpha</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARROW 3 -->
+    <div class="arrow">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- COL 4: Downstream Financial Applications -->
+    <div class="column">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-tag tag-emerald">Module A</span>
+        </div>
+        <div class="card-title">Constrained Index Rebalancing</div>
+        <div class="card-desc">15 large-cap US equities benchmark with quadratic turnover penalty.</div>
+        <div class="nested-container">
+          <div class="nested-item"><span>Full Investment</span><span>&sum; w<sub>i</sub> = 1.0000</span></div>
+          <div class="nested-item"><span>Single-Stock Cap</span><span>w<sub>i</sub> &le; 15%</span></div>
+          <div class="nested-item"><span>Sector Cap</span><span>Sector &le; 35%</span></div>
+          <div class="nested-item"><span>Turnover Budget</span><span>&Delta;w &le; 5%</span></div>
+          <div class="nested-item"><span>Backtest Horizon</span><span>357 historical days</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-tag tag-amber">Module B</span>
+        </div>
+        <div class="card-title">Multi-Asset Stress Testing</div>
+        <div class="card-desc">30 positions ($10.0M portfolio) with horizon-separated loss modeling:</div>
+        <div class="nested-container">
+          <div class="nested-item"><span>Trading Book MTM</span><span>Bonds (Duration) + Swaps + Options</span></div>
+          <div class="nested-item"><span>Banking Book ECL</span><span>Loans (Basel II/III 12-Month ECL)</span></div>
+          <div class="nested-item"><span>Interactive Tools</span><span>What-If Scaling & Reverse Stress</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM TIER: API & Frontend Delivery -->
+  <div class="bottom-tier">
+    <div class="tier-box">
+      <div class="tier-info">
+        <h3>FastAPI Unified Backend Server</h3>
+        <p>Lifespan model loading, atomic batching, CORS, REST routers: /analyze, /ingestion, /module-a, /module-b, /assistant</p>
+      </div>
+      <div class="tier-badge">Python 3.11 / Uvicorn :8000</div>
+    </div>
+
+    <div class="tier-box">
+      <div class="tier-info">
+        <h3>React & TypeScript Dashboard</h3>
+        <p>Apple-inspired minimalist monochrome UI: Home Introduction, Quick View, Analyst View & Bujji Financial Assistant</p>
+      </div>
+      <div class="tier-badge">Vite 6 / React 18 :5173</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

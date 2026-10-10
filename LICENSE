@@ -1,0 +1,57 @@
+MIT License
+
+Copyright (c) 2026 RiskPulse AI Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+THIRD-PARTY NOTICES AND LICENSES
+================================================================================
+
+This repository incorporates or interfaces with several open-source components
+and pretrained model architectures, each governed by its respective license:
+
+1. FinBERT Model Architecture & Pretrained Foundation:
+   - Origin: ProsusAI / finbert (Hugging Face)
+   - License: Apache License 2.0
+   - Description: Used as the transformer backbone for sentiment regression and
+     financial event taxonomy classification.
+
+2. XGBoost Machine Learning Library:
+   - Origin: DMLC (Distributed Machine Learning Community)
+   - License: Apache License 2.0
+   - Description: Gradient-boosted decision trees used for market impact severity prediction.
+
+3. Hugging Face Transformers & PyTorch:
+   - Origin: Hugging Face Inc. / PyTorch Foundation
+   - License: Apache License 2.0 (Transformers) / Modified BSD (PyTorch)
+
+4. Financial Market & Ingestion Data Providers:
+   - Marketaux API: Financial news metadata and sentiment endpoints. Used subject
+     to Marketaux Developer Terms. No proprietary or full-text copyrighted articles
+     are redistributed in this repository; only metadata and URLs are stored.
+   - Bluesky / AT Protocol: Public decentralized social network discourse.
+     Used in accordance with public API and AT Protocol specifications.
+   - yfinance: Historical market price data accessed via Yahoo! Finance API.
+     For research and academic evaluation purposes only.
+
+5. S&P Global & CRISIL Campus Hackathon 2026:
+   - Submitted in fulfillment of the competition challenge guidelines.
+   - All financial portfolio and institution stress testing models are educational
+     and research implementations; they do not constitute investment advice.

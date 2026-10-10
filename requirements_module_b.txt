@@ -1,4 +1,0 @@
-# Existing project's requirements.txt already provides FastAPI, Pydantic, PyTorch, XGBoost.
-# Only for Module B tests (if not already installed):
-pytest>=8,<10
-httpx>=0.27,<1

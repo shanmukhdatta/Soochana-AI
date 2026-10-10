@@ -1,35 +1,43 @@
+# Environment and Secrets
 .env
 .env.*
 !.env.example
+*.local.env
+
+# Python Caches & Virtual Environments
 __pycache__/
 .pytest_cache/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
 .venv/
 venv/
-/data/
+*.bak
+
+# Temporary / Scratch Files
 *.log
+*.zip
+test.joblib
+test_out.png
+
+# Large Model Weights (Transformers >100MB)
 models/**/model.safetensors
 models/**/model-*.safetensors
 models/**/pytorch_model.bin
-models/**/*.bin
-models/**/*.joblib
 models/**/*.pt
 models/**/*.pth
 models/**/*.onnx
-*.zip
+models/sentiment_regressor/*.bin
 
-# Ingestion ignore rules
-data/ingestion/*.db
+# Data Directory Caches & Results
+data/**/results/*.json
+data/impact_step2_test_features.parquet
+data/impact_step3.ipynb
 data/ingestion/*.db-wal
 data/ingestion/*.db-shm
 data/ingestion/*.scheduler.lock
-.env.ingestion
-*.local.env
 
-# Frontend ignore rules
+# Frontend Build & Caches
 frontend/node_modules/
 frontend/dist/
 frontend/.env.local
 frontend/.env.*.local
-

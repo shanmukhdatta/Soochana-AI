@@ -1,0 +1,412 @@
+{
+  "created_utc": "2026-10-07T15:10:25.424710+00:00",
+  "stage": "Impact Engine Step 2 - leakage-safe feature enrichment",
+  "inputs": {
+    "event_model_path": "/kaggle/input/datasets/vasaviboda/impact-step2-inputs/impact-step2-inputs/event_classifier_final",
+    "sentiment_model_path": "/kaggle/input/datasets/vasaviboda/impact-step2-inputs/impact-step2-inputs/sentiment_regressor_final",
+    "impact_step1_paths": {
+      "train": "/kaggle/input/datasets/vasaviboda/impact-step2-inputs/impact-step2-inputs/impact_train.parquet",
+      "validation": "/kaggle/input/datasets/vasaviboda/impact-step2-inputs/impact-step2-inputs/impact_validation.parquet",
+      "test": "/kaggle/input/datasets/vasaviboda/impact-step2-inputs/impact-step2-inputs/impact_test.parquet",
+      "deciles": "/kaggle/input/datasets/vasaviboda/impact-step2-inputs/impact-step2-inputs/impact_decile_thresholds.json"
+    },
+    "price_archive_path": "/root/.cache/huggingface/hub/datasets--Zihan1004--FNSPID/snapshots/bf9189c41527198897d1af3e17b1a0095279fc45/Stock_price/full_history.zip",
+    "price_archive_download_error": null
+  },
+  "row_counts": {
+    "train": 19084,
+    "validation": 3446,
+    "test": 4930,
+    "all": 27460
+  },
+  "ticker_count": 23,
+  "date_range": {
+    "start": "2015-01-02",
+    "end": "2023-12-26"
+  },
+  "timestamp_precision_counts": {
+    "date_only": 27422,
+    "exact_time": 38
+  },
+  "nlp": {
+    "max_length": 128,
+    "event_batch_size_used": 64,
+    "sentiment_batch_size_used": 64,
+    "event_label_mapping_verified": true,
+    "event_predicted_class_counts": {
+      "Product Launch": 22853,
+      "Macroeconomic": 2863,
+      "Merger / Acquisition": 1351,
+      "Geopolitical": 291,
+      "Credit Event": 102
+    },
+    "sentiment_summary": {
+      "min": -0.7538048624992371,
+      "mean": 0.26742759346961975,
+      "median": 0.3663102984428406,
+      "max": 0.7936677932739258
+    }
+  },
+  "prices": {
+    "price_load_report": {
+      "AAPL": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 10852,
+        "adjusted_price_used": true,
+        "volume_non_null": 10852,
+        "errors_before_success": []
+      },
+      "ADBE": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 9420,
+        "adjusted_price_used": true,
+        "volume_non_null": 9420,
+        "errors_before_success": []
+      },
+      "ADP": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 11040,
+        "adjusted_price_used": true,
+        "volume_non_null": 11040,
+        "errors_before_success": []
+      },
+      "AMD": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 11040,
+        "adjusted_price_used": true,
+        "volume_non_null": 11040,
+        "errors_before_success": []
+      },
+      "AMGN": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 10217,
+        "adjusted_price_used": true,
+        "volume_non_null": 10217,
+        "errors_before_success": []
+      },
+      "AMZN": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 6700,
+        "adjusted_price_used": true,
+        "volume_non_null": 6700,
+        "errors_before_success": []
+      },
+      "BKNG": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 6228,
+        "adjusted_price_used": true,
+        "volume_non_null": 6228,
+        "errors_before_success": []
+      },
+      "CMCSA": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 11040,
+        "adjusted_price_used": true,
+        "volume_non_null": 11040,
+        "errors_before_success": []
+      },
+      "COST": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 9445,
+        "adjusted_price_used": true,
+        "volume_non_null": 9445,
+        "errors_before_success": []
+      },
+      "CSCO": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 7589,
+        "adjusted_price_used": true,
+        "volume_non_null": 7589,
+        "errors_before_success": []
+      },
+      "CSX": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 10879,
+        "adjusted_price_used": true,
+        "volume_non_null": 10879,
+        "errors_before_success": []
+      },
+      "GILD": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 8044,
+        "adjusted_price_used": true,
+        "volume_non_null": 8044,
+        "errors_before_success": []
+      },
+      "GOOGL": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 3932,
+        "adjusted_price_used": true,
+        "volume_non_null": 3932,
+        "errors_before_success": []
+      },
+      "INTC": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 11040,
+        "adjusted_price_used": true,
+        "volume_non_null": 11040,
+        "errors_before_success": []
+      },
+      "MDLZ": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 4730,
+        "adjusted_price_used": true,
+        "volume_non_null": 4730,
+        "errors_before_success": []
+      },
+      "MSFT": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 9526,
+        "adjusted_price_used": true,
+        "volume_non_null": 9526,
+        "errors_before_success": []
+      },
+      "NFLX": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 4551,
+        "adjusted_price_used": true,
+        "volume_non_null": 4551,
+        "errors_before_success": []
+      },
+      "NVDA": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 6275,
+        "adjusted_price_used": true,
+        "volume_non_null": 6275,
+        "errors_before_success": []
+      },
+      "PEP": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 13006,
+        "adjusted_price_used": true,
+        "volume_non_null": 13006,
+        "errors_before_success": []
+      },
+      "QCOM": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 8070,
+        "adjusted_price_used": true,
+        "volume_non_null": 8070,
+        "errors_before_success": []
+      },
+      "REGN": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 8249,
+        "adjusted_price_used": true,
+        "volume_non_null": 8249,
+        "errors_before_success": []
+      },
+      "SBUX": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 1385,
+        "adjusted_price_used": true,
+        "volume_non_null": 1385,
+        "errors_before_success": []
+      },
+      "TSLA": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 3399,
+        "adjusted_price_used": true,
+        "volume_non_null": 3399,
+        "errors_before_success": []
+      },
+      "SPY": {
+        "status": "ok",
+        "source": "FNSPID_full_history",
+        "rows": 7785,
+        "adjusted_price_used": true,
+        "volume_non_null": 7785,
+        "errors_before_success": []
+      }
+    },
+    "stock_feature_date_violations": 0,
+    "spy_feature_date_violations": 0,
+    "feature_cutoff_after_reaction_violations": 0,
+    "feature_cutoff_rule": "latest completed market date strictly before publication calendar date"
+  },
+  "market_regime_thresholds": {
+    "calibration_source": "SPY history before frozen training end",
+    "training_end_date": "2021-04-15",
+    "spy_return_20d_q33": -0.0014017912708248485,
+    "spy_return_20d_q67": 0.026819229263706824,
+    "spy_volatility_20d_ann_q75": 0.19568399976553735
+  },
+  "market_regime_counts": {
+    "neutral_normal_vol": 8360,
+    "bullish_normal_vol": 7581,
+    "bearish_normal_vol": 4635,
+    "bearish_high_vol": 4250,
+    "bullish_high_vol": 1846,
+    "neutral_high_vol": 788
+  },
+  "feature_manifest": {
+    "created_utc": "2026-10-07T15:10:25.408944+00:00",
+    "stage": "Impact Engine Step 2 - leakage-safe feature enrichment",
+    "target_column": "realized_impact",
+    "numeric_features": [
+      "sentiment_score",
+      "abs_sentiment",
+      "event_prob_geopolitical",
+      "event_prob_macroeconomic",
+      "event_prob_credit_event",
+      "event_prob_merger_acquisition",
+      "event_prob_product_launch",
+      "event_confidence",
+      "stock_volatility_20d_ann",
+      "volume_ratio_20d",
+      "stock_return_5d",
+      "stock_return_20d",
+      "spy_return_20d",
+      "spy_volatility_20d_ann"
+    ],
+    "categorical_features": [
+      "event_predicted_class",
+      "sector",
+      "market_regime"
+    ],
+    "model_features": [
+      "sentiment_score",
+      "abs_sentiment",
+      "event_prob_geopolitical",
+      "event_prob_macroeconomic",
+      "event_prob_credit_event",
+      "event_prob_merger_acquisition",
+      "event_prob_product_launch",
+      "event_confidence",
+      "stock_volatility_20d_ann",
+      "volume_ratio_20d",
+      "stock_return_5d",
+      "stock_return_20d",
+      "spy_return_20d",
+      "spy_volatility_20d_ann",
+      "event_predicted_class",
+      "sector",
+      "market_regime"
+    ],
+    "forbidden_future_features": [
+      "abnormal_return_1d",
+      "benchmark_return_1d",
+      "car_3d",
+      "impact_score_1_10",
+      "realized_impact",
+      "session_news_count",
+      "stock_return_1d"
+    ],
+    "notes": {
+      "sentiment_score": "continuous frozen FinBERT regression in [-1,+1]",
+      "event_probabilities": "frozen 5-class event softmax; label order hard-validated",
+      "market_features": "latest completed market session strictly before the news publication calendar date",
+      "date_only_safety": "same-calendar-day market data is never used for date-only FNSPID news, because exact publication time is unknown",
+      "market_regime": "thresholds calibrated from training-period SPY history only",
+      "text_embeddings": "deferred until after baseline Impact model works"
+    }
+  },
+  "missing_features": {
+    "sentiment_score": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "abs_sentiment": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "event_prob_geopolitical": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "event_prob_macroeconomic": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "event_prob_credit_event": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "event_prob_merger_acquisition": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "event_prob_product_launch": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "event_confidence": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "stock_volatility_20d_ann": {
+      "missing_rows": 16,
+      "missing_rate": 0.000582665695557174
+    },
+    "volume_ratio_20d": {
+      "missing_rows": 15,
+      "missing_rate": 0.0005462490895848507
+    },
+    "stock_return_5d": {
+      "missing_rows": 5,
+      "missing_rate": 0.0001820830298616169
+    },
+    "stock_return_20d": {
+      "missing_rows": 16,
+      "missing_rate": 0.000582665695557174
+    },
+    "spy_return_20d": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "spy_volatility_20d_ann": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "event_predicted_class": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "sector": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    },
+    "market_regime": {
+      "missing_rows": 0,
+      "missing_rate": 0.0
+    }
+  },
+  "anti_leakage_assertions": {
+    "frozen_split_preserved": true,
+    "all_original_rows_preserved": true,
+    "market_feature_dates_strictly_before_publication_date": true,
+    "same_day_market_data_blocked_for_date_only_news": true,
+    "impact_deciles_not_recomputed": true,
+    "future_target_fields_excluded_from_model_features": true,
+    "market_regime_calibrated_without_validation_or_test": true
+  },
+  "outputs": {
+    "all": "/kaggle/working/impact_step2_features/impact_step2_features_all.parquet",
+    "train": "/kaggle/working/impact_step2_features/impact_step2_train_features.parquet",
+    "validation": "/kaggle/working/impact_step2_features/impact_step2_validation_features.parquet",
+    "test": "/kaggle/working/impact_step2_features/impact_step2_test_features.parquet"
+  }
+}

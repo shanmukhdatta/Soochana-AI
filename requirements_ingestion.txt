@@ -1,3 +1,0 @@
-# Runtime already includes FastAPI, Pydantic, requests and scikit-learn.
-# No extra third-party dependencies beyond existing requirements.txt are required.
-requests>=2.31,<3
