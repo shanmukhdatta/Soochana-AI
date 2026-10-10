@@ -952,7 +952,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
                 </li>
                 <li>
                   <span className="mode-bullet">✓</span>
-                  <div><strong>What-If &amp; Reverse Stress Tools:</strong> Interactive position-level exposure sliders (0.0× to 2.0×) and automated bisection search for capital breach limits.</div>
+                  <div><strong>What-If &amp; Reverse Stress Tools:</strong> Interactive position-level exposure sliders (0.0× to 2.0×) and grid-based search for the first sampled loss-budget breach.</div>
                 </li>
               </ul>
 
