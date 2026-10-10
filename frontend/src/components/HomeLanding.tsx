@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Activity, ArrowRight, ArrowUpRight, BrainCircuit,
   ChevronDown, Layers, Sparkles, TrendingUp, ShieldAlert, ShieldCheck
@@ -13,6 +13,37 @@ interface HomeLandingProps {
 }
 
 export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
+  // Presentation Deck scroll progress & reveal observer
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        setScrollProgress(Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100)));
+      }
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+    const targets = document.querySelectorAll(
+      '.landing-section, .hero-diagram, .transformation-grid, .engine-deepdive, .instruments-grid, .modes-grid, .constraints-showcase, .faq-container'
+    );
+    targets.forEach(el => observer.observe(el));
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   // Interactive Walkthrough state
   const [selectedExample, setSelectedExample] = useState<'aapl' | 'msft'>('aapl');
   const [activeStep, setActiveStep] = useState<number>(1);
@@ -63,10 +94,14 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
       {/* TOP NAVIGATION BAR                                           */}
       {/* ──────────────────────────────────────────────────────────── */}
       <header className="landing-nav" role="banner">
+        <div className="deck-progress-track" aria-hidden="true">
+          <div className="deck-progress-bar" style={{ width: `${scrollProgress}%` }} />
+        </div>
         <div className="landing-nav-inner">
           <div className="landing-brand">
             <Activity className="landing-brand-icon" size={24} />
             <span className="landing-brand-text">RiskPulse <strong>AI</strong></span>
+            <span className="deck-live-pill"><span className="pulse-dot-green" /> STAGE OVERVIEW</span>
           </div>
 
           <nav className="landing-menu" aria-label="Landing Navigation">
@@ -98,7 +133,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
         <div className="landing-hero-container">
           <div className="landing-hero-badge">
             <span className="badge-pulse" />
-            <span>EXPLAINABLE FINANCIAL RISK INTELLIGENCE</span>
+            <span>STAGE 01 / 06 · EXPLAINABLE FINANCIAL RISK INTELLIGENCE</span>
           </div>
 
           <h1 className="landing-hero-title">
@@ -154,13 +189,25 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
               </div>
             </div>
 
-            {/* Connecting data flow lines */}
+            {/* Connecting data flow lines with live animated moving packets */}
             <div className="hero-flow-conduit" aria-hidden="true">
               <svg className="flow-svg" viewBox="0 0 200 320" fill="none">
                 <path d="M 10 40 C 90 40, 110 160, 190 160" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line" />
                 <path d="M 10 120 C 90 120, 110 160, 190 160" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line delay-1" />
                 <path d="M 10 200 C 90 200, 110 160, 190 160" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line delay-2" />
                 <path d="M 10 280 C 90 280, 110 160, 190 160" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line delay-3" />
+                <circle r="4" fill="#111" opacity="0.85">
+                  <animateMotion dur="2.4s" repeatCount="indefinite" path="M 10 40 C 90 40, 110 160, 190 160" />
+                </circle>
+                <circle r="4" fill="#111" opacity="0.85">
+                  <animateMotion dur="2.8s" repeatCount="indefinite" path="M 10 120 C 90 120, 110 160, 190 160" />
+                </circle>
+                <circle r="4" fill="#111" opacity="0.85">
+                  <animateMotion dur="2.2s" repeatCount="indefinite" path="M 10 200 C 90 200, 110 160, 190 160" />
+                </circle>
+                <circle r="4" fill="#111" opacity="0.85">
+                  <animateMotion dur="2.6s" repeatCount="indefinite" path="M 10 280 C 90 280, 110 160, 190 160" />
+                </circle>
               </svg>
             </div>
 
@@ -181,11 +228,17 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
               </div>
             </div>
 
-            {/* Downstream branches */}
+            {/* Downstream branches with live animated packets */}
             <div className="hero-flow-conduit" aria-hidden="true">
               <svg className="flow-svg" viewBox="0 0 200 320" fill="none">
                 <path d="M 10 160 C 90 160, 110 80, 190 80" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line" />
                 <path d="M 10 160 C 90 160, 110 240, 190 240" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line delay-2" />
+                <circle r="4" fill="#111" opacity="0.85">
+                  <animateMotion dur="2.3s" repeatCount="indefinite" path="M 10 160 C 90 160, 110 80, 190 80" />
+                </circle>
+                <circle r="4" fill="#111" opacity="0.85">
+                  <animateMotion dur="2.7s" repeatCount="indefinite" path="M 10 160 C 90 160, 110 240, 190 240" />
+                </circle>
               </svg>
             </div>
 

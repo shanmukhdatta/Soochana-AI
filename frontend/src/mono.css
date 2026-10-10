@@ -377,7 +377,80 @@ select option,.mono-app select option,.form-label select option,.compact-select 
   .landing-hero-buttons{flex-direction:column!important;width:100%!important;gap:8px!important}
   .landing-hero-buttons button{width:100%!important}
 }
+/* Presentation Deck Progress & Animations */
+.deck-progress-track{position:absolute;bottom:0;left:0;width:100%;height:3px;background:rgba(0,0,0,0.06);overflow:hidden}
+.deck-progress-bar{height:100%;background:#111;transition:width 0.12s ease-out;border-radius:0 2px 2px 0}
+.deck-live-pill{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:750;letter-spacing:0.08em;text-transform:uppercase;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:3px 9px;margin-left:10px;color:#374151}
+.pulse-dot-green{width:6px;height:6px;border-radius:50%;background:#16a34a;display:inline-block;animation:pulseDot 1.8s infinite}
+
+/* Presentation Slide Scroll Reveal Transitions */
+.landing-section,
+.hero-diagram,
+.transformation-grid,
+.engine-deepdive,
+.instruments-grid,
+.modes-grid,
+.constraints-showcase,
+.faq-container {
+  opacity: 0.15;
+  transform: translateY(24px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.landing-section.is-revealed,
+.hero-diagram.is-revealed,
+.transformation-grid.is-revealed,
+.engine-deepdive.is-revealed,
+.instruments-grid.is-revealed,
+.modes-grid.is-revealed,
+.constraints-showcase.is-revealed,
+.faq-container.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Presentation Card Elevation & Micro-interactions */
+.hero-source-card,
+.hero-app-card,
+.engine-card,
+.transformation-card,
+.model-step-card,
+.instrument-card,
+.mode-card,
+.constraint-box,
+.faq-card {
+  transition: transform 0.26s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.26s ease, border-color 0.2s ease;
+}
+
+.hero-source-card:hover,
+.hero-app-card:hover,
+.transformation-card:hover,
+.model-step-card:hover,
+.instrument-card:hover,
+.mode-card:hover,
+.constraint-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px -12px rgba(0,0,0,0.08);
+  border-color: #111;
+}
+
+/* Animated SVG Flow Packets */
+.flow-svg circle {
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+}
+
+/* Animated Dynamic Metric Bars */
+.cat-bar-fill {
+  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.meter-fill {
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 @media(prefers-reduced-motion:reduce){
-  .flow-line,.float-slow,.float-medium,.float-fast,.badge-pulse{animation:none!important;transform:none!important}
+  .flow-line,.float-slow,.float-medium,.float-fast,.badge-pulse,.pulse-dot-green{animation:none!important;transform:none!important}
+  .landing-section,.hero-diagram,.transformation-grid,.engine-deepdive,.instruments-grid,.modes-grid,.constraints-showcase,.faq-container{opacity:1!important;transform:none!important;transition:none!important}
   *{transition-duration:.01ms!important}
 }
