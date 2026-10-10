@@ -71,8 +71,8 @@ RiskPulse AI bridges the gap between unstructured financial data (news publicati
 The optimal portfolio weight vector $\mathbf{w}^* = [w_1^*, \dots, w_{15}^*]^T$ minimizes the squared Euclidean distance from the signal-informed target allocation:
 $$\min_{\mathbf{w}} \quad \frac{1}{2} \sum_{i=1}^{15} \left( w_i - w_{i, \text{target}} \right)^2$$
 where:
-$$w_{i, \text{target}} = \frac{w_{i, \text{base}} \cdot \left( 1 + \alpha \cdot \hat{s}_i \cdot \frac{\text{Impact}_i}{10} \right)}{\sum_{j=1}^{15} w_{j, \text{base}} \cdot \left( 1 + \alpha \cdot \hat{s}_j \cdot \frac{\text{Impact}_j}{10} \right)}$$
-with tilt scaling parameter $\alpha = 0.5$.
+$$w_{i,\text{target}} = \frac{1}{15} + \beta \left(a_i-\frac{1}{15}\sum_{j=1}^{15}a_j\right), \quad \beta=0.025.$$
+Here $a_i$ is the ticker's deduplicated, age-weighted sentiment/event/impact aggregate from \`app/module_a/signals.py\`. The strategy creates centered target weights and the SLSQP optimizer projects them into the allowed portfolio constraints. This is a heuristic event signal, not a learned directional-return target.
 
 ### 3.3 Financial & Regulatory Constraints (`app/module_a/constraints.py`)
 The quadratic program is solved subject to strict investment constraints:
@@ -85,10 +85,10 @@ The quadratic program is solved subject to strict investment constraints:
 4. **Sector Deviation Limit:**
    $$\left| \sum_{i \in \text{Sector}_k} w_i - \sum_{i \in \text{Sector}_k} w_{i, \text{base}} \right| \le 0.05 \quad (\pm 5 \text{ percentage points}), \quad \forall k$$
 5. **Maximum One-Way Turnover Budget:**
-   $$\frac{1}{2} \sum_{i=1}^{15} |w_i - w_{i, \text{base}}| \le 0.10 \quad (10\% \text{ maximum turnover})$$
-   Enforced via auxiliary absolute-deviation variables $u_i \ge |w_i - w_{i, \text{base}}|$ such that $\frac{1}{2} \sum u_i \le 0.10$.
+   $$\frac{1}{2} \sum_{i=1}^{15} |w_i - w_{i, \text{current}}| \le 0.10 \quad (10\% \text{ maximum turnover})$$
+   Enforced via auxiliary absolute-deviation variables $u_i \ge |w_i - w_{i, \text{current}}|$ such that $\frac{1}{2} \sum u_i \le 0.10$.
 6. **Transaction Cost Model:**
-   Transaction costs are calculated at 10 basis points ($0.0010 \times \text{Turnover}$).
+   Transaction costs are 10 basis points per dollar traded; the estimated transaction cost fraction is $2\times0.0010\times$ one-way turnover.
 
 ---
 
@@ -148,7 +148,5 @@ using analytical standard normal CDF $\Phi(d)$ with continuous dividend yield $q
 Allows risk managers to scale individual position exposures with multiplier $\alpha_j \in [0.0, 2.0]$:
 $$\Delta \text{Loss}_{\text{net}} = \sum_{j=1}^{30} \alpha_j \cdot \text{Loss}_j(\mathbf{x}_{\text{scenario}}) - \sum_{j=1}^{30} \text{Loss}_j(\mathbf{x}_{\text{scenario}})$$
 
-#### Reverse Stress Testing (`app/module_b/reverse_stress.py`)
-Determines the critical shock scalar $\lambda^* \ge 1.0$ that breaches a specified institution loss tolerance limit $B_{\text{limit}}$:
-$$\lambda^* = \arg\min_{\lambda \in [1.0, 10.0]} \left\{ \text{TotalLoss}(\lambda \cdot \mathbf{x}_{\text{scenario}}) \ge B_{\text{limit}} \right\}$$
-Solved via rigorous bisection root-finding with tolerance $\epsilon = 10^{-4}$ or maximum 20 iterations.
+#### Reverse Stress Testing (\`app/module_b/reverse_stress.py\`)
+For a chosen budget and a scenario multiplier, the implementation samples a finite grid starting at 0 through a configured maximum multiplier (defaults: maximum 4, 81 points). It reports the **first sampled loss-budget breach**, not an exact threshold. Derivative hedges can make losses non-monotonic; therefore, the implementation deliberately uses a grid **rather than bisection**. Invalid shocked instrument values can truncate the grid.
