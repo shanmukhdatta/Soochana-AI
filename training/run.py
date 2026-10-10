@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parent
 STAGES = {
     "event-gather": ("event_classifier", "01_data_gathering.py"),
     "event-preprocess": ("event_classifier", "02_preprocessing.py"),
-    "event-train": ("event_classifier", "04_finbert_training.py"),
+    "event-train": ("event_classifier", "04_finbert_training_real_only.py"),
     "sentiment-prepare": ("sentiment", "01_fiqa_data_preparation.py"),
     "sentiment-train": ("sentiment", "02_finbert_regression_training.py"),
     "event-synthetic-optional": ("event_classifier", "03_synthetic_generation_optional.py"),
