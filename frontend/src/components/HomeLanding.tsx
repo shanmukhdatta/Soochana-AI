@@ -842,7 +842,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
                 </li>
                 <li>
                   <span className="mode-bullet">✓</span>
-                  <div><strong>Uncluttered UI:</strong> Secondary mathematical parameters (like 10-class probability arrays and shock vectors) are tucked away to prevent information fatigue.</div>
+                  <div><strong>Uncluttered UI:</strong> Secondary mathematical parameters (like 5-class probability arrays and shock vectors) are tucked away to prevent information fatigue.</div>
                 </li>
               </ul>
 
@@ -883,19 +883,19 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
               <ul className="mode-features-list">
                 <li>
                   <span className="mode-bullet">✓</span>
-                  <div><strong>10-Class Softmax Probabilities:</strong> Complete event taxonomy distribution bars (Earnings, Credit Event, Product Launch, etc.) showing exact model entropy.</div>
+                  <div><strong>5-Class Softmax Probabilities:</strong> Complete event taxonomy distribution bars (Geopolitical, Macroeconomic, Credit Event, Merger / Acquisition, Product Launch) showing exact model entropy.</div>
                 </li>
                 <li>
                   <span className="mode-bullet">✓</span>
-                  <div><strong>Granular Feature Decomposition:</strong> Unveils continuous sentiment scores [−1.0 to +1.0], 15-day rolling volatility (σ₁₅), and market regime state flags.</div>
+                  <div><strong>Granular Feature Decomposition:</strong> Unveils continuous sentiment scores [−1.0 to +1.0], 20-day rolling volatility (σ₂₀), and market regime state flags.</div>
                 </li>
                 <li>
                   <span className="mode-bullet">✓</span>
-                  <div><strong>Interactive Optimizer Sliders:</strong> Live turnover penalty tuning (λ parameter) and inspectable 15% single-stock / 35% sector concentration checks.</div>
+                  <div><strong>Mathematical Constraint Inspectability:</strong> Inspectable ±2% stock deviation, ±5% sector deviation, and 10% maximum turnover budget checks.</div>
                 </li>
                 <li>
                   <span className="mode-bullet">✓</span>
-                  <div><strong>Multi-Asset Accounting Separation:</strong> Discrete valuation for Trading Book MTM (Bonds duration/convexity, Swaps DV01, Options Delta-Gamma) vs Banking Book 12-Month ECL.</div>
+                  <div><strong>Multi-Asset Accounting Separation:</strong> Discrete valuation for Trading Book MTM (Bonds duration/convexity, Swaps DV01, Options European Black-Scholes) vs Banking Book 12-Month ECL.</div>
                 </li>
                 <li>
                   <span className="mode-bullet">✓</span>
@@ -907,7 +907,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
                 <h4>How to test Analyst View in the dashboard:</h4>
                 <ol>
                   <li>Click the button below to launch the dashboard in <strong>Analyst View</strong>.</li>
-                  <li>In <strong>AI Signals</strong>, inspect the full 10-category probability distributions on event cards.</li>
+                  <li>In <strong>AI Signals</strong>, inspect the full 5-category probability distributions on event cards.</li>
                   <li>In <strong>Stress Lab</strong>, adjust position sliders in the <code>What-If Analysis</code> panel or execute a <code>Reverse Stress Test</code>.</li>
                 </ol>
               </div>

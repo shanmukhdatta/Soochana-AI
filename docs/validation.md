@@ -41,14 +41,14 @@ pytest -q
 ### Breakdown of Test Suites
 - **`tests/test_api.py`** (12 tests): Single inference (`/analyze`), batch processing (`/analyze/batch`), request validation, health endpoints, payload bounds.
 - **`tests/test_pipeline.py`** (10 tests): Three-stage model orchestration, fallback behavior, error handling.
-- **`tests/test_impact.py`** (10 tests): XGBoost feature assembly, decile thresholding (1–10 scale), rolling volatility integration.
+- **`tests/test_impact.py`** (10 tests): XGBoost feature assembly, decile thresholding (1–10 scale), 20-day rolling volatility integration.
 - **`tests/test_prices_and_features.py`** (8 tests): Feature parity between offline training and online inference, handling of missing tickers.
 - **`tests/test_ingestion_api.py` & `test_ingestion_pipeline.py`** (18 tests): Ingestion scheduler, deduplication, SQLite signal persistence, manual ingest triggers.
 - **`tests/test_ingestion_sources.py` & `test_ingestion_tickers.py`** (12 tests): Marketaux news parsing, Bluesky AT-protocol ingestion, regex ticker matching with alias resolution.
-- **`tests/test_module_a_api.py` & `test_module_a_constraints.py`** (14 tests): Baseline index weights ($\sum w = 1.0$), quadratic optimization, 15% single-stock cap, 35% sector cap, 5% turnover budget.
+- **`tests/test_module_a_api.py` & `test_module_a_constraints.py`** (14 tests): Baseline index weights ($\sum w = 1.0$), quadratic optimization, $\pm 2$ percentage point stock deviation, $\pm 5$ percentage point sector deviation, 10% maximum one-way turnover.
 - **`tests/test_module_a_backtest.py`** (8 tests): Walk-forward backtester on 357 historical market sessions, verification against same-day lookahead leakage.
-- **`tests/test_module_b_api.py` & `test_module_b_portfolio.py`** (16 tests): 30-position synthetic institution portfolio, data integrity, scenario schema verification.
-- **`tests/test_module_b_pricing.py` & `test_module_b_all_scenarios.py`** (10 tests): Bond MTM (modified duration + convexity), loan ECL (Basel II/III), swaps DV01, options Delta-Gamma.
+- **`tests/test_module_b_api.py` & `test_module_b_portfolio.py`** (16 tests): 30-position synthetic institution portfolio (12 loans, 10 bonds, 4 swaps, 4 options), data integrity, scenario schema verification.
+- **`tests/test_module_b_pricing.py` & `test_module_b_all_scenarios.py`** (10 tests): Bond MTM (modified duration + rate convexity), loan ECL (incremental 12m), swaps signed DV01, options full European Black-Scholes repricing.
 - **`tests/test_module_b_reverse.py`** (6 tests): Reverse stress test bisection root-finding under capital breach constraints.
 - **`tests/test_assistant.py`** (6 tests): Bujji assistant query routing, financial terminology explanation, rate limiting, and Groq fallback modes.
 
@@ -171,39 +171,40 @@ Executed directly against live running FastAPI (`http://127.0.0.1:8000`) and Vit
 ## 6. Financial Domain Model Verification Details
 
 ### Model 1: Sentiment Regressor
-- **Architecture:** FinBERT (`ProsusAI/finbert`) with custom linear regression head.
-- **Output:** Continuous sentiment score $s \in [-1.0, +1.0]$.
+- **Architecture:** BERT-based regressor (`FinBertSentimentRegressor`) with a `Dropout -> Linear(hidden_size, 1) -> Tanh` regression head.
+- **Output:** Continuous sentiment intensity score $\hat{s} \in [-1.0, +1.0]$.
 - **Inference Verification:** Evaluated across test sentences with known polarities; produces positive scores for constructive announcements, negative scores for downgrades and credit warnings.
 
 ### Model 2: Financial Event Classifier
-- **Architecture:** FinBERT sequence classifier trained on 10 structured financial event taxonomy categories.
-- **Categories:** Credit Event, Dividend / Buyback, Earnings, Employment, Executive Move, Legal / Regulatory, Macroeconomic, Merger / Acquisition, Partnership, Product Launch.
+- **Base Provenance:** Base config references `yiyanghkust/finbert-tone` with sequence classification head (`num_labels = 5`).
+- **Categories (5 Classes):** `Geopolitical`, `Macroeconomic`, `Credit Event`, `Merger / Acquisition`, `Product Launch`.
 - **Output:** Categorical distribution with softmax probability confidence score.
 
 ### Model 3: XGBoost Impact Severity Engine
-- **Architecture:** XGBoost regressor predicting return impact decile (1 to 10 scale).
-- **Features:** 10 event class probabilities, continuous sentiment score, 15-day rolling return volatility, 5 market regime indicators, sector one-hot encoding.
-- **Evaluation Evidence:** Parquet feature parity verification (`scripts/compare_feature_parity.py`) confirms exact alignment between offline training features and online runtime feature construction.
+- **Architecture:** XGBoost regressor predicting market reaction decile (1 to 10 scale).
+- **Features:** 5 event class probabilities, continuous sentiment score, absolute sentiment, event confidence, 20-day annualized rolling price volatility, 20-day volume ratio, 5d/20d returns, SPY return and 20-day volatility, event class, sector, and market regime indicators.
+- **Decile Mapping:** Continuous prediction mapped to integer severity score $1 \dots 10$ using calibrated historical thresholds in `configs/impact_decile_thresholds.json`.
 
 ### Module A: Constrained Index Rebalancing
-- **Baseline Universe:** 15 large-cap US equities (`AAPL`, `MSFT`, `NVDA`, `AMZN`, `GOOGL`, `META`, `JPM`, `V`, `MA`, `BAC`, `WMT`, `PG`, `JNJ`, `UNH`, `HD`).
+- **Baseline Universe:** 15 large-cap US equities (`AAPL`, `MSFT`, `NVDA`, `QCOM`, `GOOGL`, `CMCSA`, `AMZN`, `TSLA`, `BKNG`, `SBUX`, `COST`, `PEP`, `GILD`, `AMGN`, `CSX`).
 - **Mathematical Constraints:**
   - Full investment: $\sum_{i=1}^{15} w_i = 1.0000$ (Verified $\pm 10^{-6}$)
-  - Long-only: $w_i \ge 0$
-  - Single-name limit: $w_i \le 15\%$
-  - Sector concentration limit: $\sum_{i \in \text{Sector}_k} w_i \le 35\%$
-  - Turnover budget: $\frac{1}{2}\sum |w_i - w_{i, \text{base}}| \le 5\%$
+  - Long-only: $w_i \ge 0, \forall i$
+  - Position deviation from baseline: $|w_i - w_{i, \text{base}}| \le 0.02$ ($\pm 2$ percentage points)
+  - Sector deviation from baseline: $|\sum_{i \in \text{Sector}_k} w_i - \sum_{i \in \text{Sector}_k} w_{i, \text{base}}| \le 0.05$ ($\pm 5$ percentage points)
+  - Turnover budget: $\frac{1}{2}\sum |w_i - w_{i, \text{base}}| \le 0.10$ ($10\%$ maximum one-way turnover)
+  - Transaction cost: 10 basis points ($0.0010 \times \text{turnover}$)
 
 ### Module B: Multi-Asset Stress Valuation Engines
 - **Portfolio Composition:** 30 positions across 4 asset classes:
-  - 10 Commercial & Corporate Loans ($5.0M total EAD)
+  - 12 Commercial & Corporate Loans ($5.0M total EAD)
   - 10 Corporate Bonds ($3.5M total Market Value)
-  - 5 Interest Rate Swaps ($1.0M total Notional)
-  - 5 FX Options ($0.5M total Notional)
+  - 4 Interest Rate Swaps ($1.0M total Notional)
+  - 4 FX / Equity Options ($0.5M total Reference Notional)
 - **Accounting & Horizon Separation:**
-  - **Instantaneous Mark-to-Market (MTM):** Applied to Bonds (Modified Duration + Convexity), Swaps (DV01 curve shifts), and Options (Delta-Gamma re-pricing).
-  - **Incremental 12-Month Expected Credit Loss (ECL):** Applied strictly to Loans ($ECL = EAD \times PD \times LGD$), modeling credit deterioration under stressed transition probabilities.
-  - **No Apples-to-Oranges Addition:** MTM and ECL are tracked in distinct financial totals to reflect accurate accounting treatment between Trading Book and Banking Book.
+  - **Instantaneous Mark-to-Market (MTM):** Applied to Bonds (Modified Duration + rate Convexity), Swaps (signed DV01 curve shifts), and Options (full European Black-Scholes continuous dividend yield repricing).
+  - **Incremental 12-Month Expected Credit Loss (ECL):** Applied strictly to Loans ($\Delta ECL = EAD \times (\text{PD}_{\text{stressed}} - \text{PD}_0) \times LGD$), modeling credit deterioration over a 1-year horizon.
+  - **No Apples-to-Oranges Addition:** MTM and ECL are tracked in distinct financial totals to reflect accurate accounting treatment between Trading Book and Banking Book. Reference derivative notionals are never conflated with Net Asset Value (NAV).
 
 ---
 

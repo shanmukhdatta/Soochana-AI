@@ -1,14 +1,14 @@
 # RiskPulse AI — Signal Atlas React Dashboard
 
-An original 4-screen **Obsidian Iris** frontend mapped to the editable Figma design: https://www.figma.com/design/MayTa8LELjBHHpPNKUkNCc
+**RiskPulse AI Dashboard** is a clean, modern, white financial risk intelligence workspace built with Vite, React 19, and TypeScript. It features a dual-mode interface designed for both executive screening (**Quick View**) and quantitative audit (**Analyst View**), as well as the **Bujji Financial AI Assistant**.
 
-**Scope:** Separate Vite + React + TypeScript frontend package for integration with the existing, working Windows `c2c` FastAPI repository. Does not replace backend, retrain ML, ingest providers in the browser, or execute trades.
+**Scope:** Dedicated frontend client communicating with the RiskPulse AI FastAPI backend. It does not replace the backend, retrain machine learning models, ingest external providers directly in the browser, or execute live exchange transactions.
 
-## Quick start (Windows PowerShell)
+---
 
-1. Back up your `c2c` repository and make a checkpoint commit.
-2. Extract this ZIP into `c2c/frontend/` (ensure `frontend/package.json` exists).
-3. With FastAPI running at `http://127.0.0.1:8000`, open a separate terminal:
+## Quick Start (Windows PowerShell)
+
+With FastAPI running at `http://127.0.0.1:8000`, run:
 
 ```powershell
 cd C:\Users\lokes\datta\c2c\frontend
@@ -20,50 +20,48 @@ npm run build
 npm run dev
 ```
 
-4. Open http://127.0.0.1:5173 . Vite proxies `/api` to local FastAPI. No CORS change is needed for local development.
-5. External deployment: do not use localhost proxy as the production API. Set `VITE_API_BASE_URL` to the public HTTPS backend origin/proxy route; configure allowed origins in FastAPI or use a same-origin reverse proxy. Never put provider or ingestion admin tokens in `VITE_*` variables or browser code.
+Open `http://127.0.0.1:5173`. Vite proxies `/api` directly to local FastAPI (`http://127.0.0.1:8000`). No CORS modifications are needed for local development.
 
-## Screen-to-endpoint mapping
+### External / Production Deployment
+For cloud deployment, configure `VITE_API_BASE_URL` to point to the public HTTPS backend origin or deploy behind a reverse proxy. Never expose provider tokens or ingestion secrets in frontend environment variables.
 
-| Screen | Backend routes |
-|---|---|
-| Command Center | `GET /health`, `GET /ingestion/health`, `GET /signals/summary`, `GET /signals` |
-| Event Intelligence | `GET /signals`, `GET /signals/{id}`, `POST /analyze`, `GET /signals/{id}/module-b-suggestion` |
-| Module A | `GET /module-a/index`, `POST /ingestion/module-a/recommend`, `POST /module-a/backtest` |
-| Module B | `GET /module-b/portfolio`, `GET /module-b/scenarios`, `POST /module-b/stress`, `POST /module-b/what-if`, `POST /module-b/reverse-stress` |
+---
 
-**Important behavior**
-- `GET /ingestion/health` only reports configuration/database status, NOT verified real-time provider connectivity. Actual source successes are shown from `recent_collection_runs`.
-- Scores are never populated with synthetic placeholders. Empty or offline sections show empty/error states.
-- `GET /signals` is capped at the latest 100 records in this MVP. Event metrics calculated from loaded completed records say so explicitly; they are **not** global historical averages.
-- The 15-stock allocations are loaded from `/module-a/index`; recommendations are generated on demand from saved analyzed signals. No trades occur.
-- Historical backtest returns are requested from the actual backend `POST /module-a/backtest` only on a manual click; no static fake performance figures.
-- Module B scenarios are hypothetical. Issuer placeholders must be explicitly resolved, shock fields are editable, and an acknowledgment is required before stress/what-if/reverse-stress actions.
-- Loans: projected incremental 12-month expected credit loss. Bonds, swaps, options: instantaneous mark-to-market. Derivative notional is NOT additive NAV.
-- UI uses no admin token and does not expose mutating collector endpoints.
-- Current CSS imports Inter via Google Fonts when available and falls back to system fonts when blocked. For fully offline demo, self-host a legally obtained web font or use system fonts.
+## Screen-to-Endpoint Architecture
 
-## API compatibility / integration gate
+| Section | Key Endpoints | Description |
+|---|---|---|
+| **Home Landing Page** | — | Interactive walkthrough, live model inference demo, visual architecture map, and view mode guide. |
+| **AI Signals & Ingestion** | `GET /signals`<br>`GET /signals/{id}`<br>`POST /analyze`<br>`GET /ingestion/health` | Multi-source feed (financial news & social media), 5-class event taxonomy distribution, continuous sentiment score, impact decile, and manual text analysis. |
+| **Module A: Index Lab** | `GET /module-a/index`<br>`POST /ingestion/module-a/recommend`<br>`POST /module-a/backtest` | 15-stock constrained index optimization with quadratic distance minimization, ±2% stock deviation, ±5% sector deviation, 10% maximum one-way turnover, and 357-session historical backtesting. |
+| **Module B: Stress Lab** | `GET /module-b/portfolio`<br>`GET /module-b/scenarios`<br>`POST /module-b/stress`<br>`POST /module-b/what-if`<br>`POST /module-b/reverse-stress` | 30-position synthetic institutional portfolio (12 loans, 10 bonds, 4 swaps, 4 options). Instantaneous MTM vs. 12-month incremental ECL separation, interactive What-If sliders, and automated Reverse Stress testing. |
+| **Bujji Financial Assistant** | Embedded floating assistant | Context-aware risk assistant explaining financial terms, model outputs, and portfolio risk metrics. |
 
-The source ZIPs used for contract review were versions of Risk Engine, Module A, Module B, and Ingestion add-ons preserved in this conversation. The user's running Antigravity-integrated backend may have subsequent modifications (e.g., Marketaux). **Verify against the actual current `http://127.0.0.1:8000/openapi.json` and live responses before declaring integrated.** The dashboard does not make provider requests directly; all requests go to FastAPI.
+---
 
-### Testing
+## Design System & Interface Modes
 
-`npm test`: pure Node unit tests for source safety, numeric display, data counts, issuer placeholder handling.
-`npm run check:contracts`: validates our required frontend API route strings and UI design markers.
-`npm run build`: TypeScript + Vite build after `npm install`.
+### Dual Audience Modes
+- **Quick View Mode:** Executive and portfolio manager perspective. Streamlines cards, highlights high-level summary totals, provides 1-click optimization recommendations and macro scenario executions, and tucks away granular probability arrays.
+- **Analyst View Mode:** Quantitative analyst and auditor perspective. Unveils complete 5-class softmax probability distributions, continuous sentiment intensities $[-1.0, +1.0]$, 20-day rolling price volatility ($\sigma_{20}$), mathematical constraint checks, interactive What-If position sliders ($0.0\times$ to $2.0\times$), and automated Reverse Stress bisection search.
 
-These static checks **do not** prove browser rendering, live model inference, deployed API connectivity, or external provider access. Conduct manual browser acceptance tests with the actual backend and a legitimate saved news/social signal.
+### Modern Clean Aesthetics
+- **Palette:** Minimalist bright white canvas (`#ffffff` / `#f8fafc`), neutral slate typography (`#0f172a`, `#475569`), subtle cool borders (`#e2e8f0`), and crisp risk badge accents (green for positive, amber for moderate, crimson for severe).
+- **Responsive Layout:** Adaptive breakpoints at 1600px, 1440px, 1024px, 768px, and 390px, with `prefers-reduced-motion` accessibility support.
+- **Auditable Financial Distinctions:** Distinct visual badges for Trading Book instantaneous MTM vs. Banking Book 12-month ECL. Clear disclaimers that derivative notional is not additive Net Asset Value (NAV).
 
-## Design principles
+---
 
-Obsidian Iris Figma theme: deep charcoal `#10121C`, panels `#191D2B`, violet `#9B8CFF`, amber `#F0B56B`. Distinct sources, auditable model outputs, constrained index analytics and separated risk measurement horizons. Responsive layouts with reduced-motion support. No asset screenshots pasted as fake components.
+## Automated Verification Suite
 
-## Known current limitations
+Run the verified test and contract checks:
+```bash
+# Unit and logic tests (14 tests)
+npm test
 
-- The frontend is a fully sourced implementation package but is **not certified live** until installed and run with your latest `c2c` checkout.
-- The source-provider scheduler runs as a separate backend process; launching the dashboard does not start ingestion.
-- Browser-visible history is capped to latest 100 records; add server-side pagination/aggregations if the data grows.
-- Reverse-stress and what-if metrics are shown in compact text rather than full interactive plots; chart enhancement can follow real-data acceptance.
-- No authentication system is added; the front end assumes the backend or gateway handles access policy for a public deployment.
-- The Figma Starter account hit its design-context MCP call limit; the implementation follows the four visually verified editable Figma screens rather than an automated export.
+# API contract and route declaration checks (15 routes verified)
+npm run check:contracts
+
+# Production bundle packaging (TypeScript + Vite)
+npm run build
+```

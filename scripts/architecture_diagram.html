@@ -179,7 +179,7 @@
   <div class="header">
     <div class="title-area">
       <h1>RiskPulse AI — Explainable Financial Risk Intelligence</h1>
-      <p>End-to-End System Architecture Pipeline: From Raw News/Social Feeds to Risk-Adjusted Index Rebalancing & Multi-Asset Stress Testing</p>
+      <p>End-to-End System Architecture Pipeline: From News/Social Feeds to 3-Model Risk Signals, Tactical Index Rebalancing & Multi-Asset Stress Testing</p>
     </div>
     <div class="badge">S&P Global & CRISIL Hackathon 2026</div>
   </div>
@@ -192,8 +192,8 @@
           <span class="card-tag tag-blue">Data Source 1</span>
         </div>
         <div class="card-title">Marketaux News API</div>
-        <div class="card-desc">Real-time financial journalism, Reuters/SeekingAlpha feeds, entity metadata.</div>
-        <div class="card-subtext">2 articles ingested</div>
+        <div class="card-desc">Financial news headlines, Reuters/SeekingAlpha feeds, entity tags.</div>
+        <div class="card-subtext">2 articles seeded</div>
       </div>
 
       <div class="card">
@@ -201,8 +201,8 @@
           <span class="card-tag tag-cyan">Data Source 2</span>
         </div>
         <div class="card-title">Bluesky Social (ATP)</div>
-        <div class="card-desc">Decentralized public financial social discourse, cashtag regex matcher.</div>
-        <div class="card-subtext">27 posts ingested</div>
+        <div class="card-desc">Public financial discourse, cashtag regex matcher ($AAPL, $NVDA).</div>
+        <div class="card-subtext">27 posts seeded</div>
       </div>
 
       <div class="card">
@@ -210,7 +210,7 @@
           <span class="card-tag tag-emerald">Persistence</span>
         </div>
         <div class="card-title">Text Normalizer & SQLite</div>
-        <div class="card-desc">Deduplication, ticker alias extraction, provenance logging.</div>
+        <div class="card-desc">Deduplication, ticker alias resolution, URL provenance logging.</div>
         <div class="card-subtext">data/ingestion/riskpulse.db</div>
       </div>
     </div>
@@ -227,8 +227,8 @@
           <span class="card-tag tag-purple">ML Model 1</span>
         </div>
         <div class="card-title">FinBERT Sentiment Regressor</div>
-        <div class="card-desc">Continuous sentiment score mapped onto [-1.0, +1.0] intensity scale.</div>
-        <div class="card-subtext">ProsusAI/finbert + Dense Head</div>
+        <div class="card-desc">Custom BERT head (Dropout &rarr; Linear &rarr; Tanh); outputs continuous score in [-1.0, +1.0].</div>
+        <div class="card-subtext">BERT Architecture (30.5k vocab)</div>
       </div>
 
       <div class="card">
@@ -236,8 +236,8 @@
           <span class="card-tag tag-purple">ML Model 2</span>
         </div>
         <div class="card-title">FinBERT Event Classifier</div>
-        <div class="card-desc">10-class softmax distribution across taxonomy (Earnings, Credit, Product...).</div>
-        <div class="card-subtext">10 Financial Taxonomies</div>
+        <div class="card-desc">5-class sequence classifier (finbert-tone base); outputs softmax probabilities.</div>
+        <div class="card-subtext">5 Classes (Geopolitical, Macro, etc.)</div>
       </div>
 
       <div class="card">
@@ -245,8 +245,8 @@
           <span class="card-tag tag-purple">ML Model 3</span>
         </div>
         <div class="card-title">XGBoost Impact Severity</div>
-        <div class="card-desc">Trained on market quantiles; predicts market reaction severity (Decile 1–10).</div>
-        <div class="card-subtext">Inputs: Probabilities + &sigma;<sub>15</sub> + Regime</div>
+        <div class="card-desc">Predicts return impact magnitude; quantile-mapped into Deciles 1–10.</div>
+        <div class="card-subtext">Inputs: 5 probs + &sigma;<sub>20d</sub> + volume + regime</div>
       </div>
     </div>
 
@@ -265,12 +265,12 @@
         <div class="card-desc">Machine-readable JSON schema delivered to downstream engines:</div>
         <div class="nested-container">
           <div class="nested-item"><span>Target Ticker</span><span style="color:#38BDF8">AAPL / AMZN</span></div>
-          <div class="nested-item"><span>Sentiment Intensity</span><span style="color:#4ADE80">+0.606 / -0.081</span></div>
-          <div class="nested-item"><span>Event Category</span><span>Product Launch</span></div>
+          <div class="nested-item"><span>Continuous Sentiment</span><span style="color:#4ADE80">+0.606 / -0.081</span></div>
+          <div class="nested-item"><span>Event Taxonomy</span><span>Product Launch</span></div>
           <div class="nested-item"><span>Event Confidence</span><span>99.7%</span></div>
-          <div class="nested-item"><span>Impact Severity</span><span style="color:#FBBF24">7 / 10 (High)</span></div>
-          <div class="nested-item"><span>Historical &sigma;<sub>15</sub></span><span>0.0142</span></div>
-          <div class="nested-item"><span>Provenance URL</span><span>SeekingAlpha</span></div>
+          <div class="nested-item"><span>Impact Decile</span><span style="color:#FBBF24">7 / 10 (High)</span></div>
+          <div class="nested-item"><span>Stock &sigma;<sub>20d</sub> (Ann.)</span><span>0.228</span></div>
+          <div class="nested-item"><span>Provenance Source</span><span>SeekingAlpha</span></div>
         </div>
       </div>
     </div>
@@ -287,12 +287,12 @@
           <span class="card-tag tag-emerald">Module A</span>
         </div>
         <div class="card-title">Constrained Index Rebalancing</div>
-        <div class="card-desc">15 large-cap US equities benchmark with quadratic turnover penalty.</div>
+        <div class="card-desc">15 large-cap US equities benchmark with convex bounded optimization.</div>
         <div class="nested-container">
-          <div class="nested-item"><span>Full Investment</span><span>&sum; w<sub>i</sub> = 1.0000</span></div>
-          <div class="nested-item"><span>Single-Stock Cap</span><span>w<sub>i</sub> &le; 15%</span></div>
-          <div class="nested-item"><span>Sector Cap</span><span>Sector &le; 35%</span></div>
-          <div class="nested-item"><span>Turnover Budget</span><span>&Delta;w &le; 5%</span></div>
+          <div class="nested-item"><span>Objective</span><span>min ||w - w<sub>target</sub>||&sup2;</span></div>
+          <div class="nested-item"><span>Position Band</span><span>&plusmn; 2 percentage points</span></div>
+          <div class="nested-item"><span>Sector Band</span><span>&plusmn; 5 percentage points</span></div>
+          <div class="nested-item"><span>Max 1-Way Turnover</span><span>10% limit</span></div>
           <div class="nested-item"><span>Backtest Horizon</span><span>357 historical days</span></div>
         </div>
       </div>
@@ -302,11 +302,12 @@
           <span class="card-tag tag-amber">Module B</span>
         </div>
         <div class="card-title">Multi-Asset Stress Testing</div>
-        <div class="card-desc">30 positions ($10.0M portfolio) with horizon-separated loss modeling:</div>
+        <div class="card-desc">30 positions with horizon-separated loss modeling:</div>
         <div class="nested-container">
-          <div class="nested-item"><span>Trading Book MTM</span><span>Bonds (Duration) + Swaps + Options</span></div>
-          <div class="nested-item"><span>Banking Book ECL</span><span>Loans (Basel II/III 12-Month ECL)</span></div>
-          <div class="nested-item"><span>Interactive Tools</span><span>What-If Scaling & Reverse Stress</span></div>
+          <div class="nested-item"><span>12 Loans ($5.0M EAD)</span><span>12-Month ECL (PD &times; LGD &times; EAD)</span></div>
+          <div class="nested-item"><span>10 Bonds ($3.5M MV)</span><span>Instant MTM (Duration + Convexity)</span></div>
+          <div class="nested-item"><span>4 Swaps &amp; 4 Options ($1.5M)</span><span>DV01 &amp; Black-Scholes Delta-Gamma</span></div>
+          <div class="nested-item"><span>Interactive Tools</span><span>What-If Scaling &amp; Reverse Stress</span></div>
         </div>
       </div>
     </div>
@@ -324,8 +325,8 @@
 
     <div class="tier-box">
       <div class="tier-info">
-        <h3>React & TypeScript Dashboard</h3>
-        <p>Apple-inspired minimalist monochrome UI: Home Introduction, Quick View, Analyst View & Bujji Financial Assistant</p>
+        <h3>React &amp; TypeScript Dashboard</h3>
+        <p>Minimalist white UI design: Home Introduction, Quick View, Analyst View &amp; Bujji Financial Assistant</p>
       </div>
       <div class="tier-badge">Vite 6 / React 18 :5173</div>
     </div>

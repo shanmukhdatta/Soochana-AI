@@ -5,7 +5,7 @@
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
 [![Node.js 20+](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org/)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
-[![React 18](https://img.shields.io/badge/Frontend-React%2018%20%2B%20Vite-61DAFB.svg)](https://react.dev/)
+[![React 19](https://img.shields.io/badge/Frontend-React%2019%20%2B%20Vite-61DAFB.svg)](https://react.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -16,19 +16,19 @@ Financial institutions, investment managers, and risk analysts face an overwhelm
 
 **RiskPulse AI** bridges this critical divide by converting unstructured financial textual narratives into interpretable, machine-readable quantitative risk signals and applying them directly to real-world financial decision workflows. Rather than treating sentiment as an isolated scalar metric, RiskPulse AI combines multi-dimensional natural language processing with gradient-boosted decision trees to evaluate event taxonomy classification, continuous sentiment intensity, and market impact severity deciles.
 
-The structured risk signals produced by the engine are connected downstream to two distinct institutional risk laboratories: **Module A (Index Rebalancing)**, which translates event sentiment into constraint-aware portfolio tilts with quadratic turnover control; and **Module B (Multi-Asset Stress Testing)**, which maps adverse event scenarios onto a 30-position institutional balance sheet while rigorously separating trading book mark-to-market re-pricing from banking book 12-month expected credit loss provisioning.
+The structured risk signals produced by the engine are connected downstream to two distinct institutional risk laboratories: **Module A (Index Rebalancing)**, which translates event sentiment into constraint-aware portfolio tilts with quadratic distance minimization subject to turnover and concentration limits; and **Module B (Multi-Asset Stress Testing)**, which maps adverse event scenarios onto a 30-position institutional balance sheet while rigorously separating trading book mark-to-market re-pricing from banking book 12-month expected credit loss provisioning.
 
 ### Core Problem Requirements vs. Implemented Extensions
 
 | Dimension | Core Hackathon Challenge Requirements | RiskPulse AI Implemented Extensions |
 |---|---|---|
 | **Data Ingestion** | Multiple unstructured information sources | **Dual-source live pipeline:** Marketaux Financial News API + Bluesky Social (AT Protocol) with text normalization, ticker regex extraction, entity aliasing, and SQLite persistence. |
-| **Sentiment Analysis** | Sentiment score extraction | **FinBERT Continuous Regressor:** Fine-tuned `ProsusAI/finbert` with linear regression head outputting continuous sentiment intensity $\hat{s} \in [-1.0, +1.0]$. |
-| **Event Classification** | Financial event classification | **FinBERT 10-Class Classifier:** 10-way financial event taxonomy (Earnings, Credit Event, Regulatory, Product Launch, M&A, etc.) with softmax probability distributions. |
-| **Impact Severity** | Impact severity estimation | **XGBoost Severity Engine:** Gradient-boosted decision trees trained on return volatility quantiles predicting market reaction decile ($1 \dots 10$) conditional on sentiment, event probabilities, 15-day rolling volatility, and sector features. |
+| **Sentiment Analysis** | Sentiment score extraction | **FinBERT Continuous Regressor:** BERT regression architecture (`FinBertSentimentRegressor`) with linear projection and Tanh activation outputting continuous sentiment intensity $\hat{s} \in [-1.0, +1.0]$. |
+| **Event Classification** | Financial event classification | **FinBERT 5-Class Classifier:** 5-class financial event taxonomy (`Geopolitical`, `Macroeconomic`, `Credit Event`, `Merger / Acquisition`, `Product Launch`) with softmax probability distributions. Configuration references `yiyanghkust/finbert-tone`. |
+| **Impact Severity** | Impact severity estimation | **XGBoost Severity Engine:** Gradient-boosted decision trees predicting market reaction decile ($1 \dots 10$) conditional on continuous sentiment, 5 event probabilities, 20-day rolling volatility, 20-day volume ratio, returns, and sector/regime features. |
 | **Output Schema** | Machine-readable results | **Standardized JSON Schema:** Standardized risk signal payloads detailing ticker, confidence, category, decile severity, sentiment intensity, and provenance URL. |
 | **Downstream Applications** | At least one financial portfolio application | **Two institutional modules:**<br>• **Module A:** 15-stock constrained quadratic index optimization with 357-day historical walk-forward backtesting.<br>• **Module B:** 30-position multi-asset stress laboratory with What-If exposure adjustment and bisection reverse stress testing. |
-| **Explainability & UX** | Reviewer-ready interface | **Apple-inspired Minimalist UI:** Dual view modes (Quick View for executives, Analyst View for quantitative inspection) + **Bujji**, an interactive conversational assistant for explaining model predictions. |
+| **Explainability & UX** | Reviewer-ready interface | **Modern Clean White UI:** Dual view modes (Quick View for executive screening, Analyst View for quantitative audit) + **Bujji**, an interactive conversational assistant for explaining financial models and risk metrics. |
 
 ---
 
@@ -44,9 +44,9 @@ Financial News / Public Social Media
 Text Normalization & SQLite Event Storage (data/ingestion/riskpulse.db)
                   ↓
 Three-Stage Machine Learning Risk Engine:
-  ├── 1. FinBERT Sentiment Regressor (Continuous [-1.0, +1.0])
-  ├── 2. FinBERT Event Classifier (10-Class Softmax Taxonomy)
-  └── 3. XGBoost Impact Severity (Decile 1–10 with Volatility & Sector Features)
+  ├── 1. FinBERT Sentiment Regressor (Continuous [-1.0, +1.0], Tanh-bounded)
+  ├── 2. FinBERT Event Classifier (5-Class Softmax Taxonomy)
+  └── 3. XGBoost Impact Severity (Decile 1–10 with 20-Day Volatility & Sector Features)
                   ↓
 Structured Risk Signal (JSON Schema)
                   ↓
@@ -56,7 +56,7 @@ Downstream Financial Applications:
                   ↓
 FastAPI Unified Backend Server (Python 3.11 / Uvicorn :8000)
                   ↓
-React & TypeScript Dashboard (Vite 6 / React 18 :5173)
+React & TypeScript Dashboard (Vite 6 / React 19 :5173)
 ```
 
 ![RiskPulse AI System Architecture](docs/architecture.png)
@@ -68,19 +68,20 @@ React & TypeScript Dashboard (Vite 6 / React 18 :5173)
    - `Bluesky Social Adapter`: Uses the decentralized AT Protocol to stream public financial discourse matching equity cashtags (`$AAPL`, `$NVDA`, etc.).
    - `Text Normalizer & SQLite Repository`: Strips boilerplate, deduplicates via URL hashing, resolves ticker aliases (e.g., "Google" $\rightarrow$ `GOOGL`), and persists raw records into `data/ingestion/riskpulse.db`.
 2. **Three-Stage ML Risk Engine (Trained Machine Learning Models):**
-   - **Model 1 (FinBERT Sentiment):** Extracts pooled `[CLS]` embeddings from financial text to project continuous sentiment $\hat{s} \in [-1.0, +1.0]$.
-   - **Model 2 (FinBERT Event Classifier):** Evaluates multi-class sequence probabilities across 10 financial event taxonomy categories.
-   - **Model 3 (XGBoost Impact Severity):** Combines event probabilities, continuous sentiment, historical 15-day rolling price volatility ($\sigma_{15}$ via `yfinance`), and one-hot sector indicators to predict market severity decile ($1 \dots 10$).
+   - **Model 1 (FinBERT Sentiment):** Custom BERT regression head (`Dropout -> Linear -> Tanh`) outputting continuous sentiment intensity $\hat{s} \in [-1.0, +1.0]$ trained with MSE loss.
+   - **Model 2 (FinBERT Event Classifier):** Evaluates multi-class sequence probabilities across 5 financial event categories (`Geopolitical`, `Macroeconomic`, `Credit Event`, `Merger / Acquisition`, `Product Launch`). Pretrained base configuration references `yiyanghkust/finbert-tone`.
+   - **Model 3 (XGBoost Impact Severity):** Combines continuous sentiment, 5 event probabilities, event confidence, historical 20-day annualized rolling price volatility ($\sigma_{20\text{d}}$), 20-day volume ratio, return momentum, and one-hot sector indicators to predict market severity decile ($1 \dots 10$).
 3. **Module A — Index Rebalancing Laboratory (Constrained Convex Optimization):**
-   - Formulates a quadratic optimization problem balancing target alpha tilts against turnover transaction costs.
-   - Enforces strict institutional constraints: full investment ($\sum w_i = 1.0$), long-only ($w_i \ge 0$), 15% single-stock cap, 35% sector concentration limit, and 5% maximum turnover budget per rebalance.
+   - Formulates a quadratic optimization problem minimizing squared Euclidean distance from the signal-tilted target allocation.
+   - Enforces strict institutional constraints: full investment ($\sum w_i = 1.0$), long-only ($w_i \ge 0$), position deviation limits ($\pm 2$ percentage points from benchmark), sector deviation limits ($\pm 5$ percentage points from baseline), and a 10% maximum one-way turnover budget, with transaction costs modeled at 10 basis points.
 4. **Module B — Multi-Asset Stress Laboratory (Quantitative Financial Valuation):**
-   - Evaluates a 30-position institutional portfolio ($10.0M total balance sheet).
-   - Separates **Trading Book Mark-to-Market (MTM)** (second-order duration/convexity for bonds, DV01 curve re-pricing for swaps, Black-Scholes Delta-Gamma for options) from **Banking Book Expected Credit Loss (ECL)** ($EAD \times PD \times LGD$ under Basel II/III).
+   - Evaluates a 30-position institutional reference portfolio (12 commercial loans, 10 corporate bonds, 4 interest rate swaps, 4 options).
+   - Separates **Trading Book Mark-to-Market (MTM)** (second-order duration/rate convexity for bonds, signed DV01 curve re-pricing for swaps, full European Black-Scholes continuous dividend yield repricing for options) from **Banking Book Expected Credit Loss (ECL)** ($\Delta ECL = EAD \times (\text{PD}_{\text{stressed}} - \text{PD}_0) \times LGD$).
    - Provides interactive **What-If** position scaling and **Reverse Stress Testing** via bisection root-finding.
+   - Explicitly preserves accounting integrity: Loan EAD ($5.0M), Bond MV ($3.5M), and Derivative Reference Notional ($1.5M) are distinct risk metrics and are **not** combined into Net Asset Value (NAV).
 5. **API & Interface Layer:**
    - **FastAPI:** Lifespan model management, CORS middleware, Pydantic validation, atomic batch endpoints.
-   - **React 18 + TypeScript + Vite:** Minimalist monochrome design system, state synchronization across Quick and Analyst views, responsive layout (mobile 390px to 1600px desktop).
+   - **React 19 + TypeScript + Vite:** Modern white minimalist design system, state synchronization across Quick View and Analyst View, responsive layout (mobile 390px to 1600px desktop).
 
 ---
 
@@ -89,10 +90,10 @@ React & TypeScript Dashboard (Vite 6 / React 18 :5173)
 RiskPulse AI incorporates specific datasets across training, real-source ingestion, historical market prices, and portfolio stress modeling:
 
 ### 1. Model Training & Evaluation Data
-- **Base Transformer:** `ProsusAI/finbert` (licensed under Apache 2.0), pre-trained on the Financial PhraseBank corpus.
-- **Sentiment & Event Taxonomy Fine-Tuning:** Fine-tuned on labeled financial headlines and corporate event disclosures categorized into 10 standard financial taxonomy classes.
-- **Impact Severity Feature Matrix:** Calibrated on historical corporate event filings matched with subsequent 1-day and 5-day equity return quantiles to define decile impact boundaries (`configs/impact_decile_thresholds.json`).
-- *Note:* Due to GitHub's 100 MB per-file upload limit, raw 438 MB transformer weights (`model.safetensors`) are hosted externally, while all model configurations, tokenizers, vocabularies, and the XGBoost severity engine (`models/impact_engine/*.joblib`, 535 KB) are tracked in the repository.
+- **Base Transformer Provenance:** Event classifier config references `yiyanghkust/finbert-tone` (Apache 2.0); sentiment regressor utilizes BERT-base architecture fine-tuned on financial text.
+- **Sentiment & Event Taxonomy Fine-Tuning:** Fine-tuned on labeled financial headlines and corporate event disclosures categorized into 5 verified financial taxonomy classes (`Geopolitical`, `Macroeconomic`, `Credit Event`, `Merger / Acquisition`, `Product Launch`).
+- **Impact Severity Feature Matrix:** Calibrated on historical corporate event filings matched with subsequent 1-day and 3-day equity return quantiles to define decile impact boundaries (`configs/impact_decile_thresholds.json`).
+- *Note on Model Weights:* Due to GitHub's 100 MB per-file upload limit, raw 438 MB transformer weights (`model.safetensors`) are excluded from Git via `.gitignore`. Model architectures, tokenizer configs, vocabularies, and the XGBoost severity engine (`models/impact_engine/*.joblib`, 535 KB) are tracked in the repository. The backend supports local model loading and deterministic mock execution (`SKIP_MODEL_LOAD=true`).
 
 ### 2. Live Public News & Social Ingestion
 - **Marketaux News API:** Real-time financial news headlines and metadata. Free-tier API token required for live fetching; 2 pre-collected news items are bundled in `data/ingestion/riskpulse.db`.
@@ -100,11 +101,11 @@ RiskPulse AI incorporates specific datasets across training, real-source ingesti
 - *Copyright Compliance:* No full-text copyrighted news articles are stored or redistributed. The repository stores only headline metadata, snippets, ticker tags, and public canonical source URLs.
 
 ### 3. Historical Market Price Data
-- **Historical Daily Prices:** Historical adjusted closing prices for the 15 supported equities retrieved via `yfinance` for volatility calculation.
+- **Historical Daily Prices:** Historical adjusted closing prices for the 15 supported equities retrieved via `yfinance` for 20-day volatility and volume calculations.
 - **Offline Walk-Forward Holdout Data:** Bundled holdout market prices (`data/module_a/holdout_prices.csv`, 188 KB) and holdout signal series (`data/module_a/holdout_signals.csv`, 624 KB) covering 357 market sessions for offline reproducibility of Module A backtests without network access.
 
 ### 4. Synthetic Institutional Portfolio Data
-- **Synthetic Institution Balance Sheet (`data/module_b/synthetic_portfolio.json`):** Calibrated 30-position institutional portfolio totaling $10,000,000 exposure across 10 commercial loans ($5.0M EAD), 10 corporate bonds ($3.5M MV), 5 interest rate swaps ($1.0M Notional), and 5 FX options ($0.5M Notional).
+- **Synthetic Institution Balance Sheet (`data/module_b/synthetic_portfolio.json`):** Calibrated 30-position institutional portfolio comprising 12 commercial loans ($5.0M EAD), 10 corporate bonds ($3.5M MV), 4 interest rate swaps ($1.0M Notional), and 4 options ($0.5M Reference Notional). Derivative reference notional ($1.5M) is non-additive.
 - **Scenario Library (`data/module_b/scenario_library.json`):** 5 historical and hypothetical stress scenario families (Credit Event, Macroeconomic, Geopolitical, Merger / Acquisition, Product Launch) specifying quantitative shock vectors for risk-free rates, credit spreads, equity indices, FX rates, and loan default probabilities.
 
 ---
@@ -183,7 +184,7 @@ Execute the full test verification suite:
 # 1. Run all 120 backend unit & integration tests
 pytest -q
 
-# 2. Run frontend unit tests (13 tests)
+# 2. Run frontend unit tests (14 tests)
 npm --prefix frontend test
 
 # 3. Verify frontend-backend API contracts
@@ -209,7 +210,7 @@ All metrics below reflect genuine, measured outputs from automated verification 
 | **Risk Engine Health** | Model orchestration, lifespan startup, atomic batching | `GET /health` returns `status: "ready"`; 120/120 passing pytest suite. |
 | **Three-Model Inference** | Real-time sentiment regression, event classification, impact decile | Deterministic manual inference: Product Launch (99.7% conf), Sentiment +0.606, Impact 6/10. |
 | **Dual-Source Ingestion** | Live & pre-collected ingestion from news (Marketaux) and social (Bluesky) | 29 active signals (2 news, 27 social) stored in `data/ingestion/riskpulse.db`. |
-| **Module A Rebalancing** | 15-stock quadratic optimization subject to 5 strict regulatory constraints | Target weights sum to exactly $1.0000$; maximum position $\le 15\%$; sector $\le 35\%$; turnover $\le 5\%$. |
+| **Module A Rebalancing** | 15-stock quadratic optimization subject to strict constraints | Target weights sum to exactly $1.0000$; stock deviation $\le \pm 2\%$; sector deviation $\le \pm 5\%$; turnover $\le 10\%$. |
 | **Module A Backtesting** | Walk-forward simulation over 357 historical market sessions | `POST /module-a/backtest` executes across 357 market sessions without lookahead leakage. |
 | **Module B Stress Testing** | Horizon-separated valuation across 30 institutional positions | Instantaneous MTM P&L ($+\$2,892.61$) and Incremental 12m ECL ($\$391.50$) computed under reviewed scenarios. |
 | **What-If Analysis** | Interactive sensitivity adjustment on position exposures | Position L01 adjustment calculates exact net portfolio delta ($\$78.30$). |
@@ -240,26 +241,26 @@ Reviewers can experience the full capabilities of RiskPulse AI through the follo
 
 1. **Home Introduction (`/#home`):**
    - High-level overview of the financial risk intelligence platform, key system metrics, and architectural workflow.
-   - Click **"Launch Platform"** to transition to the live intelligence dashboard.
+   - Click **"Open Dashboard"** to transition to the live intelligence dashboard.
 2. **Live AI Signals & Provenance (`/?mode=quick#events`):**
    - Review 29 ingested news and social signals with color-coded sentiment bars, detected event badges, and estimated impact severity deciles ($1 \dots 10$).
    - Click source external links (e.g., SeekingAlpha, Bluesky) to inspect the raw narrative origin with strict `rel="noopener noreferrer"` security.
 3. **Module A — Index Rebalancing Laboratory (`/#moduleA`):**
    - Review the 15-stock baseline equal-weighted index ($w_i = 6.67\%$).
-   - Click **"Run Signal-Based Rebalance"** to execute the quadratic optimizer, observing how positive/negative signals tilt allocations within the 5% turnover budget.
+   - Click **"Run Signal-Based Rebalance"** to execute the quadratic optimizer, observing how positive/negative signals tilt allocations within the 10% turnover budget while respecting the $\pm 2\%$ position and $\pm 5\%$ sector bounds.
    - Run the 357-day historical backtest to observe cumulative return profiles.
 4. **Module B — Multi-Asset Stress Laboratory (`/#moduleB`):**
-   - Inspect the 30-position portfolio breakdown ($5.0M Loans, $3.5M Bonds, $1.5M Derivatives).
+   - Inspect the 30-position portfolio breakdown (12 Loans $5.0M EAD, 10 Bonds $3.5M MV, 4 Swaps $1.0M notional, 4 Options $0.5M reference notional).
    - Select a scenario family (e.g., *Credit Event* or *Macroeconomic*) and click **"Run Stress Test"**.
    - Observe the separation between **Instantaneous Mark-to-Market P&L** and **Incremental 12-Month Expected Credit Loss**.
    - Modify position exposure sliders in the **What-If Analysis** panel to evaluate hedging strategies.
    - Run the **Reverse Stress Test** to determine the minimum macroeconomic shock that would breach institution capital buffers.
 5. **Testing Quick View vs. Analyst View:**
    - **Quick View (Executive Perspective):** Streamlines the interface to eliminate visual clutter. Evaluates 29 live signals via headline sentiment pills and 1–10 impact ratings, with 1-click rebalancing and macro stress summaries.
-   - **Analyst View (Quantitative Perspective):** Reveals full 10-class softmax probability distributions across the event taxonomy, continuous sentiment intensities $[-1.0, +1.0]$, 15-day rolling volatilities ($\sigma_{15}$), interactive turnover penalty sliders ($\lambda$), position-level What-If exposure adjustment sliders ($0.0\times$ to $2.0\times$), and automated Reverse Stress bisection search.
+   - **Analyst View (Quantitative Perspective):** Reveals full 5-class softmax probability distributions across the event taxonomy, continuous sentiment intensities $[-1.0, +1.0]$, 20-day rolling volatilities ($\sigma_{20\text{d}}$), inspectable constraint bounds ($\pm 2\%$ stock, $\pm 5\%$ sector, 10% turnover), position-level What-If exposure adjustment sliders ($0.0\times$ to $2.0\times$), and automated Reverse Stress bisection search.
    - **Testing in Dashboard:** Click the **Quick View / Analyst View** segmented toggle in the top-right header (or append `?mode=analyst` or `?mode=quick` to your URL). All selections, filters, and simulation outputs stay synchronized across both views without resetting.
 6. **Bujji Financial Assistant:**
-   - Click the floating circular assistant icon at the bottom-right to open **Bujji**, and ask financial questions such as *"Why are MTM and ECL reported separately?"* or *"Explain how the 15% single-stock cap works."*
+   - Click the floating circular assistant icon at the bottom-right to open **Bujji**, and ask financial questions such as *"Why are MTM and ECL reported separately?"* or *"Explain how the ±2% stock deviation limit works."*
 
 ---
 
@@ -268,7 +269,7 @@ Reviewers can experience the full capabilities of RiskPulse AI through the follo
 To maintain scientific and financial integrity, the known limitations of RiskPulse AI are documented below:
 
 1. **Model Uncertainty & Misclassification:** NLP classification models, while achieving high benchmark accuracy, can misclassify ambiguous or sarcastic financial text. Predictions should be utilized as quantitative risk intelligence to support human analysts, not as autonomous decision-makers.
-2. **Impact Severity Interpretation:** Predicted impact severity deciles ($1 \dots 10$) reflect estimated return volatility and market reaction magnitudes; they do not predict exact directional return percentages or target prices.
+2. **Impact Severity Interpretation:** Predicted impact severity deciles ($1 \dots 10$) reflect estimated return volatility and market reaction magnitudes; they do not predict exact directional return percentages, guaranteed price movements, or default probabilities.
 3. **Provider Rate Limits:** Live news ingestion depends on third-party API availability and tier quotas (e.g., Marketaux free tier). When external connectivity is unavailable, the platform automatically utilizes its offline SQLite repository.
 4. **Historical Simulation Assumptions:** Module A backtest results are based on historical daily market data. Past performance is not indicative of future returns, and backtests assume standard transaction cost models.
 5. **Synthetic Portfolio Scope:** Module B operates on a 30-position calibrated synthetic portfolio designed for research demonstration rather than an enterprise core banking ledger.
@@ -292,12 +293,13 @@ To maintain scientific and financial integrity, the known limitations of RiskPul
 ### Project Submission Details
 - **Candidate Full Name:** Shanmukh Datta
 - **Institution / College:** National Institute of Technology Jalandhar (NITJ)
-- **Official Email:** `shanmukhadattaboda069@gmail.com`
+- **Official College Email:** `bodasd.ic.24@nitj.ac.in`
+- **Contact Email:** `shanmukhadattaboda069@gmail.com`
 - **Submission Repository URL:** `https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon.git`
 - **Repository Name:** `nitj-shanmukhdatta-hackthon`
 
 ### Acknowledgments & Attribution
-- **ProsusAI FinBERT:** Developed by ProsusAI and hosted on Hugging Face (`ProsusAI/finbert`), licensed under Apache 2.0.
+- **ProsusAI FinBERT & yiyanghkust/finbert-tone:** Pretrained language models licensed under Apache 2.0.
 - **XGBoost:** Distributed Machine Learning Community (DMLC), licensed under Apache 2.0.
 - **Hugging Face Transformers & PyTorch:** Open-source deep learning frameworks.
 - **Marketaux & Bluesky:** Public news and social media APIs.
