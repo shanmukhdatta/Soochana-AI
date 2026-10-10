@@ -30,7 +30,7 @@ RiskPulse AI bridges the gap between unstructured financial data (news publicati
 - **Output:** Continuous sentiment intensity where $-1.0$ represents severe distress/pessimism, $0.0$ neutral market sentiment, and $+1.0$ strong expansionary optimism.
 
 ### 2.2 Model 2: Financial Event Classifier
-- **Base Provenance:** Configuration references `yiyanghkust/finbert-tone` with a 5-class sequence classification head (`num_labels = 5`).
+- **Model identity caveat:** Runtime configuration references `yiyanghkust/finbert-tone`, while the original classifier training notebook initializes `nickmuchi/finbert-tone-finetuned-finance-topic-classification`. The original trained weights are not bundled; these sources must not be treated as the same verified checkpoint. The five-class runtime label contract is `num_labels = 5`.
 - **Classification Head:** 5-way softmax distribution over verified financial event categories:
   $$P(\text{Event} = k \mid \mathbf{x}) = \frac{\exp(\mathbf{w}_k^T \mathbf{h}_{\text{pooled}} + b_k)}{\sum_{j=1}^{5} \exp(\mathbf{w}_j^T \mathbf{h}_{\text{pooled}} + b_j)}, \quad k \in \{1 \dots 5\}$$
 - **Supported 5-Class Taxonomy (`configs/event_labels.json`):**
