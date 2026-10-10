@@ -1,7 +1,9 @@
+import { demoRequest, isReviewerPreview } from './demo-data';
 import type { IndexData, Inference, Portfolio, Proposal, RebalanceEnvelope, ScenarioLibrary, SignalsPage, Signal, StressResult, Summary } from './types';
 const BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 export class ApiError extends Error { constructor(public status: number, public path: string, message: string) { super(message); this.name='ApiError'; } }
 async function request<T>(path: string, opts: RequestInit = {}): Promise<T> {
+  if (isReviewerPreview) return demoRequest<T>(path, opts);
   const ctrl = new AbortController(); const timeout = setTimeout(() => ctrl.abort(), 18000);
   try {
     const res = await fetch(`${BASE}${path}`, { ...opts, signal:ctrl.signal, headers: { 'Accept':'application/json', ...(opts.body ? {'Content-Type':'application/json'} : {}), ...opts.headers } });
