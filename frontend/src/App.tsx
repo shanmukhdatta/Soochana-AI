@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import {
   Activity, ArrowRight, ArrowUpRight, BrainCircuit, ChartNoAxesCombined,
   ChevronDown, CircleAlert, Clock3, ExternalLink, Gauge,
@@ -133,6 +133,167 @@ function ModuleB({portfolio,library,proposal,clearProposal,mode}:{portfolio:Port
  {mode==='analyst'&&<section className="panel additional-stress"><div className="tabs"><button className={activeTab==='stress'?'active':''} onClick={()=>setTab('stress')}>Stress context</button><button className={activeTab==='whatif'?'active':''} onClick={()=>setTab('whatif')}>What-if exposure</button><button className={activeTab==='reverse'?'active':''} onClick={()=>setTab('reverse')}>Reverse stress</button></div>{activeTab==='stress'?<div className="tab-content"><b>Read the results carefully</b><p>Instantaneous marked-to-market profit/loss and projected 12-month incremental expected credit loss use different time horizons. No combined value should be interpreted as regulatory capital, NAV or guaranteed loss.</p><span className="fineprint">Scenarios are hypothetical, and all portfolio positions are synthetic.</span></div>:activeTab==='whatif'?<div className="tab-content"><p>Scale the exposure of a single synthetic position, then compare the stress results before and after. Does not model hedging or financing costs.</p><div className="tab-controls"><label className="form-label">POSITION<select value={positionId} onChange={e=>setPositionId(e.target.value)}><option value="">Select position</option>{portfolio?.positions.map(p=><option key={p.id} value={p.id}>{p.id} · {p.name}</option>)}</select></label><label className="form-label">EXPOSURE MULTIPLIER<input type="number" min="0" max="2" step="0.05" value={scale} onChange={e=>setScale(e.target.value)}/></label><button className="secondary-button" disabled={busy||!reviewed} onClick={runWhatIf}>Run what-if</button></div>{whatIf&&<div className="compact-results"><span>Before mixed-horizon net: {fmtMoney(whatIf.before.totals.illustrative_mixed_horizon_net_effect_usd)}</span><span>After: {fmtMoney(whatIf.after.totals.illustrative_mixed_horizon_net_effect_usd)}</span><b>Change: {fmtMoney(whatIf.net_effect_change_usd)}</b><small>{whatIf.warning}</small></div>}</div>:<div className="tab-content"><p>Find the first sampled severity multiplier that breaches a user-chosen illustrative mixed-horizon loss budget. This is not VaR or a globally optimal threshold.</p><div className="tab-controls"><label className="form-label">LOSS BUDGET (USD)<input type="number" min="1" step="1000" value={lossBudget} onChange={e=>setLossBudget(e.target.value)}/></label><button className="secondary-button" disabled={busy||!reviewed} onClick={runReverse}>Run reverse stress</button></div>{reverse&&<div className="compact-results"><b>{reverse.found_breach?'First sampled threshold breach found':'No breach in evaluated grid'}</b><span>{reverse.first_breach_on_grid?`Multiplier ${decimal(reverse.first_breach_on_grid.multiplier,2)}, indicative loss ${fmtMoney(reverse.first_breach_on_grid.loss_usd)}`:'No threshold within feasible evaluated factors'}</span><small>{reverse.method}</small></div>}</div>}</section>}
  </div>;
 }
+
+function BujjiAssistant({ mode, selectedSignalId }: { mode: ViewMode; selectedSignalId?: string | null }) {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string; status?: string }>>([
+    {
+      role: 'assistant',
+      content: "Hi! I'm Bujji, your RiskPulse AI guide. Ask me about financial news, AI risk signals, index rebalancing, or portfolio stress testing."
+    }
+  ]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const starters = [
+    "What does RiskPulse AI do?",
+    "What is financial sentiment?",
+    "What does an impact score of 7/10 mean?",
+    "How does Index Rebalancing work?",
+    "What is Expected Credit Loss?",
+    "How does Stress Testing work?"
+  ];
+
+  useEffect(() => {
+    if (open && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, open, loading]);
+
+  const send = async (textToSend?: string) => {
+    const q = (textToSend ?? input).trim();
+    if (!q || loading) return;
+    setInput('');
+    const newMessages = [...messages, { role: 'user' as const, content: q }];
+    setMessages(newMessages);
+    setLoading(true);
+    try {
+      const history = newMessages
+        .slice(-6)
+        .map(m => ({ role: m.role, content: m.content }));
+      const res = await api.assistantChat({
+        message: q,
+        history,
+        mode,
+        selected_signal_id: selectedSignalId ?? null,
+      });
+      setMessages(prev => [...prev, { role: 'assistant', content: res.reply, status: res.status }]);
+    } catch {
+      setMessages(prev => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: "Sorry, I encountered an issue reaching the assistant service. Please check the backend connection.",
+          status: 'error',
+        }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      void send();
+    }
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        className="bujji-launcher"
+        onClick={() => setOpen(o => !o)}
+        aria-label={open ? "Close Bujji AI Assistant" : "Open Bujji AI Assistant"}
+        title={open ? "Close Bujji" : "Ask Bujji (RiskPulse AI Guide)"}
+      >
+        {open ? (
+          <span style={{ fontSize: 18, fontWeight: 700 }}>✕</span>
+        ) : (
+          <svg viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+        )}
+      </button>
+
+      {open && (
+        <div className="bujji-panel" role="dialog" aria-label="Bujji Financial Assistant">
+          <div className="bujji-header">
+            <div className="bujji-header-left">
+              <span className="bujji-title">Bujji</span>
+              <span className="bujji-mode-pill">{mode === 'analyst' ? 'Analyst View' : 'Quick View'}</span>
+            </div>
+            <button
+              type="button"
+              className="bujji-close-btn"
+              onClick={() => setOpen(false)}
+              aria-label="Close assistant"
+              title="Close assistant"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="bujji-body" ref={scrollRef}>
+            {messages.map((m, i) => (
+              <div key={i} className={`bujji-msg ${m.role}`}>
+                <div style={{ whiteSpace: 'pre-wrap' }}>{m.content}</div>
+              </div>
+            ))}
+
+            {messages.length === 1 && !loading && (
+              <div className="bujji-starters">
+                <div style={{ fontSize: 11, color: '#6c757d', fontWeight: 600, marginBottom: 2 }}>Suggested questions:</div>
+                {starters.map((s, idx) => (
+                  <button key={idx} type="button" className="bujji-starter-btn" onClick={() => void send(s)}>
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {loading && (
+              <div className="bujji-loading">
+                <span>●</span> Bujji is thinking...
+              </div>
+            )}
+          </div>
+
+          <div className="bujji-footer">
+            <div className="bujji-input-row">
+              <input
+                className="bujji-input"
+                placeholder="Ask Bujji anything..."
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={loading}
+              />
+              <button
+                type="button"
+                className="bujji-send-btn"
+                onClick={() => void send()}
+                disabled={loading || !input.trim()}
+                aria-label="Send message"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </div>
+            <div className="bujji-disclaimer">
+              AI-generated explanations may contain errors. Research use only; not investment advice.
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function App(){
  const [page,setPage]=useState<Page>('home');const [mode,setMode]=useState<ViewMode>('quick'); const [summary,setSummary]=useState<Load<Summary>>(initial()); const [signalPage,setSignalPage]=useState<Load<SignalsPage>>(initial());const [health,setHealth]=useState('unknown');const [ingestion,setIngestion]=useState('unknown');
  const [idx,setIdx]=useState<Load<IndexData>>(initial());const [portfolio,setPortfolio]=useState<Load<Portfolio>>(initial());const [library,setLibrary]=useState<Load<ScenarioLibrary>>(initial());
@@ -158,9 +319,13 @@ export default function App(){
  const choose=(s:Signal)=>{setSelected(s);setPage('events')};
  const goProposal=(p:Proposal)=>{setProposal(p);setPage('moduleB')};
  const hasProblem=summary.error||signalPage.error;
- return page==='home'?<Home onStart={()=>setPage('events')} onTab={setPage}/>:<Shell page={page} onPage={setPage} mode={mode} onMode={setMode} summary={summary.value} health={health} ingestion={ingestion} loading={refreshing} refresh={()=>void refresh()} selectedTicker={selected?.ticker??''}>
- <div className="dataset-strip"><span><Dot tone={hasProblem?'amber':'green'}/>{hasProblem?'Backend connection incomplete':'Backend responses loaded'}</span><span><Clock3 size={13}/> {lastUpdated?`UI refreshed ${asDate(lastUpdated)}`:'Waiting for first response'}</span><span><LockKeyhole size={13}/> Simulation / research only</span></div>
- <ErrorBanner message={hasProblem?`Backend read failed: ${hasProblem}. Start FastAPI on 127.0.0.1:8000; dev Vite proxies /api.`:null}/>
- {page==='overview'?<Overview summary={summary.value} signals={signals} goSignal={choose} goPage={setPage} health={health} ingestion={ingestion}/>:page==='events'?<><SignalSummary summary={summary.value} signals={signals}/><Events signals={signals} selected={selected} onSelect={setSelected} onModuleB={goProposal} tickers={idx.value?.tickers??[]} analyzeManual={api.analyze}/></>:page==='moduleA'?<ModuleA index={idx.value} indexError={idx.error} rebalance={rebalance} setRebalance={setRebalance} mode={mode}/>:<ModuleB portfolio={portfolio.value} library={library.value} proposal={proposal} clearProposal={()=>setProposal(null)} mode={mode}/>}
- </Shell>;
+ return <>
+  {page==='home'?<Home onStart={()=>setPage('events')} onTab={setPage}/>:<Shell page={page} onPage={setPage} mode={mode} onMode={setMode} summary={summary.value} health={health} ingestion={ingestion} loading={refreshing} refresh={()=>void refresh()} selectedTicker={selected?.ticker??''}>
+  <div className="dataset-strip"><span><Dot tone={hasProblem?'amber':'green'}/>{hasProblem?'Backend connection incomplete':'Backend responses loaded'}</span><span><Clock3 size={13}/> {lastUpdated?`UI refreshed ${asDate(lastUpdated)}`:'Waiting for first response'}</span><span><LockKeyhole size={13}/> Simulation / research only</span></div>
+  <ErrorBanner message={hasProblem?`Backend read failed: ${hasProblem}. Start FastAPI on 127.0.0.1:8000; dev Vite proxies /api.`:null}/>
+  {page==='overview'?<Overview summary={summary.value} signals={signals} goSignal={choose} goPage={setPage} health={health} ingestion={ingestion}/>:page==='events'?<><SignalSummary summary={summary.value} signals={signals}/><Events signals={signals} selected={selected} onSelect={setSelected} onModuleB={goProposal} tickers={idx.value?.tickers??[]} analyzeManual={api.analyze}/></>:page==='moduleA'?<ModuleA index={idx.value} indexError={idx.error} rebalance={rebalance} setRebalance={setRebalance} mode={mode}/>:<ModuleB portfolio={portfolio.value} library={library.value} proposal={proposal} clearProposal={()=>setProposal(null)} mode={mode}/>}
+  </Shell>}
+  <BujjiAssistant mode={mode} selectedSignalId={selected?.id}/>
+ </>;
 }
+

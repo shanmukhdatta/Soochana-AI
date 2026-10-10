@@ -102,3 +102,7 @@ app.include_router(module_b_router)
 # RiskPulse two-source ingestion router
 from app.ingestion.router import router as ingestion_router
 app.include_router(ingestion_router)
+
+# Bujji AI Financial Assistant router
+from app.assistant.router import router as assistant_router
+app.include_router(assistant_router)
