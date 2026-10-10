@@ -1,0 +1,18 @@
+# Source-notebook execution environment (ranges derived from imports / install cells).
+# These are NOT a fully pinned environment lock or proof of identical training results.
+# For best compatibility, run the notebooks in a Kaggle Python GPU environment.
+numpy>=1.26,<3
+pandas>=2.1,<3
+scipy>=1.11,<2
+scikit-learn>=1.4,<1.7
+matplotlib>=3.7,<4
+pyarrow>=14
+tqdm>=4.66
+datasets>=3,<4
+huggingface-hub>=0.27,<2
+transformers>=4.46,<5
+accelerate>=1,<2
+safetensors>=0.4,<1
+torch>=2.3,<3
+# Optional third stage for Groq-powered synthetic generation:
+groq>=0.33

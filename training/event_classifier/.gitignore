@@ -1,0 +1,15 @@
+# Do not publish credentials, downloaded datasets, checkpoints or large weights.
+.env
+.env.*
+*.safetensors
+*.bin
+*.parquet
+*.csv
+*.zip
+*.log
+__pycache__/
+.ipynb_checkpoints/
+output/
+outputs/
+checkpoints/
+*.token

@@ -1,0 +1,46 @@
+{
+  "package": "RiskPulse AI event classifier source package",
+  "source_preservation": "Notebook source cells preserved; outputs, execution counts, and potentially sensitive notebook metadata removed. Shell magics commented in script exports only.",
+  "sources": {
+    "01_data_gathering": {
+      "original_filename": "event-classification-data-gathering(1).ipynb",
+      "original_sha256": "8500680171a95514cd8e7ef0bfa306d9738468ba0d97d6fa5d7fb31627d2b948",
+      "source_cells_sha256": "d09dc48a2d994af5eb4c7bdeed919c9983b1ff09ec1b9a639a54bdf17e062d6b",
+      "notebook": "notebooks/01_data_gathering.ipynb",
+      "script": "scripts/01_data_gathering.py",
+      "cells": 26,
+      "code_cells": 13,
+      "original_output_cells_removed": 6
+    },
+    "02_preprocessing": {
+      "original_filename": "event-classification-preprocessing(1).ipynb",
+      "original_sha256": "91a785a28e7ed432835275e225428b2a6bfa312d43fca5147f4d1755028bf043",
+      "source_cells_sha256": "4d296d3d894f707ae1eb596772aaa9eaa2bd2d9ff719795468c939eaf308955c",
+      "notebook": "notebooks/02_preprocessing.ipynb",
+      "script": "scripts/02_preprocessing.py",
+      "cells": 22,
+      "code_cells": 12,
+      "original_output_cells_removed": 12
+    },
+    "03_synthetic_generation_optional": {
+      "original_filename": "event-classification-synthetic-data-generation(1).ipynb",
+      "original_sha256": "3b60590cfebe738f58af44350fbd66f49704da6a3fd36e5a9b225b5ed3827664",
+      "source_cells_sha256": "787613f24a7b531b4615bcb2cedff056dd818e468bf48f6dc5ae179f9ce8498a",
+      "notebook": "notebooks/03_synthetic_generation_optional.ipynb",
+      "script": "scripts/03_synthetic_generation_optional.py",
+      "cells": 23,
+      "code_cells": 21,
+      "original_output_cells_removed": 11
+    },
+    "04_finbert_training_real_only": {
+      "original_filename": "event-classification-finberttraining.ipynb",
+      "original_sha256": "a35aaaf3b8883f30dee33c25a505e685a2327d3fb81dcdc52b0e002533f49d54",
+      "source_cells_sha256": "c824dbba233ce2852a894a1b7a1efb2e73c4a8b79423c7f328fe2b2bfe0d1ee7",
+      "notebook": "notebooks/04_finbert_training_real_only.ipynb",
+      "script": "scripts/04_finbert_training_real_only.py",
+      "cells": 51,
+      "code_cells": 25,
+      "original_output_cells_removed": 23
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "source": "Outputs recorded inside original uploaded notebooks; NOT rerun or independently verified",
+  "data_gathering": {
+    "raw_rows": 26172,
+    "sources": {
+      "twitter_financial_news_topic": 9506,
+      "gdelt_news_events": 13779,
+      "sentivent": 1495,
+      "sec_8k_events": 138,
+      "corporate_event_detection": 229,
+      "catalyst_financial_news": 1025
+    }
+  },
+  "preprocessing": {
+    "total_real_clean": 16576,
+    "train_real": 13260,
+    "validation_real": 1658,
+    "test_real": 1658,
+    "seed": 42,
+    "split": "stratified 80/10/10",
+    "credit_event_count": {
+      "train": 96,
+      "validation": 12,
+      "test": 12
+    }
+  },
+  "training": {
+    "model_name_in_training_notebook": "nickmuchi/finbert-tone-finetuned-finance-topic-classification",
+    "requested_epochs": 5,
+    "selected_checkpoint": "checkpoint-415",
+    "stopped_epoch_reported": 3.0,
+    "max_length": 512,
+    "learning_rate": 2e-05,
+    "train_batch_size": 16,
+    "eval_batch_size": 32,
+    "sampler_power": 0.5,
+    "test_accuracy": 0.9945717732207479,
+    "test_macro_f1": 0.9797648592141875,
+    "test_weighted_f1": 0.9945454992564555,
+    "validation_macro_f1": 0.9879609031739,
+    "input_train_filename": "event_train.parquet",
+    "used_synthetic_augmented_train": false
+  },
+  "optional_synthetic_notebook_run": {
+    "accepted_credit_event": 45,
+    "accepted_merger_acquisition": 0,
+    "accepted_product_launch": 0,
+    "target_reached": false,
+    "stop_reason": "Groq 413 TPM/request too large; checkpoint saved",
+    "subsequent_training_run_on_augmented_data_in_uploads": false
+  },
+  "code_runtime_discrepancy": {
+    "published_event_model_config_name_or_path": "yiyanghkust/finbert-tone",
+    "uploaded_training_notebook_base_model": "nickmuchi/finbert-tone-finetuned-finance-topic-classification",
+    "status": "checkpoint provenance requires verification; do not claim they are the same artifact without weights/hash/training report"
+  }
+}

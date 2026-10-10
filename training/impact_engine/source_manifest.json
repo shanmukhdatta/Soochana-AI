@@ -1,0 +1,23 @@
+{
+  "01_dataset_generation": {
+    "original_source_sha256": "e35e0f656f0b69b251bed1299767ec519c527eac38f7ee87213dced27adb639b",
+    "notebook_source_sha256": "77b75ecb1eeb4768bfc7263b815c1a66df74a6f94e72c559a500650f0dc70f40",
+    "original_name": "impact-engine-dataset-generation (1).ipynb",
+    "cell_count": 64,
+    "export_sha256": "a0be7f42be70bb021e947c532cabbbf561f24f4b348c3f02147916f597ef4491"
+  },
+  "02_feature_preparation": {
+    "original_source_sha256": "35ce172ea12afdafc24e3ae699cda721624f1f9025b27483f4a9f521a52847b6",
+    "notebook_source_sha256": "48c0e8d4563672e35f3b27f6de23dd213d6f5da849745968812c1d9273ad0018",
+    "original_name": "impact-engine-training-data-prepration.ipynb",
+    "cell_count": 55,
+    "export_sha256": "fd4dd3311e7b02686ca16e6d59b97c82f2f5e56978888b6146e159a64127b7a5"
+  },
+  "03_model_training": {
+    "original_source_sha256": "55ab2ae69373492e305db0a60250c5e619d1aa7e5539939c07a753658a136c2e",
+    "notebook_source_sha256": "fab32c8b1ad1cc4660faee1132d38f5c3ade59ea5e66a0a3efa393a825180308",
+    "original_name": "impact-engine-training-final.ipynb",
+    "cell_count": 50,
+    "export_sha256": "e3ebafe76cd6e3fd7e4f87cb2575f81a7aeaaf81195ec75d6deeb7b8af8e1d8c"
+  }
+}
