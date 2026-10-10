@@ -126,7 +126,7 @@ function ModuleB({portfolio,library,proposal,clearProposal,mode}:{portfolio:Port
 }
 
 function BujjiAssistant({ mode, selectedSignalId }: { mode: ViewMode; selectedSignalId?: string | null }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('bujji') === 'open');
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string; status?: string }>>([
     {
       role: 'assistant',
