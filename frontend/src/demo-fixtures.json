@@ -1,0 +1,2002 @@
+{
+  "attribution": "RiskPulse repository-recorded samples. Not a live API, current market signal or newly generated model result.",
+  "recordedNewsText": "Apple bonds face downgrade following liquidity concerns.",
+  "recordedInference": {
+    "ticker": "AAPL",
+    "published_at": "2024-05-15T14:30:00Z",
+    "source": "financial_news",
+    "sentiment": {
+      "score": -0.6580556035041809,
+      "label": "negative"
+    },
+    "event": {
+      "class_name": "Credit Event",
+      "confidence": 0.9828863739967346,
+      "probabilities": {
+        "Geopolitical": 0.0010022064670920372,
+        "Macroeconomic": 0.003156382590532303,
+        "Credit Event": 0.9828863739967346,
+        "Merger / Acquisition": 0.0031926387455314398,
+        "Product Launch": 0.009762438014149666
+      }
+    },
+    "impact": {
+      "predicted_realized_impact": 0.028571348637342453,
+      "score": 8,
+      "target_definition": "Estimated magnitude of historical abnormal market reaction, not a guaranteed future move"
+    },
+    "market_context": {
+      "sector": "Technology",
+      "market_regime": "bullish_normal_vol",
+      "stock_feature_date": "2024-05-14",
+      "spy_feature_date": "2024-05-14",
+      "provider": "yfinance"
+    },
+    "model_version": "risk-engine-v1",
+    "warnings": [
+      "Impact Score is an estimated historical market-reaction severity, not a guaranteed price prediction.",
+      "Daily adjusted-price provider may differ from the FNSPID training data; verify parity before production use."
+    ]
+  },
+  "recordedScenario": {
+    "name": "Credit Event — Severe adverse hypothetical scenario",
+    "event_class": "Credit Event",
+    "severity": "severe",
+    "shocks": {
+      "rate_bps": 50,
+      "spread_bps": 130,
+      "equity_pct": -8,
+      "volatility_points": 0.1,
+      "pd_multiplier": 1.2999999999999998
+    },
+    "issuer_shocks": {
+      "AAPL": {
+        "rate_bps": 0,
+        "spread_bps": 300,
+        "equity_pct": -20,
+        "volatility_points": 0.16,
+        "pd_multiplier": 3
+      }
+    },
+    "sector_shocks": {},
+    "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+  },
+  "recordedStress": {
+    "module": "riskpulse-module-b-v1",
+    "portfolio": {
+      "name": "RiskPulse Synthetic Multi-Asset Portfolio",
+      "portfolio_version": "synthetic-v1",
+      "currency": "USD",
+      "position_count": 30,
+      "counts": {
+        "loan": 12,
+        "bond": 10,
+        "swap": 4,
+        "option": 4
+      },
+      "loan_ead_usd": 5000000,
+      "bond_market_value_usd": 3500000,
+      "derivative_reference_notional_usd": 1500000,
+      "exposure_warning": "Loan EAD, bond market value and derivative reference notional use different measurement bases and are NOT additive portfolio NAV."
+    },
+    "scenario": {
+      "name": "Credit Event — Severe adverse hypothetical scenario",
+      "event_class": "Credit Event",
+      "severity": "severe",
+      "shocks": {
+        "rate_bps": 50,
+        "spread_bps": 130,
+        "equity_pct": -8,
+        "volatility_points": 0.1,
+        "pd_multiplier": 1.2999999999999998
+      },
+      "issuer_shocks": {
+        "AAPL": {
+          "rate_bps": 0,
+          "spread_bps": 300,
+          "equity_pct": -20,
+          "volatility_points": 0.16,
+          "pd_multiplier": 3
+        }
+      },
+      "sector_shocks": {},
+      "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+    },
+    "override_coverage": {
+      "unmatched_issuer_shocks": [],
+      "unmatched_sector_shocks": [],
+      "all_overrides_matched": true
+    },
+    "totals": {
+      "instantaneous_mtm_pnl_usd": -269495.06736513856,
+      "base_12m_expected_credit_loss_usd": 58556.25,
+      "stressed_12m_expected_credit_loss_usd": 86302.125,
+      "incremental_12m_expected_credit_loss_usd": 27745.875,
+      "illustrative_mixed_horizon_net_effect_usd": -297240.94236513856,
+      "illustrative_mixed_horizon_loss_usd": 297240.94236513856
+    },
+    "loss_contribution_by_type_usd": {
+      "loan": 27745.874999999993,
+      "bond": 309783.25,
+      "swap": -750,
+      "option": -39538.182634861434
+    },
+    "loss_contribution_by_sector_usd": {
+      "Communication Services": 30104.875,
+      "Consumer Discretionary": 58964.17202789577,
+      "Consumer Staples": 23109.124999999996,
+      "Financials": -750,
+      "Healthcare": 56631,
+      "Industrials": 25723.25,
+      "Technology": 103458.52033724281
+    },
+    "loss_contribution_by_ticker_usd": {
+      "AAPL": 37079.26300630226,
+      "AMGN": 29135.25,
+      "AMZN": 30004,
+      "COST": 21776,
+      "CSX": 25723.25,
+      "GILD": 27495.75,
+      "GOOGL": 30104.875,
+      "MSFT": 29201.41468339289,
+      "NVDA": 37177.84264754764,
+      "PEP": 1333.124999999999,
+      "SBUX": 1417.499999999999,
+      "TSLA": 27542.67202789577
+    },
+    "top_loss_contributors": [
+      {
+        "id": "B01",
+        "name": "Synthetic AAPL fixed-rate bond",
+        "type": "bond",
+        "sector": "Technology",
+        "ticker": "AAPL",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 430,
+          "equity_pct": -28,
+          "volatility_points": 0.26,
+          "pd_multiplier": 3.8999999999999995
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -74326.25,
+        "indicative_loss_contribution_usd": 74326.25,
+        "calculation": {
+          "mtm_pnl_usd": -74326.25,
+          "rate_pnl_usd": -8106.250000000001,
+          "spread_pnl_usd": -66220,
+          "dv01_usd_per_bp": 164.00000000000003,
+          "cs01_usd_per_bp": 154
+        }
+      },
+      {
+        "id": "B04",
+        "name": "Synthetic AMZN fixed-rate bond",
+        "type": "bond",
+        "sector": "Consumer Discretionary",
+        "ticker": "AMZN",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -28519,
+        "indicative_loss_contribution_usd": 28519,
+        "calculation": {
+          "mtm_pnl_usd": -28519,
+          "rate_pnl_usd": -8135.000000000001,
+          "spread_pnl_usd": -20384,
+          "dv01_usd_per_bp": 164.8,
+          "cs01_usd_per_bp": 156.8
+        }
+      },
+      {
+        "id": "B06",
+        "name": "Synthetic GOOGL fixed-rate bond",
+        "type": "bond",
+        "sector": "Communication Services",
+        "ticker": "GOOGL",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -28464.625000000004,
+        "indicative_loss_contribution_usd": 28464.625000000004,
+        "calculation": {
+          "mtm_pnl_usd": -28464.625000000004,
+          "rate_pnl_usd": -8080.625,
+          "spread_pnl_usd": -20384.000000000004,
+          "dv01_usd_per_bp": 163.8,
+          "cs01_usd_per_bp": 156.8
+        }
+      },
+      {
+        "id": "B02",
+        "name": "Synthetic MSFT fixed-rate bond",
+        "type": "bond",
+        "sector": "Technology",
+        "ticker": "MSFT",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -27570.375,
+        "indicative_loss_contribution_usd": 27570.375,
+        "calculation": {
+          "mtm_pnl_usd": -27570.375,
+          "rate_pnl_usd": -7914.374999999999,
+          "spread_pnl_usd": -19656,
+          "dv01_usd_per_bp": 160.2,
+          "cs01_usd_per_bp": 151.2
+        }
+      },
+      {
+        "id": "B08",
+        "name": "Synthetic AMGN fixed-rate bond",
+        "type": "bond",
+        "sector": "Healthcare",
+        "ticker": "AMGN",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -27407.25,
+        "indicative_loss_contribution_usd": 27407.25,
+        "calculation": {
+          "mtm_pnl_usd": -27407.25,
+          "rate_pnl_usd": -7751.25,
+          "spread_pnl_usd": -19656,
+          "dv01_usd_per_bp": 157.2,
+          "cs01_usd_per_bp": 151.2
+        }
+      },
+      {
+        "id": "B05",
+        "name": "Synthetic TSLA fixed-rate bond",
+        "type": "bond",
+        "sector": "Consumer Discretionary",
+        "ticker": "TSLA",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -26709.375,
+        "indicative_loss_contribution_usd": 26709.375,
+        "calculation": {
+          "mtm_pnl_usd": -26709.375,
+          "rate_pnl_usd": -7599.375000000001,
+          "spread_pnl_usd": -19110,
+          "dv01_usd_per_bp": 154.00000000000003,
+          "cs01_usd_per_bp": 147
+        }
+      },
+      {
+        "id": "B03",
+        "name": "Synthetic NVDA fixed-rate bond",
+        "type": "bond",
+        "sector": "Technology",
+        "ticker": "NVDA",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -26512.999999999996,
+        "indicative_loss_contribution_usd": 26512.999999999996,
+        "calculation": {
+          "mtm_pnl_usd": -26512.999999999996,
+          "rate_pnl_usd": -7584.999999999999,
+          "spread_pnl_usd": -18927.999999999996,
+          "dv01_usd_per_bp": 153.6,
+          "cs01_usd_per_bp": 145.59999999999997
+        }
+      },
+      {
+        "id": "B07",
+        "name": "Synthetic GILD fixed-rate bond",
+        "type": "bond",
+        "sector": "Healthcare",
+        "ticker": "GILD",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -25902.75,
+        "indicative_loss_contribution_usd": 25902.75,
+        "calculation": {
+          "mtm_pnl_usd": -25902.75,
+          "rate_pnl_usd": -7338.749999999999,
+          "spread_pnl_usd": -18564,
+          "dv01_usd_per_bp": 148.8,
+          "cs01_usd_per_bp": 142.8
+        }
+      },
+      {
+        "id": "B09",
+        "name": "Synthetic CSX fixed-rate bond",
+        "type": "bond",
+        "sector": "Industrials",
+        "ticker": "CSX",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -24093.125,
+        "indicative_loss_contribution_usd": 24093.125,
+        "calculation": {
+          "mtm_pnl_usd": -24093.125,
+          "rate_pnl_usd": -6803.125000000001,
+          "spread_pnl_usd": -17290,
+          "dv01_usd_per_bp": 138,
+          "cs01_usd_per_bp": 133
+        }
+      },
+      {
+        "id": "B10",
+        "name": "Synthetic COST fixed-rate bond",
+        "type": "bond",
+        "sector": "Consumer Staples",
+        "ticker": "COST",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -20277.5,
+        "indicative_loss_contribution_usd": 20277.5,
+        "calculation": {
+          "mtm_pnl_usd": -20277.5,
+          "rate_pnl_usd": -5717.500000000001,
+          "spread_pnl_usd": -14560,
+          "dv01_usd_per_bp": 116.00000000000003,
+          "cs01_usd_per_bp": 112
+        }
+      }
+    ],
+    "positions": [
+      {
+        "id": "L01",
+        "name": "Synthetic AAPL corporate term loan",
+        "type": "loan",
+        "sector": "Technology",
+        "ticker": "AAPL",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 430,
+          "equity_pct": -28,
+          "volatility_points": 0.26,
+          "pd_multiplier": 3.8999999999999995
+        },
+        "incremental_ecl_12m_usd": 11353.5,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 11353.5,
+        "calculation": {
+          "base_ecl_12m_usd": 3915,
+          "stress_ecl_12m_usd": 15268.5,
+          "incremental_ecl_12m_usd": 11353.5,
+          "base_pd_12m": 0.0145,
+          "stress_pd_12m": 0.056549999999999996
+        }
+      },
+      {
+        "id": "L02",
+        "name": "Synthetic MSFT corporate term loan",
+        "type": "loan",
+        "sector": "Technology",
+        "ticker": "MSFT",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1262.249999999999,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1262.249999999999,
+        "calculation": {
+          "base_ecl_12m_usd": 4207.5,
+          "stress_ecl_12m_usd": 5469.749999999999,
+          "incremental_ecl_12m_usd": 1262.249999999999,
+          "base_pd_12m": 0.017,
+          "stress_pd_12m": 0.022099999999999998
+        }
+      },
+      {
+        "id": "L03",
+        "name": "Synthetic NVDA corporate term loan",
+        "type": "loan",
+        "sector": "Technology",
+        "ticker": "NVDA",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1316.249999999999,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1316.249999999999,
+        "calculation": {
+          "base_ecl_12m_usd": 4387.5,
+          "stress_ecl_12m_usd": 5703.749999999999,
+          "incremental_ecl_12m_usd": 1316.249999999999,
+          "base_pd_12m": 0.0195,
+          "stress_pd_12m": 0.025349999999999998
+        }
+      },
+      {
+        "id": "L04",
+        "name": "Synthetic AMZN corporate term loan",
+        "type": "loan",
+        "sector": "Consumer Discretionary",
+        "ticker": "AMZN",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1484.9999999999982,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1484.9999999999982,
+        "calculation": {
+          "base_ecl_12m_usd": 4950,
+          "stress_ecl_12m_usd": 6434.999999999998,
+          "incremental_ecl_12m_usd": 1484.9999999999982,
+          "base_pd_12m": 0.022,
+          "stress_pd_12m": 0.028599999999999993
+        }
+      },
+      {
+        "id": "L05",
+        "name": "Synthetic TSLA corporate term loan",
+        "type": "loan",
+        "sector": "Consumer Discretionary",
+        "ticker": "TSLA",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1488.374999999999,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1488.374999999999,
+        "calculation": {
+          "base_ecl_12m_usd": 4961.25,
+          "stress_ecl_12m_usd": 6449.624999999999,
+          "incremental_ecl_12m_usd": 1488.374999999999,
+          "base_pd_12m": 0.0245,
+          "stress_pd_12m": 0.031849999999999996
+        }
+      },
+      {
+        "id": "L06",
+        "name": "Synthetic GOOGL corporate term loan",
+        "type": "loan",
+        "sector": "Communication Services",
+        "ticker": "GOOGL",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1640.2499999999982,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1640.2499999999982,
+        "calculation": {
+          "base_ecl_12m_usd": 5467.5,
+          "stress_ecl_12m_usd": 7107.749999999998,
+          "incremental_ecl_12m_usd": 1640.2499999999982,
+          "base_pd_12m": 0.027,
+          "stress_pd_12m": 0.03509999999999999
+        }
+      },
+      {
+        "id": "L07",
+        "name": "Synthetic GILD corporate term loan",
+        "type": "loan",
+        "sector": "Healthcare",
+        "ticker": "GILD",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1592.999999999999,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1592.999999999999,
+        "calculation": {
+          "base_ecl_12m_usd": 5310,
+          "stress_ecl_12m_usd": 6902.999999999999,
+          "incremental_ecl_12m_usd": 1592.999999999999,
+          "base_pd_12m": 0.0295,
+          "stress_pd_12m": 0.038349999999999995
+        }
+      },
+      {
+        "id": "L08",
+        "name": "Synthetic AMGN corporate term loan",
+        "type": "loan",
+        "sector": "Healthcare",
+        "ticker": "AMGN",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1728,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1728,
+        "calculation": {
+          "base_ecl_12m_usd": 5760,
+          "stress_ecl_12m_usd": 7488,
+          "incremental_ecl_12m_usd": 1728,
+          "base_pd_12m": 0.032,
+          "stress_pd_12m": 0.0416
+        }
+      },
+      {
+        "id": "L09",
+        "name": "Synthetic CSX corporate term loan",
+        "type": "loan",
+        "sector": "Industrials",
+        "ticker": "CSX",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1630.124999999999,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1630.124999999999,
+        "calculation": {
+          "base_ecl_12m_usd": 5433.750000000001,
+          "stress_ecl_12m_usd": 7063.875,
+          "incremental_ecl_12m_usd": 1630.124999999999,
+          "base_pd_12m": 0.0345,
+          "stress_pd_12m": 0.04485
+        }
+      },
+      {
+        "id": "L10",
+        "name": "Synthetic COST corporate term loan",
+        "type": "loan",
+        "sector": "Consumer Staples",
+        "ticker": "COST",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1498.4999999999982,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1498.4999999999982,
+        "calculation": {
+          "base_ecl_12m_usd": 4995,
+          "stress_ecl_12m_usd": 6493.499999999998,
+          "incremental_ecl_12m_usd": 1498.4999999999982,
+          "base_pd_12m": 0.037,
+          "stress_pd_12m": 0.04809999999999999
+        }
+      },
+      {
+        "id": "L11",
+        "name": "Synthetic PEP corporate term loan",
+        "type": "loan",
+        "sector": "Consumer Staples",
+        "ticker": "PEP",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1333.124999999999,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1333.124999999999,
+        "calculation": {
+          "base_ecl_12m_usd": 4443.75,
+          "stress_ecl_12m_usd": 5776.874999999999,
+          "incremental_ecl_12m_usd": 1333.124999999999,
+          "base_pd_12m": 0.0395,
+          "stress_pd_12m": 0.05134999999999999
+        }
+      },
+      {
+        "id": "L12",
+        "name": "Synthetic SBUX corporate term loan",
+        "type": "loan",
+        "sector": "Consumer Discretionary",
+        "ticker": "SBUX",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 1417.499999999999,
+        "mtm_pnl_usd": 0,
+        "indicative_loss_contribution_usd": 1417.499999999999,
+        "calculation": {
+          "base_ecl_12m_usd": 4725,
+          "stress_ecl_12m_usd": 6142.499999999999,
+          "incremental_ecl_12m_usd": 1417.499999999999,
+          "base_pd_12m": 0.042,
+          "stress_pd_12m": 0.054599999999999996
+        }
+      },
+      {
+        "id": "B01",
+        "name": "Synthetic AAPL fixed-rate bond",
+        "type": "bond",
+        "sector": "Technology",
+        "ticker": "AAPL",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 430,
+          "equity_pct": -28,
+          "volatility_points": 0.26,
+          "pd_multiplier": 3.8999999999999995
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -74326.25,
+        "indicative_loss_contribution_usd": 74326.25,
+        "calculation": {
+          "mtm_pnl_usd": -74326.25,
+          "rate_pnl_usd": -8106.250000000001,
+          "spread_pnl_usd": -66220,
+          "dv01_usd_per_bp": 164.00000000000003,
+          "cs01_usd_per_bp": 154
+        }
+      },
+      {
+        "id": "B02",
+        "name": "Synthetic MSFT fixed-rate bond",
+        "type": "bond",
+        "sector": "Technology",
+        "ticker": "MSFT",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -27570.375,
+        "indicative_loss_contribution_usd": 27570.375,
+        "calculation": {
+          "mtm_pnl_usd": -27570.375,
+          "rate_pnl_usd": -7914.374999999999,
+          "spread_pnl_usd": -19656,
+          "dv01_usd_per_bp": 160.2,
+          "cs01_usd_per_bp": 151.2
+        }
+      },
+      {
+        "id": "B03",
+        "name": "Synthetic NVDA fixed-rate bond",
+        "type": "bond",
+        "sector": "Technology",
+        "ticker": "NVDA",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -26512.999999999996,
+        "indicative_loss_contribution_usd": 26512.999999999996,
+        "calculation": {
+          "mtm_pnl_usd": -26512.999999999996,
+          "rate_pnl_usd": -7584.999999999999,
+          "spread_pnl_usd": -18927.999999999996,
+          "dv01_usd_per_bp": 153.6,
+          "cs01_usd_per_bp": 145.59999999999997
+        }
+      },
+      {
+        "id": "B04",
+        "name": "Synthetic AMZN fixed-rate bond",
+        "type": "bond",
+        "sector": "Consumer Discretionary",
+        "ticker": "AMZN",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -28519,
+        "indicative_loss_contribution_usd": 28519,
+        "calculation": {
+          "mtm_pnl_usd": -28519,
+          "rate_pnl_usd": -8135.000000000001,
+          "spread_pnl_usd": -20384,
+          "dv01_usd_per_bp": 164.8,
+          "cs01_usd_per_bp": 156.8
+        }
+      },
+      {
+        "id": "B05",
+        "name": "Synthetic TSLA fixed-rate bond",
+        "type": "bond",
+        "sector": "Consumer Discretionary",
+        "ticker": "TSLA",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -26709.375,
+        "indicative_loss_contribution_usd": 26709.375,
+        "calculation": {
+          "mtm_pnl_usd": -26709.375,
+          "rate_pnl_usd": -7599.375000000001,
+          "spread_pnl_usd": -19110,
+          "dv01_usd_per_bp": 154.00000000000003,
+          "cs01_usd_per_bp": 147
+        }
+      },
+      {
+        "id": "B06",
+        "name": "Synthetic GOOGL fixed-rate bond",
+        "type": "bond",
+        "sector": "Communication Services",
+        "ticker": "GOOGL",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -28464.625000000004,
+        "indicative_loss_contribution_usd": 28464.625000000004,
+        "calculation": {
+          "mtm_pnl_usd": -28464.625000000004,
+          "rate_pnl_usd": -8080.625,
+          "spread_pnl_usd": -20384.000000000004,
+          "dv01_usd_per_bp": 163.8,
+          "cs01_usd_per_bp": 156.8
+        }
+      },
+      {
+        "id": "B07",
+        "name": "Synthetic GILD fixed-rate bond",
+        "type": "bond",
+        "sector": "Healthcare",
+        "ticker": "GILD",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -25902.75,
+        "indicative_loss_contribution_usd": 25902.75,
+        "calculation": {
+          "mtm_pnl_usd": -25902.75,
+          "rate_pnl_usd": -7338.749999999999,
+          "spread_pnl_usd": -18564,
+          "dv01_usd_per_bp": 148.8,
+          "cs01_usd_per_bp": 142.8
+        }
+      },
+      {
+        "id": "B08",
+        "name": "Synthetic AMGN fixed-rate bond",
+        "type": "bond",
+        "sector": "Healthcare",
+        "ticker": "AMGN",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -27407.25,
+        "indicative_loss_contribution_usd": 27407.25,
+        "calculation": {
+          "mtm_pnl_usd": -27407.25,
+          "rate_pnl_usd": -7751.25,
+          "spread_pnl_usd": -19656,
+          "dv01_usd_per_bp": 157.2,
+          "cs01_usd_per_bp": 151.2
+        }
+      },
+      {
+        "id": "B09",
+        "name": "Synthetic CSX fixed-rate bond",
+        "type": "bond",
+        "sector": "Industrials",
+        "ticker": "CSX",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -24093.125,
+        "indicative_loss_contribution_usd": 24093.125,
+        "calculation": {
+          "mtm_pnl_usd": -24093.125,
+          "rate_pnl_usd": -6803.125000000001,
+          "spread_pnl_usd": -17290,
+          "dv01_usd_per_bp": 138,
+          "cs01_usd_per_bp": 133
+        }
+      },
+      {
+        "id": "B10",
+        "name": "Synthetic COST fixed-rate bond",
+        "type": "bond",
+        "sector": "Consumer Staples",
+        "ticker": "COST",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -20277.5,
+        "indicative_loss_contribution_usd": 20277.5,
+        "calculation": {
+          "mtm_pnl_usd": -20277.5,
+          "rate_pnl_usd": -5717.500000000001,
+          "spread_pnl_usd": -14560,
+          "dv01_usd_per_bp": 116.00000000000003,
+          "cs01_usd_per_bp": 112
+        }
+      },
+      {
+        "id": "IRS01",
+        "name": "Synthetic USD interest-rate swap 1",
+        "type": "swap",
+        "sector": "Financials",
+        "ticker": null,
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": 2250,
+        "indicative_loss_contribution_usd": -2250,
+        "calculation": {
+          "mtm_pnl_usd": 2250,
+          "signed_dv01_usd_per_bp": 45
+        }
+      },
+      {
+        "id": "IRS02",
+        "name": "Synthetic USD interest-rate swap 2",
+        "type": "swap",
+        "sector": "Financials",
+        "ticker": null,
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -1800,
+        "indicative_loss_contribution_usd": 1800,
+        "calculation": {
+          "mtm_pnl_usd": -1800,
+          "signed_dv01_usd_per_bp": -36
+        }
+      },
+      {
+        "id": "IRS03",
+        "name": "Synthetic USD interest-rate swap 3",
+        "type": "swap",
+        "sector": "Financials",
+        "ticker": null,
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": 1500,
+        "indicative_loss_contribution_usd": -1500,
+        "calculation": {
+          "mtm_pnl_usd": 1500,
+          "signed_dv01_usd_per_bp": 30
+        }
+      },
+      {
+        "id": "IRS04",
+        "name": "Synthetic USD interest-rate swap 4",
+        "type": "swap",
+        "sector": "Financials",
+        "ticker": null,
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -1200,
+        "indicative_loss_contribution_usd": 1200,
+        "calculation": {
+          "mtm_pnl_usd": -1200,
+          "signed_dv01_usd_per_bp": -24
+        }
+      },
+      {
+        "id": "OPT01",
+        "name": "Synthetic AAPL European put",
+        "type": "option",
+        "sector": "Technology",
+        "ticker": "AAPL",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 430,
+          "equity_pct": -28,
+          "volatility_points": 0.26,
+          "pd_multiplier": 3.8999999999999995
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": 48600.48699369774,
+        "indicative_loss_contribution_usd": -48600.48699369774,
+        "calculation": {
+          "mtm_pnl_usd": 48600.48699369774,
+          "base_position_value_usd": 32225.587838496496,
+          "stressed_position_value_usd": 80826.07483219424,
+          "shocked_underlying_price_usd": 72,
+          "shocked_volatility": 0.61
+        }
+      },
+      {
+        "id": "OPT02",
+        "name": "Synthetic MSFT European call",
+        "type": "option",
+        "sector": "Technology",
+        "ticker": "MSFT",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -368.7896833928903,
+        "indicative_loss_contribution_usd": 368.7896833928903,
+        "calculation": {
+          "mtm_pnl_usd": -368.7896833928903,
+          "base_position_value_usd": 18727.570457824684,
+          "stressed_position_value_usd": 18358.780774431794,
+          "shocked_underlying_price_usd": 184,
+          "shocked_volatility": 0.44999999999999996
+        }
+      },
+      {
+        "id": "OPT03",
+        "name": "Synthetic NVDA European put",
+        "type": "option",
+        "sector": "Technology",
+        "ticker": "NVDA",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": -9348.59264754764,
+        "indicative_loss_contribution_usd": 9348.59264754764,
+        "calculation": {
+          "mtm_pnl_usd": -9348.59264754764,
+          "base_position_value_usd": -13251.83961562776,
+          "stressed_position_value_usd": -22600.4322631754,
+          "shocked_underlying_price_usd": 138,
+          "shocked_volatility": 0.44999999999999996
+        }
+      },
+      {
+        "id": "OPT04",
+        "name": "Synthetic TSLA European call",
+        "type": "option",
+        "sector": "Consumer Discretionary",
+        "ticker": "TSLA",
+        "applied_shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "incremental_ecl_12m_usd": 0,
+        "mtm_pnl_usd": 655.0779721042304,
+        "indicative_loss_contribution_usd": -655.0779721042304,
+        "calculation": {
+          "mtm_pnl_usd": 655.0779721042304,
+          "base_position_value_usd": -15869.409681350739,
+          "stressed_position_value_usd": -15214.331709246508,
+          "shocked_underlying_price_usd": 69,
+          "shocked_volatility": 0.44999999999999996
+        }
+      }
+    ],
+    "warnings": [
+      "Synthetic illustrative positions and shocks, not market forecasts or investment advice.",
+      "MTM revaluation is instantaneous; loan ECL change is projected 12-month loss. Mixed-horizon indicator is illustrative, not economic NAV, regulatory capital, VaR or realized P&L.",
+      "No credit migration term structures, default dependence, full swap curve repricing, options early exercise, collateral, liquidity, tax, basis risk or counterparty wrong-way risk.",
+      "Options are non-dividend/continuous-dividend European Black-Scholes approximations; swaps use linear DV01; bonds use duration/spread approximation."
+    ]
+  },
+  "historicalRebalance": {
+    "as_of": "2024-05-16T23:00:00Z",
+    "strategy": "full_event_aware",
+    "current_weights": {
+      "AAPL": 0.06666666666666667,
+      "MSFT": 0.06666666666666667,
+      "NVDA": 0.06666666666666667,
+      "QCOM": 0.06666666666666667,
+      "GOOGL": 0.06666666666666667,
+      "CMCSA": 0.06666666666666667,
+      "AMZN": 0.06666666666666667,
+      "TSLA": 0.06666666666666667,
+      "BKNG": 0.06666666666666667,
+      "SBUX": 0.06666666666666667,
+      "COST": 0.06666666666666667,
+      "PEP": 0.06666666666666667,
+      "GILD": 0.06666666666666667,
+      "AMGN": 0.06666666666666667,
+      "CSX": 0.06666666666666667
+    },
+    "target_weights": {
+      "AAPL": 0.07088272184136866,
+      "MSFT": 0.06636551986847367,
+      "NVDA": 0.06636551986847367,
+      "QCOM": 0.06636551986847367,
+      "GOOGL": 0.06636551986847367,
+      "CMCSA": 0.06636551986847367,
+      "AMZN": 0.06636551986847367,
+      "TSLA": 0.06636551986847367,
+      "BKNG": 0.06636551986847367,
+      "SBUX": 0.06636551986847367,
+      "COST": 0.06636551986847367,
+      "PEP": 0.06636551986847367,
+      "GILD": 0.06636551986847367,
+      "AMGN": 0.06636551986847367,
+      "CSX": 0.06636551986847367
+    },
+    "one_way_turnover": 0.004216055174701999,
+    "estimated_transaction_cost_fraction": 0.000008432110349403999,
+    "signal_counts": {
+      "AAPL": 1,
+      "MSFT": 0,
+      "NVDA": 0,
+      "QCOM": 0,
+      "GOOGL": 0,
+      "CMCSA": 0,
+      "AMZN": 0,
+      "TSLA": 0,
+      "BKNG": 0,
+      "SBUX": 0,
+      "COST": 0,
+      "PEP": 0,
+      "GILD": 0,
+      "AMGN": 0,
+      "CSX": 0
+    },
+    "changes": [
+      {
+        "ticker": "AAPL",
+        "before": 0.06666666666666667,
+        "after": 0.07088272184136866,
+        "change_percentage_points": 0.4216055174701999,
+        "signal": 0.18068807891579988,
+        "explanation": "increase constrained by portfolio limits; aggregated sentiment/importance signal +0.181 from 1 distinct headline(s)"
+      },
+      {
+        "ticker": "MSFT",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "NVDA",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "QCOM",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "GOOGL",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "CMCSA",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "AMZN",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "TSLA",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "BKNG",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "SBUX",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "COST",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "PEP",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "GILD",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "AMGN",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      },
+      {
+        "ticker": "CSX",
+        "before": 0.06666666666666667,
+        "after": 0.06636551986847367,
+        "change_percentage_points": -0.030114679819299994,
+        "signal": 0,
+        "explanation": "decrease constrained by portfolio limits; aggregated sentiment/importance signal +0.000 from 0 distinct headline(s)"
+      }
+    ],
+    "warnings": []
+  },
+  "indexConfig": {
+    "version": "module-a-v1",
+    "tickers": [
+      "AAPL",
+      "MSFT",
+      "NVDA",
+      "QCOM",
+      "GOOGL",
+      "CMCSA",
+      "AMZN",
+      "TSLA",
+      "BKNG",
+      "SBUX",
+      "COST",
+      "PEP",
+      "GILD",
+      "AMGN",
+      "CSX"
+    ],
+    "sector_map": {
+      "AAPL": "Technology",
+      "MSFT": "Technology",
+      "NVDA": "Technology",
+      "QCOM": "Technology",
+      "GOOGL": "Communication Services",
+      "CMCSA": "Communication Services",
+      "AMZN": "Consumer Discretionary",
+      "TSLA": "Consumer Discretionary",
+      "BKNG": "Consumer Discretionary",
+      "SBUX": "Consumer Discretionary",
+      "COST": "Consumer Staples",
+      "PEP": "Consumer Staples",
+      "GILD": "Health Care",
+      "AMGN": "Health Care",
+      "CSX": "Industrials"
+    },
+    "position_deviation_limit": 0.02,
+    "sector_deviation_limit": 0.05,
+    "one_way_turnover_limit": 0.1,
+    "minimum_trade_turnover": 0.001,
+    "signal_tilt_coefficient": 0.025,
+    "news_lookback_days": 7,
+    "signal_half_life_days": 3,
+    "evidence_prior_weight": 0.5,
+    "transaction_cost_bps": 10,
+    "max_signals_per_request": 200,
+    "source_weights": {
+      "financial_news": 1,
+      "social_media": 0.55,
+      "manual": 0.5,
+      "other": 0.3
+    },
+    "event_multipliers": {
+      "Geopolitical": 1.1,
+      "Macroeconomic": 1,
+      "Credit Event": 1.1,
+      "Merger / Acquisition": 1,
+      "Product Launch": 0.9
+    },
+    "execution_rule": "Trade at the close of a scheduled session using only articles dated strictly before that session (UTC).",
+    "backtest_holdout": "Use only Step-2 test-split predicted model outputs; never realized_impact or impact_score_1_10"
+  },
+  "portfolio": {
+    "name": "RiskPulse Synthetic Multi-Asset Portfolio",
+    "portfolio_version": "synthetic-v1",
+    "currency": "USD",
+    "positions": [
+      {
+        "type": "loan",
+        "id": "L01",
+        "name": "Synthetic AAPL corporate term loan",
+        "sector": "Technology",
+        "ticker": "AAPL",
+        "ead_usd": 600000,
+        "pd_12m": 0.0145,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L02",
+        "name": "Synthetic MSFT corporate term loan",
+        "sector": "Technology",
+        "ticker": "MSFT",
+        "ead_usd": 550000,
+        "pd_12m": 0.017,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L03",
+        "name": "Synthetic NVDA corporate term loan",
+        "sector": "Technology",
+        "ticker": "NVDA",
+        "ead_usd": 500000,
+        "pd_12m": 0.0195,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L04",
+        "name": "Synthetic AMZN corporate term loan",
+        "sector": "Consumer Discretionary",
+        "ticker": "AMZN",
+        "ead_usd": 500000,
+        "pd_12m": 0.022,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L05",
+        "name": "Synthetic TSLA corporate term loan",
+        "sector": "Consumer Discretionary",
+        "ticker": "TSLA",
+        "ead_usd": 450000,
+        "pd_12m": 0.0245,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L06",
+        "name": "Synthetic GOOGL corporate term loan",
+        "sector": "Communication Services",
+        "ticker": "GOOGL",
+        "ead_usd": 450000,
+        "pd_12m": 0.027,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L07",
+        "name": "Synthetic GILD corporate term loan",
+        "sector": "Healthcare",
+        "ticker": "GILD",
+        "ead_usd": 400000,
+        "pd_12m": 0.0295,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L08",
+        "name": "Synthetic AMGN corporate term loan",
+        "sector": "Healthcare",
+        "ticker": "AMGN",
+        "ead_usd": 400000,
+        "pd_12m": 0.032,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L09",
+        "name": "Synthetic CSX corporate term loan",
+        "sector": "Industrials",
+        "ticker": "CSX",
+        "ead_usd": 350000,
+        "pd_12m": 0.0345,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L10",
+        "name": "Synthetic COST corporate term loan",
+        "sector": "Consumer Staples",
+        "ticker": "COST",
+        "ead_usd": 300000,
+        "pd_12m": 0.037,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L11",
+        "name": "Synthetic PEP corporate term loan",
+        "sector": "Consumer Staples",
+        "ticker": "PEP",
+        "ead_usd": 250000,
+        "pd_12m": 0.0395,
+        "lgd": 0.45
+      },
+      {
+        "type": "loan",
+        "id": "L12",
+        "name": "Synthetic SBUX corporate term loan",
+        "sector": "Consumer Discretionary",
+        "ticker": "SBUX",
+        "ead_usd": 250000,
+        "pd_12m": 0.042,
+        "lgd": 0.45
+      },
+      {
+        "type": "bond",
+        "id": "B01",
+        "name": "Synthetic AAPL fixed-rate bond",
+        "sector": "Technology",
+        "ticker": "AAPL",
+        "market_value_usd": 500000,
+        "modified_duration": 3.2800000000000002,
+        "spread_duration": 3.08,
+        "convexity": 15
+      },
+      {
+        "type": "bond",
+        "id": "B02",
+        "name": "Synthetic MSFT fixed-rate bond",
+        "sector": "Technology",
+        "ticker": "MSFT",
+        "market_value_usd": 450000,
+        "modified_duration": 3.56,
+        "spread_duration": 3.36,
+        "convexity": 17
+      },
+      {
+        "type": "bond",
+        "id": "B03",
+        "name": "Synthetic NVDA fixed-rate bond",
+        "sector": "Technology",
+        "ticker": "NVDA",
+        "market_value_usd": 400000,
+        "modified_duration": 3.84,
+        "spread_duration": 3.6399999999999997,
+        "convexity": 19
+      },
+      {
+        "type": "bond",
+        "id": "B04",
+        "name": "Synthetic AMZN fixed-rate bond",
+        "sector": "Consumer Discretionary",
+        "ticker": "AMZN",
+        "market_value_usd": 400000,
+        "modified_duration": 4.12,
+        "spread_duration": 3.92,
+        "convexity": 21
+      },
+      {
+        "type": "bond",
+        "id": "B05",
+        "name": "Synthetic TSLA fixed-rate bond",
+        "sector": "Consumer Discretionary",
+        "ticker": "TSLA",
+        "market_value_usd": 350000,
+        "modified_duration": 4.4,
+        "spread_duration": 4.2,
+        "convexity": 23
+      },
+      {
+        "type": "bond",
+        "id": "B06",
+        "name": "Synthetic GOOGL fixed-rate bond",
+        "sector": "Communication Services",
+        "ticker": "GOOGL",
+        "market_value_usd": 350000,
+        "modified_duration": 4.68,
+        "spread_duration": 4.48,
+        "convexity": 25
+      },
+      {
+        "type": "bond",
+        "id": "B07",
+        "name": "Synthetic GILD fixed-rate bond",
+        "sector": "Healthcare",
+        "ticker": "GILD",
+        "market_value_usd": 300000,
+        "modified_duration": 4.96,
+        "spread_duration": 4.76,
+        "convexity": 27
+      },
+      {
+        "type": "bond",
+        "id": "B08",
+        "name": "Synthetic AMGN fixed-rate bond",
+        "sector": "Healthcare",
+        "ticker": "AMGN",
+        "market_value_usd": 300000,
+        "modified_duration": 5.24,
+        "spread_duration": 5.04,
+        "convexity": 29
+      },
+      {
+        "type": "bond",
+        "id": "B09",
+        "name": "Synthetic CSX fixed-rate bond",
+        "sector": "Industrials",
+        "ticker": "CSX",
+        "market_value_usd": 250000,
+        "modified_duration": 5.5200000000000005,
+        "spread_duration": 5.32,
+        "convexity": 31
+      },
+      {
+        "type": "bond",
+        "id": "B10",
+        "name": "Synthetic COST fixed-rate bond",
+        "sector": "Consumer Staples",
+        "ticker": "COST",
+        "market_value_usd": 200000,
+        "modified_duration": 5.800000000000001,
+        "spread_duration": 5.6,
+        "convexity": 33
+      },
+      {
+        "type": "swap",
+        "id": "IRS01",
+        "name": "Synthetic USD interest-rate swap 1",
+        "sector": "Financials",
+        "ticker": null,
+        "notional_usd": 200000,
+        "dv01_usd_per_bp": 45,
+        "side": "pay_fixed"
+      },
+      {
+        "type": "swap",
+        "id": "IRS02",
+        "name": "Synthetic USD interest-rate swap 2",
+        "sector": "Financials",
+        "ticker": null,
+        "notional_usd": 200000,
+        "dv01_usd_per_bp": 36,
+        "side": "receive_fixed"
+      },
+      {
+        "type": "swap",
+        "id": "IRS03",
+        "name": "Synthetic USD interest-rate swap 3",
+        "sector": "Financials",
+        "ticker": null,
+        "notional_usd": 200000,
+        "dv01_usd_per_bp": 30,
+        "side": "pay_fixed"
+      },
+      {
+        "type": "swap",
+        "id": "IRS04",
+        "name": "Synthetic USD interest-rate swap 4",
+        "sector": "Financials",
+        "ticker": null,
+        "notional_usd": 200000,
+        "dv01_usd_per_bp": 24,
+        "side": "receive_fixed"
+      },
+      {
+        "type": "option",
+        "id": "OPT01",
+        "name": "Synthetic AAPL European put",
+        "sector": "Technology",
+        "ticker": "AAPL",
+        "underlying_price_usd": 100,
+        "strike_usd": 110,
+        "time_years": 0.75,
+        "implied_volatility": 0.35,
+        "risk_free_rate": 0.04,
+        "dividend_yield": 0,
+        "kind": "put",
+        "side": "long",
+        "contracts": 20,
+        "contract_multiplier": 100
+      },
+      {
+        "type": "option",
+        "id": "OPT02",
+        "name": "Synthetic MSFT European call",
+        "sector": "Technology",
+        "ticker": "MSFT",
+        "underlying_price_usd": 200,
+        "strike_usd": 220,
+        "time_years": 0.75,
+        "implied_volatility": 0.35,
+        "risk_free_rate": 0.04,
+        "dividend_yield": 0,
+        "kind": "call",
+        "side": "long",
+        "contracts": 10,
+        "contract_multiplier": 100
+      },
+      {
+        "type": "option",
+        "id": "OPT03",
+        "name": "Synthetic NVDA European put",
+        "sector": "Technology",
+        "ticker": "NVDA",
+        "underlying_price_usd": 150,
+        "strike_usd": 145,
+        "time_years": 0.75,
+        "implied_volatility": 0.35,
+        "risk_free_rate": 0.04,
+        "dividend_yield": 0,
+        "kind": "put",
+        "side": "short",
+        "contracts": 10,
+        "contract_multiplier": 100
+      },
+      {
+        "type": "option",
+        "id": "OPT04",
+        "name": "Synthetic TSLA European call",
+        "sector": "Consumer Discretionary",
+        "ticker": "TSLA",
+        "underlying_price_usd": 75,
+        "strike_usd": 80,
+        "time_years": 0.75,
+        "implied_volatility": 0.35,
+        "risk_free_rate": 0.04,
+        "dividend_yield": 0,
+        "kind": "call",
+        "side": "short",
+        "contracts": 20,
+        "contract_multiplier": 100
+      }
+    ]
+  },
+  "scenarioLibrary": {
+    "Credit Event": {
+      "mild": {
+        "name": "Credit Event — Mild adverse hypothetical scenario",
+        "event_class": "Credit Event",
+        "severity": "mild",
+        "shocks": {
+          "rate_bps": 12.5,
+          "spread_bps": 32.5,
+          "equity_pct": -2,
+          "volatility_points": 0.025,
+          "pd_multiplier": 1.075
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 75,
+            "equity_pct": -5,
+            "volatility_points": 0.04,
+            "pd_multiplier": 1.5
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "moderate": {
+        "name": "Credit Event — Moderate adverse hypothetical scenario",
+        "event_class": "Credit Event",
+        "severity": "moderate",
+        "shocks": {
+          "rate_bps": 25,
+          "spread_bps": 65,
+          "equity_pct": -4,
+          "volatility_points": 0.05,
+          "pd_multiplier": 1.15
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 150,
+            "equity_pct": -10,
+            "volatility_points": 0.08,
+            "pd_multiplier": 2
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "severe": {
+        "name": "Credit Event — Severe adverse hypothetical scenario",
+        "event_class": "Credit Event",
+        "severity": "severe",
+        "shocks": {
+          "rate_bps": 50,
+          "spread_bps": 130,
+          "equity_pct": -8,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.2999999999999998
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 300,
+            "equity_pct": -20,
+            "volatility_points": 0.16,
+            "pd_multiplier": 3
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      }
+    },
+    "Macroeconomic": {
+      "mild": {
+        "name": "Macroeconomic — Mild adverse hypothetical scenario",
+        "event_class": "Macroeconomic",
+        "severity": "mild",
+        "shocks": {
+          "rate_bps": 50,
+          "spread_bps": 50,
+          "equity_pct": -6,
+          "volatility_points": 0.04,
+          "pd_multiplier": 1.3
+        },
+        "issuer_shocks": {},
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "moderate": {
+        "name": "Macroeconomic — Moderate adverse hypothetical scenario",
+        "event_class": "Macroeconomic",
+        "severity": "moderate",
+        "shocks": {
+          "rate_bps": 100,
+          "spread_bps": 100,
+          "equity_pct": -12,
+          "volatility_points": 0.08,
+          "pd_multiplier": 1.6
+        },
+        "issuer_shocks": {},
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "severe": {
+        "name": "Macroeconomic — Severe adverse hypothetical scenario",
+        "event_class": "Macroeconomic",
+        "severity": "severe",
+        "shocks": {
+          "rate_bps": 200,
+          "spread_bps": 200,
+          "equity_pct": -24,
+          "volatility_points": 0.16,
+          "pd_multiplier": 2.2
+        },
+        "issuer_shocks": {},
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      }
+    },
+    "Geopolitical": {
+      "mild": {
+        "name": "Geopolitical — Mild adverse hypothetical scenario",
+        "event_class": "Geopolitical",
+        "severity": "mild",
+        "shocks": {
+          "rate_bps": -12.5,
+          "spread_bps": 60,
+          "equity_pct": -7.5,
+          "volatility_points": 0.05,
+          "pd_multiplier": 1.25
+        },
+        "issuer_shocks": {},
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "moderate": {
+        "name": "Geopolitical — Moderate adverse hypothetical scenario",
+        "event_class": "Geopolitical",
+        "severity": "moderate",
+        "shocks": {
+          "rate_bps": -25,
+          "spread_bps": 120,
+          "equity_pct": -15,
+          "volatility_points": 0.1,
+          "pd_multiplier": 1.5
+        },
+        "issuer_shocks": {},
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "severe": {
+        "name": "Geopolitical — Severe adverse hypothetical scenario",
+        "event_class": "Geopolitical",
+        "severity": "severe",
+        "shocks": {
+          "rate_bps": -50,
+          "spread_bps": 240,
+          "equity_pct": -30,
+          "volatility_points": 0.2,
+          "pd_multiplier": 2
+        },
+        "issuer_shocks": {},
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      }
+    },
+    "Merger / Acquisition": {
+      "mild": {
+        "name": "Merger / Acquisition — Mild adverse hypothetical scenario",
+        "event_class": "Merger / Acquisition",
+        "severity": "mild",
+        "shocks": {
+          "rate_bps": 0,
+          "spread_bps": 0,
+          "equity_pct": 0,
+          "volatility_points": 0,
+          "pd_multiplier": 1
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 40,
+            "equity_pct": -4,
+            "volatility_points": 0.02,
+            "pd_multiplier": 1.125
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "moderate": {
+        "name": "Merger / Acquisition — Moderate adverse hypothetical scenario",
+        "event_class": "Merger / Acquisition",
+        "severity": "moderate",
+        "shocks": {
+          "rate_bps": 0,
+          "spread_bps": 0,
+          "equity_pct": 0,
+          "volatility_points": 0,
+          "pd_multiplier": 1
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 80,
+            "equity_pct": -8,
+            "volatility_points": 0.04,
+            "pd_multiplier": 1.25
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "severe": {
+        "name": "Merger / Acquisition — Severe adverse hypothetical scenario",
+        "event_class": "Merger / Acquisition",
+        "severity": "severe",
+        "shocks": {
+          "rate_bps": 0,
+          "spread_bps": 0,
+          "equity_pct": 0,
+          "volatility_points": 0,
+          "pd_multiplier": 1
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 160,
+            "equity_pct": -16,
+            "volatility_points": 0.08,
+            "pd_multiplier": 1.5
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      }
+    },
+    "Product Launch": {
+      "mild": {
+        "name": "Product Launch — Mild adverse hypothetical scenario",
+        "event_class": "Product Launch",
+        "severity": "mild",
+        "shocks": {
+          "rate_bps": 0,
+          "spread_bps": 0,
+          "equity_pct": 0,
+          "volatility_points": 0,
+          "pd_multiplier": 1
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 15,
+            "equity_pct": -2.5,
+            "volatility_points": 0.015,
+            "pd_multiplier": 1.05
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "moderate": {
+        "name": "Product Launch — Moderate adverse hypothetical scenario",
+        "event_class": "Product Launch",
+        "severity": "moderate",
+        "shocks": {
+          "rate_bps": 0,
+          "spread_bps": 0,
+          "equity_pct": 0,
+          "volatility_points": 0,
+          "pd_multiplier": 1
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 30,
+            "equity_pct": -5,
+            "volatility_points": 0.03,
+            "pd_multiplier": 1.1
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      },
+      "severe": {
+        "name": "Product Launch — Severe adverse hypothetical scenario",
+        "event_class": "Product Launch",
+        "severity": "severe",
+        "shocks": {
+          "rate_bps": 0,
+          "spread_bps": 0,
+          "equity_pct": 0,
+          "volatility_points": 0,
+          "pd_multiplier": 1
+        },
+        "issuer_shocks": {
+          "__ISSUER__": {
+            "rate_bps": 0,
+            "spread_bps": 60,
+            "equity_pct": -10,
+            "volatility_points": 0.06,
+            "pd_multiplier": 1.2000000000000002
+          }
+        },
+        "sector_shocks": {},
+        "assumption_source": "Synthetic scenario-library research assumptions; event class and impact tier do not forecast shocks."
+      }
+    }
+  }
+}
