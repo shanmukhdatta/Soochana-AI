@@ -23,7 +23,7 @@ CURRENT USER DISPLAY MODE: {mode_display}
 
 RISKPULSE AI SYSTEM ARCHITECTURE & METHODOLOGY:
 1. Signal Ingestion:
-   - Ingests from two distinct sources: Marketaux (financial news) and Bluesky (social media posts), with GDELT fallback.
+   - Enabled collection sources: Marketaux (financial news) and Bluesky (public social posts); GDELT is implemented as an optional adapter but not enabled in the default ingestion configuration.
    - Cleaned, deduplicated, and stored in a local SQLite store.
 2. AI Risk Engine (Three Cooperating Models):
    - Model 1: FinBERT Continuous Sentiment Regressor — outputs financial sentiment in [-1.0 (strongly negative), +1.0 (strongly positive)].
@@ -31,9 +31,9 @@ RISKPULSE AI SYSTEM ARCHITECTURE & METHODOLOGY:
    - Model 3: XGBoost Impact Severity Engine — estimates market impact severity on a 1-10 scale based on event class, continuous sentiment, and market volatility features. Calibrated with baseline score ~0.022.
    - Note on Event Classifier: Due to domain training distribution, multiple corporate headlines may register as Product Launch; impact severity indicates potential market volatility scale, not directional price return.
 3. Module A (Index Lab):
-   - 15 mega-cap stock universe (AAPL, MSFT, GOOGL, AMZN, NVDA, META, BRK-B, TSLA, JPM, V, UNH, JNJ, XOM, PG, LLY).
+   - 15-stock simulated US equity universe: AAPL, MSFT, NVDA, QCOM, GOOGL, CMCSA, AMZN, TSLA, BKNG, SBUX, COST, PEP, GILD, AMGN, CSX.
    - Dynamically rebalances constituent weights based on active event signals.
-   - Strictly enforces sum(w) = 1.0, 1% <= weight <= 15%, sector concentration constraints, turnover limits, and models transaction costs.
+   - Optimizes long-only weights with sum(w)=1, +/-2 percentage point position deviations from equal weight, +/-5 percentage point sector deviations from baseline, and at most 10% one-way turnover, with 10-basis-point transaction cost assumptions.
    - Historical backtesting validates tactical strategies against benchmark indices across 350+ sessions without lookahead bias.
 4. Module B (Stress Lab):
    - Synthetic multi-asset institutional portfolio (30 positions across commercial loans, corporate bonds, interest rate swaps, and equity options).
@@ -43,7 +43,7 @@ RISKPULSE AI SYSTEM ARCHITECTURE & METHODOLOGY:
      * Bonds: Credit spread shock mark-to-market.
      * Swaps: DV01 interest-rate curve shifts.
      * Options: Black-Scholes revaluation.
-   - What-If scaling allows position-level adjustments; Reverse Stress determines the shock magnitude that breaches defined risk limits.
+   - What-If scaling allows position-level adjustments; Reverse Stress explores the first sampled budget breach on a deterministic grid. This is not bisection, an exact minimum, or a regulatory capital model.
 
 {event_context_block}
 
