@@ -49,7 +49,7 @@ pytest -q
 - **`tests/test_module_a_backtest.py`** (8 tests): Walk-forward backtester on 357 historical market sessions, verification against same-day lookahead leakage.
 - **`tests/test_module_b_api.py` & `test_module_b_portfolio.py`** (16 tests): 30-position synthetic institution portfolio (12 loans, 10 bonds, 4 swaps, 4 options), data integrity, scenario schema verification.
 - **`tests/test_module_b_pricing.py` & `test_module_b_all_scenarios.py`** (10 tests): Bond MTM (modified duration + rate convexity), loan ECL (incremental 12m), swaps signed DV01, options full European Black-Scholes repricing.
-- **`tests/test_module_b_reverse.py`** (6 tests): Reverse stress test bisection root-finding under capital breach constraints.
+- **`tests/test_module_b_reverse.py`** (6 tests): Reverse stress testing on a deterministic sampled grid under illustrative loss-budget constraints.
 - **`tests/test_assistant.py`** (6 tests): Bujji assistant query routing, financial terminology explanation, rate limiting, and Groq fallback modes.
 
 ---
@@ -193,7 +193,7 @@ Executed directly against live running FastAPI (`http://127.0.0.1:8000`) and Vit
   - Position deviation from baseline: $|w_i - w_{i, \text{base}}| \le 0.02$ ($\pm 2$ percentage points)
   - Sector deviation from baseline: $|\sum_{i \in \text{Sector}_k} w_i - \sum_{i \in \text{Sector}_k} w_{i, \text{base}}| \le 0.05$ ($\pm 5$ percentage points)
   - Turnover budget: $\frac{1}{2}\sum |w_i - w_{i, \text{base}}| \le 0.10$ ($10\%$ maximum one-way turnover)
-  - Transaction cost: 10 basis points ($0.0010 \times \text{turnover}$)
+  - Transaction cost: 10 basis points (10 bp per absolute traded dollar, equivalent to $0.0020 \times$ one-way turnover)
 
 ### Module B: Multi-Asset Stress Valuation Engines
 - **Portfolio Composition:** 30 positions across 4 asset classes:
@@ -211,6 +211,6 @@ Executed directly against live running FastAPI (`http://127.0.0.1:8000`) and Vit
 ## 7. Known Limitations and Boundary Conditions
 
 1. **Provider Ingestion Limits:** Live ingestion depends on external rate limits from Marketaux (free tier quota) and Bluesky network connectivity. When offline or unconfigured, the system automatically runs from the local SQLite repository (`data/ingestion/riskpulse.db`) containing 29 pre-collected signals.
-2. **Model Weight Size:** Large transformer model weights (`model.safetensors`, ~438 MB each) cannot be tracked directly in Git due to the GitHub 100 MB per-file upload limit. Tokenizer configs, model architectures, and XGBoost models are committed, and the backend supports running with local downloaded weights or in mock testing mode (`SKIP_MODEL_LOAD=true`).
+2. **Model Weight Size:** Large transformer model weights (`model.safetensors`, ~438 MB each) cannot be tracked directly in Git due to the GitHub 100 MB per-file upload limit. Tokenizer configs, model architectures, and XGBoost models are committed, and the backend supports real inference after supplying authentic checkpoints. With `SKIP_MODEL_LOAD=true`, model inference remains unavailable and `/health` returns HTTP 503; no mock model predictions are generated.
 3. **Synthetic Portfolio Scope:** Module B operates on a realistic, calibrated 30-position synthetic portfolio designed for demonstration and hackathon review. It is not an enterprise core banking ledger.
 4. **Non-Advisory Disclaimer:** Outputs are quantitative risk signals designed for risk intelligence research. They do not constitute personalized investment advice or automatic execution instructions.
