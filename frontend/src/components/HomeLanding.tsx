@@ -49,6 +49,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
   const [activeStep, setActiveStep] = useState<number>(1);
   const [liveAnalyzing, setLiveAnalyzing] = useState(false);
   const [liveResult, setLiveResult] = useState<{ sentiment: number; eventClass: string; impact: number } | null>(null);
+  const [liveError, setLiveError] = useState('');
 
   // Accordion state
   const [openFaq, setOpenFaq] = useState<string | null>(null);
@@ -59,6 +60,8 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
 
   const handleRunLiveInference = async () => {
     setLiveAnalyzing(true);
+    setLiveError('');
+    setLiveResult(null);
     try {
       const text = selectedExample === 'aapl'
         ? "Apple announces next-generation Silicon processor lineup and expands enterprise hardware subscription ecosystem."
@@ -77,12 +80,8 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
       });
       setActiveStep(3);
     } catch {
-      // Fallback illustrative numbers if backend is offline
-      setLiveResult(selectedExample === 'aapl'
-        ? { sentiment: 0.61, eventClass: 'Product Launch', impact: 7 }
-        : { sentiment: 0.48, eventClass: 'Product Launch', impact: 7 }
-      );
-      setActiveStep(3);
+      setLiveError('Actual AI model inference is unavailable. Start the backend with the authentic trained checkpoints; no prediction has been produced.');
+      setActiveStep(2);
     } finally {
       setLiveAnalyzing(false);
     }
@@ -1096,6 +1095,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
               </div>
             )}
 
+            {liveError && <p role="alert" style={{color:'#a63721',fontWeight:600}}>{liveError}</p>}
             {activeStep === 2 && (
               <div className="stage-content animate-fade">
                 <div className="stage-header">
@@ -1106,7 +1106,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
                   <div className="nlp-res-card">
                     <span className="nlp-label">FinBERT Continuous Sentiment</span>
                     <strong className="nlp-val text-pos">
-                      {liveResult ? `${liveResult.sentiment >= 0 ? '+' : ''}${liveResult.sentiment.toFixed(2)}` : (selectedExample === 'aapl' ? '+0.61' : '+0.48')}
+                      {liveResult ? `${liveResult.sentiment >= 0 ? '+' : ''}${liveResult.sentiment.toFixed(2)}` : 'Unavailable'}
                     </strong>
                     <p>Continuous scale from −1.0 (strongly negative) to +1.0 (strongly positive).</p>
                   </div>
@@ -1114,7 +1114,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
                   <div className="nlp-res-card">
                     <span className="nlp-label">FinBERT Event Classification</span>
                     <strong className="nlp-val">
-                      {liveResult ? liveResult.eventClass : (selectedExample === 'aapl' ? 'Product Launch' : 'Product Launch')}
+                      {liveResult ? liveResult.eventClass : 'Unavailable'}
                     </strong>
                     <p>Categorized from 5 supported classes with full probability vector.</p>
                   </div>
@@ -1136,7 +1136,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
                 <div className="impact-display-card">
                   <div className="impact-score-big">
                     <span>Impact Severity Rating:</span>
-                    <strong>{liveResult ? `${liveResult.impact} / 10` : (selectedExample === 'aapl' ? '7 / 10' : '7 / 10')}</strong>
+                    <strong>{liveResult ? `${liveResult.impact} / 10` : 'Unavailable'}</strong>
                   </div>
                   <p>
                     The gradient-boosted engine evaluates the sentiment score, class probabilities, and pre-event
