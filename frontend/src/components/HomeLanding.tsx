@@ -190,7 +190,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
 
             {/* Connecting data flow lines with live animated moving packets */}
             <div className="hero-flow-conduit" aria-hidden="true">
-              <svg className="flow-svg" viewBox="0 0 200 320" fill="none">
+              <svg className="flow-svg" viewBox="0 0 200 320" fill="none" preserveAspectRatio="none">
                 <path d="M 10 40 C 90 40, 110 160, 190 160" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line" />
                 <path d="M 10 120 C 90 120, 110 160, 190 160" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line delay-1" />
                 <path d="M 10 200 C 90 200, 110 160, 190 160" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line delay-2" />
@@ -229,7 +229,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
 
             {/* Downstream branches with live animated packets */}
             <div className="hero-flow-conduit" aria-hidden="true">
-              <svg className="flow-svg" viewBox="0 0 200 320" fill="none">
+              <svg className="flow-svg" viewBox="0 0 200 320" fill="none" preserveAspectRatio="none">
                 <path d="M 10 160 C 90 160, 110 80, 190 80" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line" />
                 <path d="M 10 160 C 90 160, 110 240, 190 240" stroke="#d5d8dc" strokeWidth="2" strokeDasharray="4 4" className="flow-line delay-2" />
                 <circle r="4" fill="#111" opacity="0.85">
