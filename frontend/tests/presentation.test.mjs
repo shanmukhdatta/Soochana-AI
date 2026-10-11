@@ -7,7 +7,7 @@ test('advanced actions remain in Analyst View',()=>{for(const s of ['Run holdout
 test('quick mode simplifies but preserves analyst stress controls',()=>{assert.ok(app.includes("mode==='analyst'&&<section className=\"panel mechanisms\""));assert.ok(app.includes("mode==='analyst'&&<section className=\"panel additional-stress\""));assert.ok(css.includes('.mode-quick .shock-fields{display:none}'));assert.ok(css.includes('.mode-quick .probabilities{display:none}'));});
 test('bujji financial assistant is mounted with welcome message, starters and disclaimer',()=>{
   assert.ok(app.includes('function BujjiAssistant('));
-  assert.ok(app.includes("Hi! I'm Bujji, your RiskPulse AI guide"));
+  assert.ok(app.includes("Hi! I'm Bujji, your Soochana AI guide"));
   assert.ok(app.includes('What is Expected Credit Loss?'));
   assert.ok(app.includes('AI-generated explanations may contain errors'));
   assert.ok(css.includes('.bujji-launcher'));

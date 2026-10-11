@@ -1,4 +1,4 @@
-# RiskPulse AI — S&P Global & CRISIL Campus Hackathon 2026
+# Soochana AI — S&P Global & CRISIL Campus Hackathon 2026
 
 **Project:** Explainable Financial Risk Intelligence  
 **Candidate Name:** Shanmukh Datta  
@@ -8,9 +8,9 @@
 **Slide Deck Link:** [Repository PDF (docs/Presentation_.pdf)](docs/Presentation_.pdf) · [Google Drive Link](https://drive.google.com/file/d/1ySZRghGGWxB0SQZsvHdQ40yYgSAaQkuJ/view?usp=sharing)  
 **Live Demo Site Link:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
 
-**Repository:** https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon
+**Repository:** https://github.com/shanmukhdatta/Soochana-AI
 
-RiskPulse AI is an academic prototype for financial event intelligence, constraint-aware index rebalancing, and synthetic multi-asset stress analysis. It is not an investment-advice product or a regulatory risk system.
+Soochana AI is an academic prototype for financial event intelligence, constraint-aware index rebalancing, and synthetic multi-asset stress analysis. It is not an investment-advice product or a regulatory risk system.
 
 ---
 
@@ -18,7 +18,7 @@ RiskPulse AI is an academic prototype for financial event intelligence, constrai
 
 **The problem.** Financial analysts must interpret high volumes of financial news, company announcements, and public market discussion. These unstructured sources can be difficult to connect consistently with quantitative market context and portfolio-level risk analysis. Price-only dashboards do not explain the underlying event narrative, while qualitative review can be time-consuming.
 
-**Our approach.** RiskPulse AI integrates optional live collection from **Marketaux** financial news and **Bluesky** public posts with a three-stage analytics pipeline: (1) a fine-tuned FinBERT-style regressor produces continuous financial sentiment in `[-1, 1]`; (2) a five-class event classifier assigns probabilities to **Geopolitical, Macroeconomic, Credit Event, Merger / Acquisition,** and **Product Launch**; and (3) an **XGBoost** model combines those outputs with historical market features to estimate an impact *severity decile* (1–10). Event source metadata and results are represented in structured records, and the React dashboard exposes both Quick View and Analyst View.
+**Our approach.** Soochana AI integrates optional live collection from **Marketaux** financial news and **Bluesky** public posts with a three-stage analytics pipeline: (1) a fine-tuned FinBERT-style regressor produces continuous financial sentiment in `[-1, 1]`; (2) a five-class event classifier assigns probabilities to **Geopolitical, Macroeconomic, Credit Event, Merger / Acquisition,** and **Product Launch**; and (3) an **XGBoost** model combines those outputs with historical market features to estimate an impact *severity decile* (1–10). Event source metadata and results are represented in structured records, and the React dashboard exposes both Quick View and Analyst View.
 
 **Business applications.** **Module A** converts event signals into proposed rebalancing weights for a simulated **15-stock index**, with position, sector, and turnover constraints and a historical walk-forward backtest. **Module B** evaluates a synthetic **30-position portfolio** of loans, bonds, swaps, and options under hypothetical shocks; it separates instantaneous trading-book mark-to-market (MTM) effects from incremental **12-month expected credit loss (ECL)** for loans. A contextual assistant, **Bujji**, can explain the workflow when its optional Groq API is configured. The prototype supports analyst exploration rather than autonomous trades, measured early-warning superiority, or certified capital calculations.
 
@@ -31,7 +31,7 @@ RiskPulse AI is an academic prototype for financial event intelligence, constrai
 
 ## 2. Architecture & Tech Stack
 
-![RiskPulse AI system architecture](docs/architecture.png)
+![Soochana AI system architecture](docs/architecture.png)
 
 ```text
 Marketaux news / Bluesky public posts     Historical prices / features
@@ -240,7 +240,7 @@ These figures are taken from files already committed in the repository. They are
 
 ### Financial-domain relevance
 
-**Risk triage:** Combining event category, sentiment, estimated impact magnitude and source provenance can help analysts systematically organize financial narratives for further investigation. RiskPulse does not establish that its alerts precede or outperform real market reactions.
+**Risk triage:** Combining event category, sentiment, estimated impact magnitude and source provenance can help analysts systematically organize financial narratives for further investigation. Soochana AI does not establish that its alerts precede or outperform real market reactions.
 
 **Constraint-aware allocation analysis:** The index lab demonstrates how qualitative event scores can be translated into proposed weights while enforcing specified sector, constituent and trading-cost constraints. It does not execute orders or certify regulatory compliance.
 
@@ -268,9 +268,6 @@ These figures are taken from files already committed in the repository. They are
 - [System architecture](docs/architecture.png)
 - [Quantitative methodology](docs/methodology.md)
 - [Recorded validation evidence](docs/validation.md)
-- [Backend architecture and sub-modules](app/README.md)
-- [Module A: Index Lab documentation](app/module_a/README.md)
-- [Module B: Stress Lab documentation](app/module_b/README.md)
 - [Frontend instructions](frontend/README.md)
 - [Training source instructions](training/README.md)
 - [MIT license and third-party notices](LICENSE)

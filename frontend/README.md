@@ -1,8 +1,8 @@
-# RiskPulse AI — Signal Atlas React Dashboard
+# Soochana AI — Signal Atlas React Dashboard
 
-**RiskPulse AI Dashboard** is a clean, modern, white financial risk intelligence workspace built with Vite, React 18, and TypeScript. It features a dual-mode interface designed for both executive screening (**Quick View**) and quantitative audit (**Analyst View**), as well as the **Bujji Financial AI Assistant**.
+**Soochana AI Dashboard** is a clean, modern, white financial risk intelligence workspace built with Vite, React 18, and TypeScript. It features a dual-mode interface designed for both executive screening (**Quick View**) and quantitative audit (**Analyst View**), as well as the **Bujji Financial AI Assistant**.
 
-**Scope:** Dedicated frontend client communicating with the RiskPulse AI FastAPI backend. It does not replace the backend, retrain machine learning models, ingest external providers directly in the browser, or execute live exchange transactions.
+**Scope:** Dedicated frontend client communicating with the Soochana AI FastAPI backend. It does not replace the backend, retrain machine learning models, ingest external providers directly in the browser, or execute live exchange transactions.
 
 ---
 

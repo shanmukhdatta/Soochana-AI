@@ -99,7 +99,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
         <div className="landing-nav-inner">
           <div className="landing-brand">
             <Activity className="landing-brand-icon" size={24} />
-            <span className="landing-brand-text">RiskPulse <strong>AI</strong></span>
+            <span className="landing-brand-text">Soochana <strong>AI</strong></span>
             <span className="deck-live-pill"><span className="pulse-dot-green" /> STAGE OVERVIEW</span>
           </div>
 
@@ -116,7 +116,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
               type="button"
               className="landing-btn-primary"
               onClick={onStart}
-              aria-label="Open RiskPulse AI Dashboard"
+              aria-label="Open Soochana AI Dashboard"
             >
               <span>Open Dashboard</span>
               <ArrowUpRight size={16} />
@@ -141,7 +141,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
           </h1>
 
           <p className="landing-hero-subtitle">
-            RiskPulse AI transforms financial news and public market discussions into explainable
+            Soochana AI transforms financial news and public market discussions into explainable
             AI signals for portfolio rebalancing and stress testing.
           </p>
 
@@ -217,7 +217,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
                 <div className="engine-icon-wrap">
                   <BrainCircuit size={28} />
                 </div>
-                <h3>RiskPulse AI Engine</h3>
+                <h3>Soochana AI Engine</h3>
                 <p>Neural NLP &amp; Gradient-Boosted Impact</p>
                 <div className="engine-specs">
                   <span>FinBERT Sentiment</span>
@@ -281,7 +281,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
           </p>
 
           <p className="section-sublead">
-            RiskPulse AI converts these narratives into structured, interpretable model outputs
+            Soochana AI converts these narratives into structured, interpretable model outputs
             that can support downstream portfolio analysis.
           </p>
 
@@ -599,7 +599,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
           </h2>
 
           <p className="section-lead">
-            RiskPulse AI goes beyond interpreting financial information. Its structured signals can
+            Soochana AI goes beyond interpreting financial information. Its structured signals can
             inform two separate portfolio research workflows.
           </p>
 
@@ -858,7 +858,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
 
           <p className="section-lead">
             Financial decision-makers and quantitative modelers have fundamentally different objectives.
-            RiskPulse AI provides two tailored interface modes running over the exact same live pipeline and shared state.
+            Soochana AI provides two tailored interface modes running over the exact same live pipeline and shared state.
           </p>
 
           <p className="section-sublead">
@@ -1243,7 +1243,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
               className="landing-btn-primary btn-large"
               onClick={onStart}
             >
-              <span>Launch RiskPulse Dashboard</span>
+              <span>Launch Soochana AI Dashboard</span>
               <ArrowRight size={18} />
             </button>
             <a href="#ai-engine" className="landing-link-subtle">
@@ -1287,7 +1287,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
         <div className="landing-footer-inner">
           <div className="footer-brand">
             <Activity size={20} />
-            <span>RiskPulse <strong>AI</strong></span>
+            <span>Soochana <strong>AI</strong></span>
           </div>
           <div className="footer-links">
             <a href="#overview">Overview</a>
@@ -1320,7 +1320,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
                 <ExternalLink size={12} />
               </a>
               <a
-                href="https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon"
+                href="https://github.com/shanmukhdatta/Soochana-AI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-repo-link"
@@ -1333,7 +1333,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
 
           <div className="footer-disclaimer">
             <p>
-              RiskPulse AI · Financial risk research and explainable intelligence prototype.
+              Soochana AI · Financial risk research and explainable intelligence prototype.
               Public information and synthetic portfolios only. No brokerage trading, price guarantees,
               or investment advice.
             </p>

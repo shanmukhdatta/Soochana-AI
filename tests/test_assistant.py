@@ -15,7 +15,7 @@ def client():
 def test_assistant_chat_no_api_key(client):
     """When GROQ_API_KEY is not set, returns unavailable status rather than failing."""
     with patch.dict("os.environ", {"GROQ_API_KEY": ""}):
-        res = client.post("/assistant/chat", json={"message": "What is RiskPulse AI?"})
+        res = client.post("/assistant/chat", json={"message": "What is Soochana AI?"})
         assert res.status_code == 200
         data = res.json()
         assert data["status"] == "unavailable"
@@ -35,7 +35,7 @@ def test_assistant_chat_mocked_success(client):
             {
                 "message": {
                     "role": "assistant",
-                    "content": "RiskPulse AI is an institutional research platform combining FinBERT and XGBoost.",
+                    "content": "Soochana AI is an institutional research platform combining FinBERT and XGBoost.",
                 }
             }
         ]
@@ -48,12 +48,12 @@ def test_assistant_chat_mocked_success(client):
             mock_post.return_value = mock_resp
             res = client.post(
                 "/assistant/chat",
-                json={"message": "Explain RiskPulse AI", "mode": "quick", "history": []},
+                json={"message": "Explain Soochana AI", "mode": "quick", "history": []},
             )
             assert res.status_code == 200
             data = res.json()
             assert data["status"] == "ok"
-            assert "RiskPulse AI" in data["reply"]
+            assert "Soochana AI" in data["reply"]
             assert data["mode"] == "quick"
             assert "AI-generated explanations" in data["disclaimer"]
 

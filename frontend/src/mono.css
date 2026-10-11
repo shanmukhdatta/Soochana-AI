@@ -1,4 +1,4 @@
-/* RiskPulse AI · Editorial Monochrome v2. All functional modules remain backed by the original API client. */
+/* Soochana AI · Editorial Monochrome v2. All functional modules remain backed by the original API client. */
 :root{font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;color-scheme:light;color:#121416;background:#fff;--bg:#ffffff;--nav:#ffffff;--panel:#ffffff;--raised:#f7f8f8;--hover:#f1f3f4;--line:#e5e7e9;--text:#111315;--sub:#5b636b;--muted:#69737c;--iris:#151719;--lav:#111315;--amber:#635a49;--blue:#4c5660;--rose:#7c5555;--green:#216a45;line-height:1.45;font-size:15px}
 html{background:#fff;color-scheme:light}body{background:#fff;color:#151719;color-scheme:light}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #151719;outline-offset:3px}
 select,.mono-app select,.form-label select{color-scheme:light!important;background:#ffffff!important;background-color:#ffffff!important;color:#111315!important;border:1px solid #dce0e1!important;border-radius:8px!important;outline:none!important;outline-offset:0!important}
@@ -52,7 +52,7 @@ select option,.mono-app select option,.form-label select option,.compact-select 
 @media(max-width:540px){.bujji-panel{right:10px;bottom:76px;width:calc(100vw - 20px);max-height:72vh}.bujji-launcher{right:16px;bottom:16px;width:48px;height:48px}}
 
 /* ==========================================================================
-   RISKPULSE AI — ANIMATED MINIMALIST LANDING STYLES (APPLE EDITORIAL AESTHETIC)
+   SOOCHANA AI — ANIMATED MINIMALIST LANDING STYLES (APPLE EDITORIAL AESTHETIC)
    ========================================================================== */
 .landing-root{background:#fff;color:#111;font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.55;overflow-x:hidden}
 .landing-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #e7e7e7}

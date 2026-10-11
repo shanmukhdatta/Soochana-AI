@@ -38,11 +38,11 @@ function Shell({page,onPage,mode,onMode,children,summary,loading,refresh,selecte
  const last=[...(summary?.recent_collection_runs??[])].sort((a,b)=>b.started_at.localeCompare(a.started_at))[0];
  const tabs:Array<[Page,string]>=[['events','AI Signals'],['moduleA','Index Lab'],['moduleB','Stress Lab']];
  return <div className={`mono-app mode-${mode}`} data-mode={mode}>
-  <header className="mono-header"><button className="mono-brand mono-brand-button" onClick={()=>onPage('home')} aria-label="Go to introduction"><Activity size={25}/><span>RiskPulse <b>AI</b></span></button><nav className="mono-topnav" aria-label="Main navigation"><button onClick={()=>onPage('home')}>Home</button><button className="active" onClick={()=>onPage('events')}>Dashboard</button></nav><div className="mono-header-right"><span className="mono-source-status" title="This is last recorded collection time, not proof that polling is currently active">{last?`Last collection ${asDate(last.started_at)}`:'Collection time unknown'}</span><button className="mono-refresh" onClick={refresh} disabled={loading} aria-label="Refresh signals"><RefreshCw size={17} className={loading?'spin':''}/></button><div className="mode-toggle" role="group" aria-label="Display mode"><button aria-pressed={mode==='quick'} className={mode==='quick'?'selected':''} onClick={()=>onMode('quick')}>Quick View</button><button aria-pressed={mode==='analyst'} className={mode==='analyst'?'selected':''} onClick={()=>onMode('analyst')}>Analyst View</button></div></div></header>
+  <header className="mono-header"><button className="mono-brand mono-brand-button" onClick={()=>onPage('home')} aria-label="Go to introduction"><Activity size={25}/><span>Soochana <b>AI</b></span></button><nav className="mono-topnav" aria-label="Main navigation"><button onClick={()=>onPage('home')}>Home</button><button className="active" onClick={()=>onPage('events')}>Dashboard</button></nav><div className="mono-header-right"><span className="mono-source-status" title="This is last recorded collection time, not proof that polling is currently active">{last?`Last collection ${asDate(last.started_at)}`:'Collection time unknown'}</span><button className="mono-refresh" onClick={refresh} disabled={loading} aria-label="Refresh signals"><RefreshCw size={17} className={loading?'spin':''}/></button><div className="mode-toggle" role="group" aria-label="Display mode"><button aria-pressed={mode==='quick'} className={mode==='quick'?'selected':''} onClick={()=>onMode('quick')}>Quick View</button><button aria-pressed={mode==='analyst'} className={mode==='analyst'?'selected':''} onClick={()=>onMode('analyst')}>Analyst View</button></div></div></header>
   <main className="mono-main"><div className="mono-tabs" role="navigation" aria-label="Dashboard sections">{tabs.map(([id,label])=><button key={id} className={page===id?'active':''} onClick={()=>onPage(id)}>{label}</button>)}</div>{page==='events'&&selectedTicker?<div className="mono-context">Selected event: <strong>{selectedTicker}</strong><span> · Click any event in the 01 / EVENT STREAM below to inspect other stocks (archived evidence is explicitly labeled in this reviewer preview) · same evidence across both views</span></div>:page==='moduleA'?<div className="mono-context">Tactical Index Lab<span> · Constrains allocations across all 15 index constituents; the public preview displays an existing recorded example</span></div>:page==='moduleB'?<div className="mono-context">Multi-Asset Stress Lab<span> · Simulates shocks across 30 portfolio positions (Loans, Bonds, Derivatives) under 5 scenario families</span></div>:null}
   <div className="mono-mode-description">{mode==='quick'?'Quick View · essential inputs, actions and results':'Analyst View · complete model evidence, constraints and advanced analyses'}</div>
   {children}</main>
-  <footer className="mono-footer"><div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}><span>RiskPulse AI · Developed by <strong>Shanmukh Datta</strong> (NIT Jalandhar) · </span><a href="https://github.com/shanmukhdatta" target="_blank" rel="noopener noreferrer" style={{color:'#111',fontWeight:600,textDecoration:'underline'}}>GitHub Profile</a><span> · </span><a href="https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon" target="_blank" rel="noopener noreferrer" style={{color:'#111',textDecoration:'underline'}}>Source Code</a></div><span>S&amp;P Global &amp; CRISIL Campus Hackathon 2026</span></footer>
+  <footer className="mono-footer"><div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}><span>Soochana AI · Developed by <strong>Shanmukh Datta</strong> (NIT Jalandhar) · </span><a href="https://github.com/shanmukhdatta" target="_blank" rel="noopener noreferrer" style={{color:'#111',fontWeight:600,textDecoration:'underline'}}>GitHub Profile</a><span> · </span><a href="https://github.com/shanmukhdatta/Soochana-AI" target="_blank" rel="noopener noreferrer" style={{color:'#111',textDecoration:'underline'}}>Source Code</a></div><span>S&amp;P Global &amp; CRISIL Campus Hackathon 2026</span></footer>
  </div>
 }
 function SignalSummary({summary,signals}:{summary:Summary|null;signals:Signal[]}){
@@ -131,7 +131,7 @@ function BujjiAssistant({ mode, selectedSignalId }: { mode: ViewMode; selectedSi
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string; status?: string }>>([
     {
       role: 'assistant',
-      content: "Hi! I'm Bujji, your RiskPulse AI guide. Ask me about financial news, AI risk signals, index rebalancing, or portfolio stress testing."
+      content: "Hi! I'm Bujji, your Soochana AI guide. Ask me about financial news, AI risk signals, index rebalancing, or portfolio stress testing."
     }
   ]);
   const [input, setInput] = useState('');
@@ -188,7 +188,7 @@ function BujjiAssistant({ mode, selectedSignalId }: { mode: ViewMode; selectedSi
   };
 
   const starters = [
-    "What does RiskPulse AI do?",
+    "What does Soochana AI do?",
     "What is financial sentiment?",
     "What does an impact score of 7/10 mean?",
     "How does Index Rebalancing work?",
@@ -248,7 +248,7 @@ function BujjiAssistant({ mode, selectedSignalId }: { mode: ViewMode; selectedSi
         className="bujji-launcher"
         onClick={() => setOpen(o => !o)}
         aria-label={open ? "Close Bujji AI Assistant" : "Open Bujji AI Assistant"}
-        title={open ? "Close Bujji" : "Ask Bujji (RiskPulse AI Guide)"}
+        title={open ? "Close Bujji" : "Ask Bujji (Soochana AI Guide)"}
       >
         {open ? (
           <span style={{ fontSize: 18, fontWeight: 700 }}>✕</span>

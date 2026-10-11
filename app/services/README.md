@@ -1,6 +1,6 @@
-# RiskPulse AI — Financial Services Layer
+# Soochana AI — Financial Services Layer
 
-`app/services/` provides the **core market data provider and feature engineering services** for RiskPulse AI. It connects live market price feeds to the machine learning pipeline, extracting pre-publication market volatility and volume indicators with mathematical parity to the offline training workflow.
+`app/services/` provides the **core market data provider and feature engineering services** for Soochana AI. It connects live market price feeds to the machine learning pipeline, extracting pre-publication market volatility and volume indicators with mathematical parity to the offline training workflow.
 
 ---
 

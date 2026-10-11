@@ -1,6 +1,6 @@
-# RiskPulse AI — Market Impact Engine Training (Original Source)
+# Soochana AI — Market Impact Engine Training (Original Source)
 
-This directory contains the **source code extracted from the three original Kaggle notebooks** for the RiskPulse AI Market Impact Severity Engine. The workflow implements historical abnormal return calculation, pre-publication feature engineering with NLP embeddings, and competitive candidate training (XGBoost vs. LightGBM).
+This directory contains the **source code extracted from the three original Kaggle notebooks** for the Soochana AI Market Impact Severity Engine. The workflow implements historical abnormal return calculation, pre-publication feature engineering with NLP embeddings, and competitive candidate training (XGBoost vs. LightGBM).
 
 **Important:** The source code and notebook structures have been preserved, but training was **not rerun** during repository packaging. The raw news archives, intermediate parquet feature matrices, and trained model files are **not bundled in this Git repository** (the trained XGBoost artifacts are published on Hugging Face at [`shanmukhdatta/riskpulse-impact-engine`](https://huggingface.co/shanmukhdatta/riskpulse-impact-engine)). This package documents the authentic training methodology.
 
@@ -80,7 +80,7 @@ From the official Step-2 training report ([`data/impact_step2_report.json`](../.
   The winning candidate on validation error is refitted and exported via `joblib`:
   * `impact_model_final.joblib`: Trained estimator
   * `impact_preprocessor.joblib`: Fitted ColumnTransformer (handling numeric scaling and one-hot encoding)
-  * **Deployed Runtime:** RiskPulse AI's production inference (`app/engine/impact.py`) expects the **XGBoost model artifact**.
+  * **Deployed Runtime:** Soochana AI's production inference (`app/engine/impact.py`) expects the **XGBoost model artifact**.
 
 ---
 

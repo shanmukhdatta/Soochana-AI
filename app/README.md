@@ -1,6 +1,6 @@
-# RiskPulse AI — Backend Application Architecture (`app/`)
+# Soochana AI — Backend Application Architecture (`app/`)
 
-`app/` contains the **FastAPI backend services, machine learning inference pipeline, quantitative financial modules, and contextual assistant** for RiskPulse AI.
+`app/` contains the **FastAPI backend services, machine learning inference pipeline, quantitative financial modules, and contextual assistant** for Soochana AI.
 
 ---
 

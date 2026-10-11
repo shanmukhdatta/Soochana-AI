@@ -1,6 +1,6 @@
-# RiskPulse AI — Continuous Sentiment Regressor Training (Original Source)
+# Soochana AI — Continuous Sentiment Regressor Training (Original Source)
 
-This directory contains the **source code extracted from the original Kaggle notebooks** for the RiskPulse AI continuous financial sentiment regressor. The workflow implements end-to-end data preparation, cleaning, deduplication, fine-tuning, and evaluation on the FiQA financial sentiment corpus.
+This directory contains the **source code extracted from the original Kaggle notebooks** for the Soochana AI continuous financial sentiment regressor. The workflow implements end-to-end data preparation, cleaning, deduplication, fine-tuning, and evaluation on the FiQA financial sentiment corpus.
 
 **Important:** The source code and notebook structures have been preserved, but training was **not rerun** during repository packaging. The raw upstream cache, intermediate Parquet splits, and fine-tuned checkpoints are **not bundled in this Git repository** (weights are published on Hugging Face at [`shanmukhdatta/riskpulse-sentiment-regressor`](https://huggingface.co/shanmukhdatta/riskpulse-sentiment-regressor)). This package documents the authentic training methodology.
 
@@ -20,7 +20,7 @@ The `.ipynb` notebooks retain **all original markdown and code cells**, with exe
 
 ## 2. Model Architecture & Continuous Formulation
 
-Unlike conventional 3-class sentiment classifiers (positive, neutral, negative), RiskPulse AI formulates financial sentiment as a **continuous scalar regression task**:
+Unlike conventional 3-class sentiment classifiers (positive, neutral, negative), Soochana AI formulates financial sentiment as a **continuous scalar regression task**:
 
 $$s \in [-1.0, +1.0]$$
 

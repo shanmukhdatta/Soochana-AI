@@ -1,6 +1,6 @@
-# RiskPulse AI — Bujji Financial AI Assistant
+# Soochana AI — Bujji Financial AI Assistant
 
-`app/assistant/` implements the **context-aware conversational risk assistant (Bujji)** for RiskPulse AI. It acts as an embedded companion in the React dashboard, explaining complex financial risk concepts, model predictions, Index Rebalancing (Module A), and Multi-Asset Stress Testing (Module B) to analysts and hackathon judges.
+`app/assistant/` implements the **context-aware conversational risk assistant (Bujji)** for Soochana AI. It acts as an embedded companion in the React dashboard, explaining complex financial risk concepts, model predictions, Index Rebalancing (Module A), and Multi-Asset Stress Testing (Module B) to analysts and hackathon judges.
 
 ---
 
@@ -35,7 +35,7 @@ User Question + Active UI Context (Mode, Signal ID)
 │  - Formats audience mode (Quick vs Analyst)            │
 │  - Resolves signal metadata from SQLite if signal_id   │
 │    is provided (Headline, Sentiment, Event, Impact)    │
-│  - Injects system prompt with RiskPulse architecture   │
+│  - Injects system prompt with Soochana AI architecture │
 └────────────────────┬───────────────────────────────────┘
                      │
                      ▼

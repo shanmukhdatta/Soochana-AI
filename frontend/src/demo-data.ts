@@ -219,10 +219,10 @@ function buildMockBujji(message: string, mode: 'quick' | 'analyst' = 'quick'): {
   const q = message.toLowerCase();
   let reply = '';
 
-  if (q.includes('what does riskpulse ai do') || q.includes('about') || q.includes('overview') || q.includes('what is riskpulse')) {
-    reply = "RiskPulse AI is an enterprise-grade financial risk intelligence system. It ingests market news and social sentiment, extracts event signals using FinBERT and XGBoost (Module A), rebalances portfolios within strict regulatory constraints, and evaluates portfolio vulnerabilities across loans, bonds, swaps, and options via multi-horizon stress testing (Module B).";
+  if (q.includes('what does soochana ai do') || q.includes('what does riskpulse ai do') || q.includes('about') || q.includes('overview') || q.includes('what is soochana') || q.includes('what is riskpulse')) {
+    reply = "Soochana AI is an enterprise-grade financial risk intelligence system. It ingests market news and social sentiment, extracts event signals using FinBERT and XGBoost (Module A), rebalances portfolios within strict regulatory constraints, and evaluates portfolio vulnerabilities across loans, bonds, swaps, and options via multi-horizon stress testing (Module B).";
   } else if (q.includes('sentiment')) {
-    reply = "Financial sentiment in RiskPulse AI is powered by FinBERT, specifically fine-tuned on financial phrasebanks. It produces a sentiment score between -1.0 (strongly negative/bearish) and +1.0 (strongly positive/bullish) across three classes: positive, neutral, and negative.";
+    reply = "Financial sentiment in Soochana AI is powered by FinBERT, specifically fine-tuned on financial phrasebanks. It produces a sentiment score between -1.0 (strongly negative/bearish) and +1.0 (strongly positive/bullish) across three classes: positive, neutral, and negative.";
   } else if (q.includes('impact score')) {
     reply = "The Impact Score (1 to 10) is estimated by an XGBoost regression model. It predicts the historical abnormal market reaction magnitude rather than a simple price direction, combining NLP sentiment, sector volatility regimes, and SPY market beta.";
   } else if (q.includes('rebalancing') || q.includes('module a') || q.includes('index')) {
@@ -234,7 +234,7 @@ function buildMockBujji(message: string, mode: 'quick' | 'analyst' = 'quick'): {
   } else if (q.includes('aapl') || q.includes('apple') || q.includes('liquidity')) {
     reply = "The AAPL signal represents a severe credit rating downgrade event triggered by liquidity concerns. In our verified test portfolio, it prompts a 300 bps credit spread widening and a 3x default probability multiplier on Apple debt positions.";
   } else {
-    reply = `Regarding "${message}": In RiskPulse AI, risk managers combine quantitative AI signal extraction with rigorous structural valuation. In ${mode === 'analyst' ? 'Analyst View' : 'Quick View'}, you can explore the signals feed, simulate index rebalancing, or run multi-asset stress tests with custom hypothetical shocks.`;
+    reply = `Regarding "${message}": In Soochana AI, risk managers combine quantitative AI signal extraction with rigorous structural valuation. In ${mode === 'analyst' ? 'Analyst View' : 'Quick View'}, you can explore the signals feed, simulate index rebalancing, or run multi-asset stress tests with custom hypothetical shocks.`;
   }
 
   return {
@@ -263,13 +263,13 @@ async function queryBujjiWithGroq(
       const messages = [
         {
           role: 'system',
-          content: `You are Bujji, an AI financial risk assistant for RiskPulse AI, developed by Shanmukh Datta (NIT Jalandhar) for the S&P Global & CRISIL Code to Connect Hackathon 2026.
-Your purpose is to help users, first-time visitors, and hackathon judges understand RiskPulse AI, core financial risk concepts, model predictions, Index Rebalancing (Module A), and Portfolio Stress Testing (Module B).
+          content: `You are Bujji, an AI financial risk assistant for Soochana AI, developed by Shanmukh Datta (NIT Jalandhar) for the S&P Global & CRISIL Code to Connect Hackathon 2026.
+Your purpose is to help users, first-time visitors, and hackathon judges understand Soochana AI, core financial risk concepts, model predictions, Index Rebalancing (Module A), and Portfolio Stress Testing (Module B).
 
 CURRENT USER DISPLAY MODE: ${mode === 'analyst' ? 'Analyst View (Quant / Auditor)' : 'Quick View (Executive / PM)'}
 ${signalId ? `CONTEXT: The user has selected signal ID ${signalId} (Apple Inc. AAPL Credit Event / Liquidity Concern).` : ''}
 
-RISKPULSE AI SYSTEM ARCHITECTURE:
+SOOCHANA AI SYSTEM ARCHITECTURE:
 1. Signal Ingestion: Marketaux news & Bluesky social posts cleaned and deduplicated in SQLite.
 2. AI Risk Engine:
    - Model 1: FinBERT Continuous Sentiment Regressor [-1.0 to +1.0].

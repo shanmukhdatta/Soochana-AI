@@ -1,6 +1,6 @@
-# RiskPulse AI — Five-Class Event Classifier Training (Original Source)
+# Soochana AI — Five-Class Event Classifier Training (Original Source)
 
-This folder contains the **source code extracted from four supplied Kaggle notebooks** for the RiskPulse AI event classifier. The notebooks form a documented collection, preprocessing, optional synthetic augmentation, fine-tuning and evaluation workflow.
+This folder contains the **source code extracted from four supplied Kaggle notebooks** for the Soochana AI event classifier. The notebooks form a documented collection, preprocessing, optional synthetic augmentation, fine-tuning and evaluation workflow.
 
 **Important:** The source has been preserved, but the training was **not rerun** when preparing this package. The raw datasets, preprocessed Parquet files, model checkpoints and fine-tuned weights are **not included**. Consequently, this is a source-code reproduction package, **not yet a fully self-contained reproducible trained-model release**.
 
@@ -17,7 +17,7 @@ The `.ipynb` copies retain **all original markdown and source code cells**, with
 
 ## Class taxonomy — immutable contract
 
-The original notebooks and RiskPulse runtime both expect:
+The original notebooks and Soochana AI runtime both expect:
 
 ```json
 {

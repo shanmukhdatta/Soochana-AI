@@ -1,4 +1,4 @@
-# RiskPulse training source code
+# Soochana AI — Model Training Source Code
 
 This folder contains the original training notebooks and scripts for all three AI models. Adaptations make dataset input/output paths configurable, avoid hard dependency on Kaggle Secrets, and preserve the original model-training logic. Scripts do not modify the production `app/` or `models/` directories.
 
