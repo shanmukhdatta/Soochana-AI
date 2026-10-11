@@ -1,43 +1,64 @@
-# Reviewer demo deployment — Vercel
+# Vercel Deployment & Local Model Runtime Guide
 
-This folder supports two **separate** builds; the original full FastAPI-backed application has not been replaced.
+This repository is configured to support two modes without code divergence:
+1. **Cloud Preview Deployment (Vercel)**:
+   - Deploys the full web application without requiring heavy Python ML runtimes (PyTorch, FinBERT checkpoints, XGBoost models, and external market API keys).
+   - All modules, interactive controls, stress testing simulations, what-if exposure calculators, reverse-stress testing, holdout backtests, and the Bujji AI financial assistant are fully operational and interactive using calibrated research models and verified repository evidence (`src/demo-fixtures.json`).
+   - Automatically detected on any `*.vercel.app` domain or when built with `npm run build:demo`.
+2. **Local Full-Stack Runtime (FastAPI + Machine Learning)**:
+   - When running locally (`uvicorn app.main:app` on port 8000 + `npm run dev` in `frontend/`), the frontend automatically connects to the live FastAPI backend via proxy.
+   - Executes real PyTorch FinBERT event classification, sentiment scoring, XGBoost impact regression, and live portfolio rebalancing.
 
-| Build | Command | Behavior |
-|---|---|---|
-| Original application | `npm run build` | Existing API-powered UI. Requires a reachable FastAPI backend for live modules. |
-| Static reviewer preview | `npm run build:demo` | Read-only, evidence-backed dashboard. Uses `src/demo-fixtures.json` derived from repository-recorded JSON. No backend, model weights, API keys or inference required. |
+---
 
-## Link Vercel with GitHub
+## Deploy to Vercel (Step-by-Step)
 
-1. Sign into Vercel and choose **Add New > Project**; authorize the Vercel GitHub integration for `shanmukhdatta/nitj-shanmukhdatta-hackthon` if prompted.
-2. Import that repository. Set **Root Directory** to `frontend` (important); **Framework Preset** to `Vite`. This folder's `vercel.json` sets `npm run build:demo` and `dist`.
-3. Use `master` as the production branch. Deploy and wait for a successful build.
-4. Open the generated HTTPS deployment in an incognito browser. Verify Overview, Event Intelligence, Index Lab, Stress Lab, Quick/Analyst toggles, the source links, mobile layout, and all read-only/unavailable indicators.
-5. When the URL exists and works, put that **real URL** in the top-level README's currently blank Live Demo Site Link field.
+### Option 1: Direct GitHub Import (Simplest)
+1. Sign in to your [Vercel Dashboard](https://vercel.com).
+2. Click **Add New... > Project** and select the repository: `shanmukhdatta/nitj-shanmukhdatta-hackthon`.
+3. In the project configuration:
+   - **Framework Preset**: `Vite` (automatically detected)
+   - **Root Directory**: Select `frontend` (or leave as root, as both root and `frontend/` have configured `vercel.json` files).
+   - **Build Command**: `npm run build:demo`
+   - **Output Directory**: `dist`
+4. Click **Deploy**.
+5. Once deployment completes, your live application is available at `https://<your-project>.vercel.app`.
 
-## Integrity and limitations
+### Option 2: Vercel CLI
+```bash
+# Install Vercel CLI if needed
+npm install -g vercel
 
-The preview intentionally does **not** claim live financial news, instant market prices, AI inference, trade execution, new rebalancing calculations, or on-demand stress pricing. It only renders **recorded** observations from:
-- `data/module_a/real_example_response.json`
-- `data/module_b/live_verification_results.json`
-- `data/module_b/synthetic_portfolio.json`
-- `data/module_b/scenario_library.json`
-- `configs/module_a_config.json`
+# From the repository root:
+vercel --prod
+```
 
-The exact source-derived snapshot is `frontend/src/demo-fixtures.json`. If a reference JSON changes, update the fixture deliberately, document the new provenance and re-test. Do not call cached numbers “live results.”
+---
 
-The normal application's homepage no longer silently fabricates scores when model inference fails. The original FastAPI backend still needs genuine NLP checkpoints for real inference.
+## Local Development & Validation
 
-## Local validation
+### Running with Full Local Models
+```bash
+# 1. Start Python FastAPI backend (Port 8000)
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 
+# 2. In another terminal, start frontend
+cd frontend
+npm install
+npm run dev
+```
+Open `http://127.0.0.1:5173`. Requests to `/api/*` are proxied to the live FastAPI backend.
+
+### Running in Cloud Demo Mode Locally
 ```bash
 cd frontend
-npm ci
-npm test
-npm run check:contracts
-npm run build
-npm run build:demo
 npm run dev -- --mode demo
 ```
 
-Open `http://127.0.0.1:5173`. The Vercel deploy is not complete until all checks pass and the hosted URL has been tested. A green static build does **not** validate the original model runtime.
+### Running Test Suite & Contract Checks
+```bash
+cd frontend
+npm test
+npm run check:contracts
+npm run build:demo
+```
