@@ -5,8 +5,8 @@
 **College Email ID:** bodasd.ic.24@nitj.ac.in  
 **College / Campus:** National Institute of Technology Jalandhar (NIT Jalandhar)  
 **Demo Video Link:**  
-**Slide Deck Link:**  
-**Live Demo Site Link:**  
+**Slide Deck Link:** [Presentation Deck PDF (docs/nitj-shanmukhdatta-presentation.pdf)](docs/nitj-shanmukhdatta-presentation.pdf)  
+**Live Demo Site Link:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
 
 **Repository:** https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon
 
@@ -254,8 +254,8 @@ These figures are taken from files already committed in the repository. They are
 ### Demo and supporting documentation
 
 **YouTube Demo Video:**  
-**Presentation Deck:**  
-**Live Demo Site:**  
+**Presentation Deck:** [docs/nitj-shanmukhdatta-presentation.pdf](docs/nitj-shanmukhdatta-presentation.pdf)  
+**Live Demo Site:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
 
 - [System architecture](docs/architecture.png)
 - [Quantitative methodology](docs/methodology.md)
