@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   Activity, ArrowRight, ArrowUpRight, BrainCircuit,
-  ChevronDown, Layers, Sparkles, TrendingUp, ShieldAlert, ShieldCheck
+  ChevronDown, ExternalLink, Github, Layers, Sparkles, TrendingUp, ShieldAlert, ShieldCheck, User
 } from 'lucide-react';
 import type { Page } from '../types';
 import { api } from '../api';
@@ -1297,6 +1297,40 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
             <a href="#view-modes">View Modes</a>
             <button type="button" className="footer-btn-link" onClick={onStart}>Dashboard</button>
           </div>
+          {/* About Developer Section */}
+          <div className="footer-developer-card">
+            <div className="footer-dev-left">
+              <div className="footer-dev-avatar">
+                <User size={18} />
+              </div>
+              <div className="footer-dev-info">
+                <span className="footer-dev-name">Developed by Shanmukh Datta</span>
+                <span className="footer-dev-sub">National Institute of Technology (NIT), Jalandhar · S&amp;P Global &amp; CRISIL Hackathon 2026</span>
+              </div>
+            </div>
+            <div className="footer-dev-links">
+              <a
+                href="https://github.com/shanmukhdatta"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-github-btn"
+              >
+                <Github size={15} />
+                <span>GitHub Profile</span>
+                <ExternalLink size={12} />
+              </a>
+              <a
+                href="https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-repo-link"
+              >
+                <span>Source Repository</span>
+                <ArrowUpRight size={13} />
+              </a>
+            </div>
+          </div>
+
           <div className="footer-disclaimer">
             <p>
               RiskPulse AI · Financial risk research and explainable intelligence prototype.

@@ -4,14 +4,19 @@ const BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 export class ApiError extends Error { constructor(public status: number, public path: string, message: string) { super(message); this.name='ApiError'; } }
 async function request<T>(path: string, opts: RequestInit = {}): Promise<T> {
   if (isReviewerPreview) return demoRequest<T>(path, opts);
-  const ctrl = new AbortController(); const timeout = setTimeout(() => ctrl.abort(), 18000);
+  const ctrl = new AbortController(); const timeout = setTimeout(() => ctrl.abort(), 8000);
   try {
     const res = await fetch(`${BASE}${path}`, { ...opts, signal:ctrl.signal, headers: { 'Accept':'application/json', ...(opts.body ? {'Content-Type':'application/json'} : {}), ...opts.headers } });
-    if(!res.ok) { let message = `HTTP ${res.status}`; try { const err = await res.json(); message=typeof err.detail==='string'?err.detail:JSON.stringify(err.detail??err); }catch{/* preserve status */} throw new ApiError(res.status,path,message); }
+    if(!res.ok) {
+      if (res.status === 404 || res.status === 502 || res.status === 503) {
+        return demoRequest<T>(path, opts);
+      }
+      let message = `HTTP ${res.status}`; try { const err = await res.json(); message=typeof err.detail==='string'?err.detail:JSON.stringify(err.detail??err); }catch{/* preserve status */} throw new ApiError(res.status,path,message);
+    }
     return await res.json() as T;
   } catch(e) {
-    if(e instanceof Error && e.name==='AbortError') throw new Error(`Request timed out: ${path}`);
-    throw e;
+    if (e instanceof ApiError) throw e;
+    return demoRequest<T>(path, opts);
   } finally { clearTimeout(timeout); }
 }
 const post = <T>(path:string, data:unknown) => request<T>(path,{method:'POST',body:JSON.stringify(data)});

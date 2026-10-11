@@ -245,6 +245,82 @@ function buildMockBujji(message: string, mode: 'quick' | 'analyst' = 'quick'): {
   };
 }
 
+async function queryBujjiWithGroq(
+  message: string,
+  history: Array<{ role: 'user' | 'assistant'; content: string }> = [],
+  mode: 'quick' | 'analyst' = 'quick',
+  signalId?: string | null
+): Promise<{ reply: string; status: 'ok'; mode: string; disclaimer: string }> {
+  const groqKey = (import.meta as any).env?.VITE_GROQ_API_KEY || '';
+
+  if (groqKey) {
+    try {
+      const messages = [
+        {
+          role: 'system',
+          content: `You are Bujji, an AI financial risk assistant for RiskPulse AI, developed by Shanmukh Datta (NIT Jalandhar) for the S&P Global & CRISIL Code to Connect Hackathon 2026.
+Your purpose is to help users, first-time visitors, and hackathon judges understand RiskPulse AI, core financial risk concepts, model predictions, Index Rebalancing (Module A), and Portfolio Stress Testing (Module B).
+
+CURRENT USER DISPLAY MODE: ${mode === 'analyst' ? 'Analyst View (Quant / Auditor)' : 'Quick View (Executive / PM)'}
+${signalId ? `CONTEXT: The user has selected signal ID ${signalId} (Apple Inc. AAPL Credit Event / Liquidity Concern).` : ''}
+
+RISKPULSE AI SYSTEM ARCHITECTURE:
+1. Signal Ingestion: Marketaux news & Bluesky social posts cleaned and deduplicated in SQLite.
+2. AI Risk Engine:
+   - Model 1: FinBERT Continuous Sentiment Regressor [-1.0 to +1.0].
+   - Model 2: FinBERT 5-class Event Classifier (Credit Event, Macroeconomic, Geopolitical, Merger / Acquisition, Product Launch).
+   - Model 3: XGBoost Impact Severity Engine (1-10 decile scale).
+3. Module A (Index Lab): Constrained 15-stock tactical equity index rebalancing (AAPL, MSFT, NVDA, QCOM, GOOGL, CMCSA, AMZN, TSLA, BKNG, SBUX, COST, PEP, GILD, AMGN, CSX) with +/-2% position bounds, +/-5% sector bounds, and <=15% one-way turnover.
+4. Module B (Stress Lab): 30 multi-asset positions (loans, bonds, swaps, options). 4 loss mechanisms: Loans (IFRS 9 12-month ECL = PD x LGD x EAD), Bonds (duration/convexity MTM), Swaps (DV01 rate sensitivity), Options (Black-Scholes).
+5. Voice Assistant: Browser Web Speech API for voice input and speech synthesis.
+
+FINANCIAL SAFETY:
+- Research and educational use only; not investment advice or trade execution.
+- Be friendly, concise, intelligent, and articulate.`
+        },
+        ...history.slice(-4),
+        { role: 'user', content: message }
+      ];
+
+      const ctrl = new AbortController();
+      const timeout = setTimeout(() => ctrl.abort(), 9000);
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        signal: ctrl.signal,
+        headers: {
+          'Authorization': `Bearer ${groqKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'qwen/qwen3.8-27b',
+          messages,
+          max_tokens: 500,
+          temperature: 0.6
+        })
+      });
+      clearTimeout(timeout);
+
+      if (res.ok) {
+        const json = await res.json();
+        const reply = json.choices?.[0]?.message?.content;
+        if (reply) {
+          return {
+            reply,
+            status: 'ok',
+            mode,
+            disclaimer: 'Bujji Risk Assistant — Live Groq Qwen AI model inference.'
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('Groq live inference fallback:', e);
+    }
+  }
+
+  // Instant fallback to curated RiskPulse financial response generator
+  return buildMockBujji(message, mode);
+}
+
 /**
  * Handle API requests in demo / Vercel cloud preview mode.
  */
@@ -368,7 +444,12 @@ export async function demoRequest<T>(path: string, options: RequestInit = {}): P
       warning: 'Demonstration reverse-stress estimation (Cloud demo mode).'
     };
   } else if (route === '/assistant/chat') {
-    value = buildMockBujji(bodyData?.message || '', bodyData?.mode || 'quick');
+    value = await queryBujjiWithGroq(
+      bodyData?.message || '',
+      bodyData?.history || [],
+      bodyData?.mode || 'quick',
+      bodyData?.selected_signal_id
+    );
   } else {
     value = { status: 'ok', detail: 'Mock response for ' + route };
   }
