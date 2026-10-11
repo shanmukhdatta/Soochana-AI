@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } fro
 import {
   Activity, ArrowRight, ArrowUpRight, BrainCircuit, ChartNoAxesCombined,
   ChevronDown, CircleAlert, Clock3, ExternalLink, Gauge,
-  LoaderCircle, LockKeyhole, Newspaper, Play, RadioTower, RefreshCw, Search, ShieldAlert, ShieldCheck,
-  SlidersHorizontal, Sparkles, WandSparkles, X
+  LoaderCircle, LockKeyhole, Mic, MicOff, Newspaper, Play, RadioTower, RefreshCw, Search, ShieldAlert, ShieldCheck,
+  SlidersHorizontal, Sparkles, Volume2, VolumeX, WandSparkles, X
 } from 'lucide-react';
 import { api } from './api';
 import { isReviewerPreview, previewNotice, recordedStress } from './demo-data';
@@ -136,7 +136,56 @@ function BujjiAssistant({ mode, selectedSignalId }: { mode: ViewMode; selectedSi
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [speakingIdx, setSpeakingIdx] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const toggleListen = () => {
+    if (typeof window === 'undefined') return;
+    const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRec) {
+      alert('Speech recognition is not supported in this browser. Please use Chrome or Edge for voice input.');
+      return;
+    }
+    if (isListening) {
+      setIsListening(false);
+      return;
+    }
+    try {
+      const rec = new SpeechRec();
+      rec.lang = 'en-US';
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      rec.onstart = () => setIsListening(true);
+      rec.onresult = (evt: any) => {
+        const text = evt.results?.[0]?.[0]?.transcript;
+        if (text) {
+          setInput(text);
+          void send(text);
+        }
+      };
+      rec.onerror = () => setIsListening(false);
+      rec.onend = () => setIsListening(false);
+      rec.start();
+    } catch {
+      setIsListening(false);
+    }
+  };
+
+  const toggleSpeak = (idx: number, text: string) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    if (speakingIdx === idx) {
+      window.speechSynthesis.cancel();
+      setSpeakingIdx(null);
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => setSpeakingIdx(null);
+    utterance.onerror = () => setSpeakingIdx(null);
+    setSpeakingIdx(idx);
+    window.speechSynthesis.speak(utterance);
+  };
 
   const starters = [
     "What does RiskPulse AI do?",
@@ -232,6 +281,17 @@ function BujjiAssistant({ mode, selectedSignalId }: { mode: ViewMode; selectedSi
             {messages.map((m, i) => (
               <div key={i} className={`bujji-msg ${m.role}`}>
                 <div style={{ whiteSpace: 'pre-wrap' }}>{m.content}</div>
+                {m.role === 'assistant' && (
+                  <button
+                    type="button"
+                    className="bujji-voice-ctrl"
+                    onClick={() => toggleSpeak(i, m.content)}
+                    title={speakingIdx === i ? "Stop speaking" : "Listen aloud"}
+                  >
+                    {speakingIdx === i ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                    <span>{speakingIdx === i ? "Stop voice" : "Listen"}</span>
+                  </button>
+                )}
               </div>
             ))}
 
@@ -257,12 +317,21 @@ function BujjiAssistant({ mode, selectedSignalId }: { mode: ViewMode; selectedSi
             <div className="bujji-input-row">
               <input
                 className="bujji-input"
-                placeholder="Ask Bujji anything..."
+                placeholder={isListening ? "Listening to your voice..." : "Ask Bujji anything or speak..."}
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 disabled={loading}
               />
+              <button
+                type="button"
+                className={`bujji-mic-btn ${isListening ? 'listening' : ''}`}
+                onClick={toggleListen}
+                title={isListening ? "Stop listening" : "Speak question"}
+                aria-label={isListening ? "Stop listening" : "Speak question"}
+              >
+                {isListening ? <MicOff size={15} /> : <Mic size={15} />}
+              </button>
               <button
                 type="button"
                 className="bujji-send-btn"
