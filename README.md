@@ -5,7 +5,7 @@
 **College Email ID:** bodasd.ic.24@nitj.ac.in  
 **College / Campus:** National Institute of Technology Jalandhar (NIT Jalandhar)  
 **Demo Video Link:**  
-**Slide Deck Link:** [Presentation Deck PDF (docs/nitj-shanmukhdatta-presentation.pdf)](docs/nitj-shanmukhdatta-presentation.pdf)  
+**Slide Deck Link:** [Presentation Deck PDF (docs/presentation.pdf)](docs/presentation.pdf)  
 **Live Demo Site Link:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
 
 **Repository:** https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon
@@ -97,6 +97,7 @@ Marketaux news / Bluesky public posts     Historical prices / features
 ├── scripts/                # Independent demos, model checks, diagnostics
 ├── tests/                  # Backend tests
 └── docs/
+    ├── presentation.pdf
     ├── architecture.png
     ├── methodology.md
     ├── validation.md
@@ -254,7 +255,7 @@ These figures are taken from files already committed in the repository. They are
 ### Demo and supporting documentation
 
 **YouTube Demo Video:**  
-**Presentation Deck:** [docs/nitj-shanmukhdatta-presentation.pdf](docs/nitj-shanmukhdatta-presentation.pdf)  
+**Presentation Deck:** [docs/presentation.pdf](docs/presentation.pdf)  
 **Live Demo Site:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
 
 - [System architecture](docs/architecture.png)
