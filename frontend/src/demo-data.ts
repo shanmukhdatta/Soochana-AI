@@ -93,7 +93,7 @@ export async function demoRequest<T>(path: string, options: RequestInit = {}): P
   }
   else if (route === '/module-a/index') value = index;
   else if (route === '/module-b/portfolio') value = {
-    summary: evidence.verification.module_b_portfolio,
+    summary: evidence.recordedStress.portfolio,
     positions: evidence.portfolio.positions,
     disclaimer: 'Recorded synthetic research portfolio; no institution/client account data.'
   } as unknown as Portfolio;
