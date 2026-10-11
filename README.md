@@ -5,7 +5,7 @@
 **College Email ID:** bodasd.ic.24@nitj.ac.in  
 **College / Campus:** National Institute of Technology Jalandhar (NIT Jalandhar)  
 **Demo Video Link:**  
-**Slide Deck Link:** [Presentation Deck PDF (docs/presentation.pdf)](docs/presentation.pdf)  
+**Slide Deck Link:** [Repository PDF (docs/Presentation_.pdf)](docs/Presentation_.pdf) · [Google Drive Link](https://drive.google.com/file/d/1ySZRghGGWxB0SQZsvHdQ40yYgSAaQkuJ/view?usp=sharing)  
 **Live Demo Site Link:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
 
 **Repository:** https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon
@@ -97,7 +97,7 @@ Marketaux news / Bluesky public posts     Historical prices / features
 ├── scripts/                # Independent demos, model checks, diagnostics
 ├── tests/                  # Backend tests
 └── docs/
-    ├── presentation.pdf
+    ├── Presentation_.pdf
     ├── architecture.png
     ├── methodology.md
     ├── validation.md
@@ -138,7 +138,7 @@ python -m venv .venv
 Activate the environment:
 
 ```powershell
-# Windows PowerShell
+# Windows PowerShell (if script execution is restricted: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass)
 .venv\Scripts\Activate.ps1
 Copy-Item .env.example .env
 ```
@@ -180,7 +180,8 @@ Those scripts write outputs under `data/module_a/results/` and `data/module_b/re
 From the repository root, after activation and dependency installation:
 
 ```bash
-uvicorn app.main:app --reload --port 8000
+python -m uvicorn app.main:app --reload --port 8000
+# or: uvicorn app.main:app --reload --port 8000
 ```
 
 In **another terminal**, from the same repository root:
@@ -255,7 +256,7 @@ These figures are taken from files already committed in the repository. They are
 ### Demo and supporting documentation
 
 **YouTube Demo Video:**  
-**Presentation Deck:** [docs/presentation.pdf](docs/presentation.pdf)  
+**Presentation Deck:** [Repository PDF (docs/Presentation_.pdf)](docs/Presentation_.pdf) · [Google Drive Link](https://drive.google.com/file/d/1ySZRghGGWxB0SQZsvHdQ40yYgSAaQkuJ/view?usp=sharing)  
 **Live Demo Site:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
 
 - [System architecture](docs/architecture.png)

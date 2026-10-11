@@ -11,7 +11,8 @@
 With FastAPI running at `http://127.0.0.1:8000`, run:
 
 ```powershell
-cd nitj-shanmukhdatta-hackthon\frontend
+# From the repository root:
+cd frontend
 Copy-Item .env.example .env
 npm ci
 npm test
