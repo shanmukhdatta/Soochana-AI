@@ -251,7 +251,12 @@ async function queryBujjiWithGroq(
   mode: 'quick' | 'analyst' = 'quick',
   signalId?: string | null
 ): Promise<{ reply: string; status: 'ok'; mode: string; disclaimer: string }> {
-  const groqKey = (import.meta as any).env?.VITE_GROQ_API_KEY || '';
+  const groqKey =
+    import.meta.env.VITE_GROQ_API_KEY ||
+    import.meta.env.GROQ_API_KEY ||
+    (import.meta as any).env?.VITE_GROQ_API_KEY ||
+    (import.meta as any).env?.GROQ_API_KEY ||
+    '';
 
   if (groqKey) {
     try {
