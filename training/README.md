@@ -1,6 +1,12 @@
 # RiskPulse training source code
 
-This folder contains the original event-classification and sentiment notebooks (code retained; execution outputs omitted) plus minimally adapted Python scripts. Adaptations make dataset input/output paths configurable, avoid hard dependency on Kaggle Secrets, and preserve the original model-training logic. Scripts do not modify the production `app/` or `models/` directories.
+This folder contains the original training notebooks and scripts for all three AI models. Adaptations make dataset input/output paths configurable, avoid hard dependency on Kaggle Secrets, and preserve the original model-training logic. Scripts do not modify the production `app/` or `models/` directories.
+
+## Training Modules
+
+* [**Event Classifier Training**](event_classifier/README.md): 5-class FinBERT event classifier (`yiyanghkust/finbert-tone`) trained on 16,576 cleaned financial records.
+* [**Sentiment Regressor Training**](sentiment/README.md): Continuous FinBERT regression model (`ProsusAI/finbert`) predicting sentiment in `[-1.0, +1.0]` on the FiQA corpus.
+* [**Impact Severity Engine Training**](impact_engine/README.md): XGBoost / LightGBM abnormal reaction severity decile model trained on 27,460 pre-publication financial features.
 
 **Python 3.11 recommended; GPU recommended for BERT fine-tuning.** From repository root:
 
