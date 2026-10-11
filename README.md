@@ -22,7 +22,12 @@ RiskPulse AI is an academic prototype for financial event intelligence, constrai
 
 **Business applications.** **Module A** converts event signals into proposed rebalancing weights for a simulated **15-stock index**, with position, sector, and turnover constraints and a historical walk-forward backtest. **Module B** evaluates a synthetic **30-position portfolio** of loans, bonds, swaps, and options under hypothetical shocks; it separates instantaneous trading-book mark-to-market (MTM) effects from incremental **12-month expected credit loss (ECL)** for loans. A contextual assistant, **Bujji**, can explain the workflow when its optional Groq API is configured. The prototype supports analyst exploration rather than autonomous trades, measured early-warning superiority, or certified capital calculations.
 
-> **Important reproducibility note:** The fine-tuned event-classifier and sentiment-regressor weight files are **not included** in this GitHub repository. Model configurations and tokenizers do not substitute for trained weights. A new clone cannot execute full real NLP inference until the matching original checkpoints are supplied. The bundled index/stress demos and corresponding APIs can run independently. See [Model setup](#model-setup-and-run-modes) and [Known limitations](#known-limitations-and-reproducibility).
+> **Model weights hosted on Hugging Face:** Trained transformer weight checkpoints and the impact model are officially hosted on Hugging Face Hub:
+> - **Event Classifier:** [`shanmukhdatta/riskpulse-event-classifier`](https://huggingface.co/shanmukhdatta/riskpulse-event-classifier)
+> - **Sentiment Regressor:** [`shanmukhdatta/riskpulse-sentiment-regressor`](https://huggingface.co/shanmukhdatta/riskpulse-sentiment-regressor)
+> - **Impact Engine:** [`shanmukhdatta/riskpulse-impact-engine`](https://huggingface.co/shanmukhdatta/riskpulse-impact-engine)
+> 
+> A new clone can download all model weights in one command with `python -m scripts.fetch_models`. See [Model setup](#model-setup-and-run-modes).
 
 ## 2. Architecture & Tech Stack
 
@@ -158,13 +163,14 @@ npm --prefix frontend ci
 
 ### Model setup and run modes
 
-**Full real inference (original trained checkpoints required):** Place the *authentic* event-classification and sentiment-regression checkpoints (including `model.safetensors` or equivalent, compatible `config.json`, and tokenizer files) into `models/event_classifier/` and `models/sentiment_regressor/`, or configure `EVENT_MODEL_DIR` and `SENTIMENT_MODEL_DIR` to point to them. The tracked impact-model files are in `models/impact_engine/`. If you own authorized model repositories, `scripts/fetch_models.py` can retrieve them using explicit `EVENT_MODEL_REPO`, `SENTIMENT_MODEL_REPO`, and optional `HF_TOKEN` settings. This does **not** synthesize missing weights.
+**Full real inference (from Hugging Face Hub):** The trained event classifier, sentiment regressor, and impact engine weights are hosted on Hugging Face. Download them automatically into `models/`:
 
 ```bash
+python -m scripts.fetch_models
 python -m scripts.check_models
 ```
 
-The check is **expected to fail on a fresh GitHub clone** because the two fine-tuned transformer weight files are not committed. After supplying them, it checks file presence; full compatibility is only established by actual loading and inference. Keep `SKIP_MODEL_LOAD=false` for real model execution.
+Once downloaded, `check_models` will verify file presence. Keep `SKIP_MODEL_LOAD=false` in `.env` for complete real inference.
 
 **Portfolio-only demonstration (no transformer checkpoints required):** Edit `.env` to set `SKIP_MODEL_LOAD=true`. This allows the backend to start with the risk engine unavailable: `/analyze`, full news-to-portfolio inference, and `/health` will return **503**, rather than fabricated model predictions. You can still inspect saved records and use independent Module A/Module B routes or demos:
 
