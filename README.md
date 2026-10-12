@@ -12,7 +12,7 @@
 
 **Author:** [Shanmukh Datta](https://github.com/shanmukhdatta) (National Institute of Technology Jalandhar)  
 **Repository:** [https://github.com/shanmukhdatta/Soochana-AI](https://github.com/shanmukhdatta/Soochana-AI)  
-**Live Application:** [https://nitj-shanmukhdatta-hackthon-lime.vercel.app/](https://nitj-shanmukhdatta-hackthon-lime.vercel.app/)
+**Local Preview:** `http://localhost:5173` (Vercel cloud deployment in progress)
 
 ---
 

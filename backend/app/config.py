@@ -9,7 +9,10 @@ ROOT = _p.parents[2] if (_p.parents[2] / 'configs').exists() else _p.parents[1]
 
 def _path_env(name: str, default: Path) -> Path:
     raw = os.environ.get(name)
-    return Path(raw).expanduser().resolve() if raw else default.resolve()
+    if not raw:
+        return default.resolve()
+    p = Path(raw).expanduser()
+    return p.resolve() if p.is_absolute() else (ROOT / p).resolve()
 
 
 @dataclass(frozen=True)
