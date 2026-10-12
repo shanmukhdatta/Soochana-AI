@@ -51,7 +51,7 @@ and pretrained model architectures, each governed by its respective license:
    - yfinance: Historical market price data accessed via Yahoo! Finance API.
      For research and academic evaluation purposes only.
 
-5. S&P Global & CRISIL Campus Hackathon 2026:
-   - Submitted in fulfillment of the competition challenge guidelines.
+5. Research & Academic Portfolio Notice:
+   - Designed and developed by Shanmukh Datta as an institutional financial risk intelligence research platform.
    - All financial portfolio and institution stress testing models are educational
      and research implementations; they do not constitute investment advice.

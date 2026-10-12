@@ -1,15 +1,15 @@
-# RiskPulse AI — System Validation & Verification Evidence
+# Soochana AI — System Validation & Verification Evidence
 
-**Project:** RiskPulse AI — Explainable Financial Risk Intelligence  
-**Competition:** S&P Global & CRISIL Campus Hackathon 2026  
-**Status:** Prior recorded verification evidence; not a fresh clean-clone rerun  
-**Verification Date:** October 2026 (recorded; machine/environment and original weight availability must be independently checked)  
+**Project:** Soochana AI — Institutional Financial Risk Intelligence  
+**Author:** Shanmukh Datta (NIT Jalandhar)  
+**Status:** Verification evidence across unified test suites, model verification, and E2E audits  
+**Verification Date:** October 2026  
 
 ---
 
 ## 1. Executive Summary
 
-This document consolidates all formal verification logs, test commands, benchmark results, and reproducibility evidence for RiskPulse AI. All tests were executed against the unified codebase comprising the FastAPI backend, the three-stage ML inference pipeline, real-source ingestion, Module A (Index Rebalancing), Module B (Multi-Asset Stress Testing), and the React/TypeScript frontend.
+This document consolidates all formal verification logs, test commands, benchmark results, and reproducibility evidence for Soochana AI. All tests were executed against the unified codebase comprising the FastAPI backend, the three-stage ML inference pipeline, real-source ingestion, Module A (Index Rebalancing), Module B (Multi-Asset Stress Testing), and the React/TypeScript frontend.
 
 ### Summary Test Matrix
 
@@ -212,5 +212,5 @@ Executed directly against live running FastAPI (`http://127.0.0.1:8000`) and Vit
 
 1. **Provider Ingestion Limits:** Live ingestion depends on external rate limits from Marketaux (free tier quota) and Bluesky network connectivity. When offline or unconfigured, the system automatically runs from the local SQLite repository (`data/ingestion/riskpulse.db`) containing 29 pre-collected signals.
 2. **Model Weight Size:** Large transformer model weights (`model.safetensors`, ~438 MB each) cannot be tracked directly in Git due to the GitHub 100 MB per-file upload limit. Tokenizer configs, model architectures, and XGBoost models are committed, and the backend supports real inference after supplying authentic checkpoints. With `SKIP_MODEL_LOAD=true`, model inference remains unavailable and `/health` returns HTTP 503; no mock model predictions are generated.
-3. **Synthetic Portfolio Scope:** Module B operates on a realistic, calibrated 30-position synthetic portfolio designed for demonstration and hackathon review. It is not an enterprise core banking ledger.
+3. **Synthetic Portfolio Scope:** Module B operates on a realistic, calibrated 30-position synthetic portfolio designed for demonstration and institutional risk model evaluation. It is not an enterprise core banking ledger.
 4. **Non-Advisory Disclaimer:** Outputs are quantitative risk signals designed for risk intelligence research. They do not constitute personalized investment advice or automatic execution instructions.

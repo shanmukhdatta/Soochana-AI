@@ -1,14 +1,14 @@
-# RiskPulse AI — Quantitative Methodology & Modeling Specifications
+# Soochana AI — Quantitative Methodology & Modeling Specifications
 
-**Project:** RiskPulse AI — Explainable Financial Risk Intelligence  
-**Competition:** S&P Global & CRISIL Campus Hackathon 2026  
+**Project:** Soochana AI — Institutional Financial Risk Intelligence  
+**Author:** Shanmukh Datta (NIT Jalandhar)  
 **Document:** Mathematical Specifications, Model Architecture & Risk Methodology  
 
 ---
 
 ## 1. System Overview
 
-RiskPulse AI bridges the gap between unstructured financial data (news publications and social discourse) and quantitative financial portfolio risk management. The architecture is organized into four interconnected tiers:
+Soochana AI bridges the gap between unstructured financial data (news publications and social discourse) and quantitative financial portfolio risk management. The architecture is organized into four interconnected tiers:
 
 1. **Multi-Source Ingestion & Provenance:** Real-time collection, normalization, entity mapping, and deduplication across financial news and public market discussion.
 2. **Three-Stage Machine Learning Risk Engine:**

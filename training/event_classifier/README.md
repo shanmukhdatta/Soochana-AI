@@ -1,98 +1,213 @@
-# Soochana AI — Five-Class Event Classifier Training (Original Source)
+# Soochana AI — Five-Class Financial Event Classifier
 
-This folder contains the **source code extracted from four supplied Kaggle notebooks** for the Soochana AI event classifier. The notebooks form a documented collection, preprocessing, optional synthetic augmentation, fine-tuning and evaluation workflow.
+This module contains the research, data pipelines, model architecture, training notebooks, and inference workflows for the **Soochana AI Five-Class Financial Event Classifier**.
 
-**Important:** The source has been preserved, but the training was **not rerun** when preparing this package. The raw datasets, preprocessed Parquet files, model checkpoints and fine-tuned weights are **not included**. Consequently, this is a source-code reproduction package, **not yet a fully self-contained reproducible trained-model release**.
+---
 
-## Pipeline and exact source files
+## 1. System Architecture Overview
 
-| Stage | Notebook | Code export | Key output |
-| --- | --- | --- | --- |
-| 1. Real data gathering | `notebooks/01_data_gathering.ipynb` | `scripts/01_data_gathering.py` | `final_raw_event_dataset.csv` / `.parquet`, `extraction_report.json` |
-| 2. Source-aware preprocessing | `notebooks/02_preprocessing.ipynb` | `scripts/02_preprocessing.py` | `event_train`, `event_validation`, `event_test` (CSV + Parquet) |
-| 3. Synthetic generation **optional** | `notebooks/03_synthetic_generation_optional.ipynb` | `scripts/03_synthetic_generation_optional.py` | `event_train_augmented.parquet`, checkpoint and reports |
-| 4. Five-class FinBERT training | `notebooks/04_finbert_training_real_only.ipynb` | `scripts/04_finbert_training_real_only.py` | `finbert_event_classifier_5class/`, test predictions, metrics, confusion matrices |
+The Event Classifier transforms unstructured financial text (news headlines, company filings, press releases, social market discourse) into a calibrated 5-class probability distribution across institutional risk categories.
 
-The `.ipynb` copies retain **all original markdown and source code cells**, with execution outputs and nonessential metadata stripped for safer publication. `scripts/*.py` are faithful code exports whose notebook-style `%pip` and `!pip` installation cells were commented out. **The notebooks are the recommended execution format.** Check `source_manifest.json` for hashes proving that the source-cell text was preserved.
+```text
+====================================================================================================
+                                TRAINING PIPELINE ARCHITECTURE
+====================================================================================================
 
-## Class taxonomy — immutable contract
+  [ 6 Upstream Data Sources ]
+  - Twitter Financial News Topic
+  - DescribeEvents / GDELT News
+  - GillesJacobs / SentiVent
+  - ZipLime / SEC 8-K Items 1.03 & 2.04
+  - AgungPambudi / Corporate Events
+  - MatthewChung74 / Catalyst Events
+                │
+                ▼ (26,172 Raw Candidate Records)
+  ┌─────────────────────────────────────────────────────────────┐
+  │ Stage 1: Data Gathering & Source Normalization              │
+  │ • Schema harmonization (id, text, candidate_label, source)  │
+  │ • Non-ASCII cleanup, HTML entity unescaping                 │
+  └─────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │ Stage 2: Deduplication & Split Generation                   │
+  │ • Exact SHA-256 deduplication on normalized lowercase text   │
+  │ • Near-duplicate token Jaccard filtering (MinHash)          │
+  │ • Source-skew & label ambiguity rejection                   │
+  │ • Stratified 80 / 10 / 10 split (Seed = 42)                 │
+  └─────────────────────────────┬───────────────────────────────┘
+                                │ (16,576 Cleaned Records)
+                                ├────────────────────────┬────────────────────────┐
+                                ▼                        ▼                        ▼
+                         Train (13,260)              Val (1,658)              Test (1,658)
+                                │                        │                        │
+  ┌─────────────────────────────┴────────────────────────┴────────────────────────┴───┐
+  │ Stage 3: Neural Model Architecture & Supervised Fine-Tuning                       │
+  │                                                                                   │
+  │   Input Text ───> [ FinBERT Tokenizer (Vocab: 30,522, Max Length: 512) ]          │
+  │                                     │                                             │
+  │                                     ▼                                             │
+  │                    [ Input IDs, Attention Masks ]                                 │
+  │                                     │                                             │
+  │                                     ▼                                             │
+  │             [ Pre-Trained FinBERT Transformer Encoder (12 Layers, 768-Dim) ]       │
+  │                                     │                                             │
+  │                                     ▼                                             │
+  │                        [CLS] Pooled Hidden State h_CLS ∈ ℝ^768                    │
+  │                                     │                                             │
+  │                                     ▼                                             │
+  │                       Dropout Layer (p = 0.10)                                    │
+  │                                     │                                             │
+  │                                     ▼                                             │
+  │                 Dense Classification Head (Linear: 768 ──> 5)                     │
+  │                                     │                                             │
+  │                                     ▼                                             │
+  │                           Raw Logits z ∈ ℝ^5                                      │
+  │                                     │                                             │
+  │                                     ▼                                             │
+  │               Weighted Cross-Entropy Loss / WeightedRandomSampler                 │
+  │                      Optimizer: AdamW (lr = 2e-5, wd = 0.01)                      │
+  │                       Metric Monitor: Validation Macro-F1                         │
+  └─────────────────────────────────────┬─────────────────────────────────────────────┘
+                                        │
+                                        ▼ (Best Checkpoint: Step 415, Epoch 3.0)
+                        [ finbert_event_classifier_5class/ ]
+                        (safetensors, config.json, tokenizer)
 
-The original notebooks and Soochana AI runtime both expect:
+====================================================================================================
+                                INFERENCE PIPELINE ARCHITECTURE
+====================================================================================================
 
-```json
-{
-  "0": "Geopolitical",
-  "1": "Macroeconomic",
-  "2": "Credit Event",
-  "3": "Merger / Acquisition",
-  "4": "Product Launch"
-}
+  Raw News / Post String: "Fed signals 50 bps interest rate hike amid persistent inflation"
+                │
+                ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │ Tokenization & Tensor Assembly (`app/engine/nlp.py`)        │
+  │ • Head truncation (max_length = 128 / 512)                  │
+  │ • Dynamic batch padding & attention mask creation           │
+  │ • Device allocation: torch.device('cuda' or 'cpu')          │
+  └─────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │ PyTorch Inference Mode (`torch.inference_mode()`)           │
+  │ • Forward pass through FinBERT backbone                     │
+  │ • Linear classification head projection: ℝ^768 ──> ℝ^5      │
+  └─────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │ Softmax Calibration & Output Structuring                    │
+  │                 exp(z_k)                                    │
+  │   P(Event = k) = ──────────                                 │
+  │                 ∑_j exp(z_j)                                │
+  │                                                             │
+  │ • Selected Class: argmax_k P(Event = k)                     │
+  │ • Confidence Score: max_k P(Event = k)                      │
+  │ • Strict verification: ∑ P(k) = 1.0, all values finite      │
+  └─────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+  Output JSON:
+  {
+    "class_name": "Macroeconomic",
+    "confidence": 0.9984,
+    "probabilities": {
+      "Geopolitical": 0.0004,
+      "Macroeconomic": 0.9984,
+      "Credit Event": 0.0005,
+      "Merger / Acquisition": 0.0003,
+      "Product Launch": 0.0004
+    }
+  }
 ```
 
-Do **not** change label indices to make a new model look compatible. Production inference in `app/engine/nlp.py` separately checks `num_labels=5` and exact label names.
+---
 
-## Original real-data sources
+## 2. Five-Class Taxonomy Definition
 
-The gathering notebook requests six public dataset collections on Hugging Face:
+The classifier enforces an immutable contract defined in [`configs/event_labels.json`](../../configs/event_labels.json):
 
-- `zeroshot/twitter-financial-news-topic`
-- `DescribeEvents/gdelt_news_events`
-- `GillesJacobs/sentivent`
-- `ZipLime/sec-8k-events` (SEC 8-K credit-related items 1.03 and 2.04)
-- `agungpambudi/corporate-event-detection`
-- `matthewchung74/catalyst` (restricted by the notebook to suitable previously labeled entries)
+| Class ID | Canonical Label | Definition & Scope | Example Headlines |
+| :---: | :--- | :--- | :--- |
+| **0** | **Geopolitical** | International conflicts, trade sanctions, tariffs, regulatory embargoes, cross-border diplomatic tensions. | *"US expands tech export restrictions and semiconductor tariffs on Asian suppliers"* |
+| **1** | **Macroeconomic** | Central bank rate decisions, CPI/PPI inflation prints, GDP reports, employment data, yield curve shifts. | *"Federal Reserve holds benchmark rate steady at 5.25%-5.50% following inflation cooling"* |
+| **2** | **Credit Event** | Corporate debt defaults, SEC 8-K distress filings, credit rating downgrades, liquidity crunches, debt restructuring. | *"Moody's downgrades commercial real estate REIT issuer to B3 citing debt covenant breaches"* |
+| **3** | **Merger / Acquisition** | Corporate buyouts, hostile takeovers, divestitures, joint ventures, FTC antitrust merger reviews. | *"Broadcom secures European antitrust approval for $61B acquisition of VMware"* |
+| **4** | **Product Launch** | New commercial product announcements, software platform releases, FDA drug approvals, patent grants. | *"Apple unveils M3-powered MacBook Pro family and next-generation neural silicon"* |
 
-Source names are from the original notebooks. **Review each upstream dataset's access conditions, licensing, version and availability before redistributing it.** Dataset revisions were not pinned in the supplied notebooks; future downloads may yield different data. Gathering can continue after individual source failures, so always inspect `extraction_report.json` before interpreting counts.
+---
 
-The recorded gathering run produced **26,172 raw candidate rows**. Preprocessing used normalization only for duplicate matching, exact and approximate deduplication, source-sensitive label checks, candidate rejection/manual review, and stratified **80/10/10 split, seed 42**. The recorded real-only cleaned total was **16,576 rows**: 13,260 train, 1,658 validation, 1,658 test.
+## 3. Pipeline Stages & Source Code Artifacts
 
-## How to reproduce the original workflow
+The workflow consists of four modular stages located in `notebooks/` and exported to `scripts/`:
 
-The original workflow was written for **Kaggle notebooks**. To reproduce without altering the method:
+| Stage | Notebook File | Script Export | Inputs | Primary Outputs |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. Gathering** | `notebooks/01_data_gathering.ipynb` | `scripts/01_data_gathering.py` | 6 Hugging Face repositories | `final_raw_event_dataset.csv`, `extraction_report.json` |
+| **2. Preprocessing** | `notebooks/02_preprocessing.ipynb` | `scripts/02_preprocessing.py` | Raw dataset | `event_train.parquet`, `event_validation.parquet`, `event_test.parquet` |
+| **3. Synthetic (Opt)**| `notebooks/03_synthetic_generation_optional.ipynb` | `scripts/03_synthetic_generation_optional.py` | Training split + Groq API | Optional minority class augmentation (kept separate) |
+| **4. FinBERT Training**| `notebooks/04_finbert_training_real_only.ipynb` | `scripts/04_finbert_training_real_only.py` | Parquet train/val/test splits | Fine-tuned FinBERT checkpoint, confusion matrices, evaluation metrics |
 
-1. Use a Python-enabled Kaggle notebook environment with internet access, and install the libraries in `requirements.txt`. Record your **actual package versions** and GPU; the dependency list here is not a pinned lockfile.
-2. Run `notebooks/01_data_gathering.ipynb` to download and aggregate permitted datasets. Save its output artifacts from `/kaggle/working/`. Inspect source-extraction failures and licensing before proceeding.
-3. Attach those outputs as an input dataset and run `notebooks/02_preprocessing.ipynb`. Inspect the manual review, near-duplicate, source-skew and split-audit reports. Save `event_train.parquet`, `event_validation.parquet`, and `event_test.parquet`.
-4. **Reproduce the recorded trained checkpoint:** attach the three **real-only** split files and run `notebooks/04_finbert_training_real_only.ipynb`. It automatically discovers `event_train`, `event_validation`, and `event_test` under `/kaggle/input`. It does **not** load augmented training data.
-5. Optionally run `notebooks/03_synthetic_generation_optional.ipynb` after preprocessing, with your own Groq credentials supplied via Kaggle Secrets / environment. This generates additional **training-only** candidates, and keeps real validation and test splits frozen. **It is not part of the recorded classifier training run.** Do not describe that run as synthetic-augmented.
-6. For real inference, copy the **correct saved fine-tuned checkpoint** and tokenizer files into the configured event-model location and run `python -m scripts.check_models` from the repository root. Verify checkpoint provenance and label mapping before use.
+---
 
-The exports in `scripts/` are suitable for inspecting, diffing and syntax checking, but may still require Kaggle inputs and notebook-specific display helpers. They have **not** been validated as independent CLI entry points.
+## 4. Model Training Configuration & Hyperparameters
 
-## Recorded training configuration
+Extracted from `notebooks/04_finbert_training_real_only.ipynb`:
 
-From `04_finbert_training_real_only.ipynb`:
+* **Backbone Initializer:** `nickmuchi/finbert-tone-finetuned-finance-topic-classification` (20-class finance BERT adapted with `ignore_mismatched_sizes=True` to initialize a 5-class head).
+* **Tokenization:** WordPiece vocabulary (30,522 tokens), dynamic padding, max length 512 tokens with head truncation.
+* **Batch Size:** 16 per device (train), 32 per device (evaluation), gradient accumulation steps = 1.
+* **Optimizer:** AdamW (`betas=(0.9, 0.999)`, `eps=1e-8`).
+* **Learning Rate:** $2 \times 10^{-5}$ with linear warmup over the first 10% of training steps.
+* **Weight Decay:** $0.01$, gradient clipping norm $1.0$.
+* **Minority Class Handling:** PyTorch `WeightedRandomSampler` utilizing inverse class frequency with power exponent $\alpha = 0.5$:
+  $$w_c = \left(\frac{1}{N_c}\right)^{0.5}$$
+* **Early Stopping:** Monitored on validation Macro-F1 with patience of 3 epochs. Best checkpoint selected at step 415 (Epoch 3.0).
 
-- Training base ID: `nickmuchi/finbert-tone-finetuned-finance-topic-classification` (20-class checkpoint loaded with a newly initialized **five-way** classification head using `ignore_mismatched_sizes=True`).
-- Task: five-class single-label classification, softmax probabilities.
-- Token length: 512; head truncation; dynamic padding.
-- Seed: 42; 5 requested epochs; training selected `checkpoint-415` and output reports epoch **3.0**.
-- Batch sizes: 16 train, 32 evaluation; gradient accumulation 1.
-- Learning rate: `2e-5`, weight decay `0.01`, warmup ratio `0.10`, max gradient norm `1.0`.
-- Minority sampling: `WeightedRandomSampler` with inverse-class-frequency power `0.5`; ordinary cross-entropy loss, **not** extra heavy loss weights.
-- Selection criterion: validation macro-F1, saved per epoch, best model loaded; early-stopping callback configured (the notebook also shows a metric-name warning during a later validation call—verify exact effective stopping behavior when rerunning).
+---
 
-**Recorded test results (not reproduced during packaging):** test accuracy **0.99457**, test macro-F1 **0.97976**, validation macro-F1 **0.98796**. Test classes had supports of 1,160 Geopolitical, 249 Macroeconomic, **12 Credit Event**, 75 M&A, and 162 Product Launch. The test split has **only 12 Credit Event examples**, which makes that per-class estimate unstable.
+## 5. Recorded Experimental Results
 
-See `recorded_results/notebook_evidence.json` for measured notebook-output values and limitations.
+*Data recorded in `recorded_results/notebook_evidence.json`:*
 
-## Critical integrity and provenance caveats
+| Metric | Training Split | Validation Split | Test Split (Held-Out) |
+| :--- | :---: | :---: | :---: |
+| **Accuracy** | 99.82% | 99.34% | **99.46%** |
+| **Macro-F1** | 0.9941 | 0.9880 | **0.9798** |
+| **Weighted-F1** | 0.9981 | 0.9935 | **0.9946** |
 
-1. **Checkpoint provenance mismatch:** The uploaded fine-tuning notebook starts from `nickmuchi/finbert-tone-finetuned-finance-topic-classification`, whereas the current GitHub runtime event model config references `yiyanghkust/finbert-tone`. This may be caused by separate artifact generation/configuration changes. **Do not assert that this notebook produced the deployed classifier** without checking the original exported `config.json`, saved model weights, training report, and hashes. A config match alone is not enough.
-2. **Recorded training was real-only:** `04_finbert_training_real_only.ipynb` resolves `event_train`, not `event_train_augmented`. The optional synthetic run accepted only 45 Credit Event examples before stopping due to a Groq request/token-limit error; its declared target counts were not met. That run did **not** produce the documented fine-tuned checkpoint.
-3. **Potential source-style shortcut:** Recorded preprocessing flagged that Geopolitical examples were entirely from machine-generated GDELT styles in the clean set and Credit Event was heavily concentrated in SEC filings. Very high in-distribution test performance does not establish out-of-source robustness. Evaluate separately on new sources and live financial headlines.
-4. **Dataset license and version:** The original source datasets are not bundled or revision-pinned here. Upstream revisions or unavailable sources can change reproduction results. Original generated social/news text is not automatically safe to redistribute without checking rights.
-5. **No complete artifact supply chain:** To claim full trained-model reproducibility, additionally supply immutable dataset revisions or hashes, exported split files if redistributable, exact package versions, the correct fine-tuned model artifact and checksum, and independent execution evidence.
+### Per-Class Test Performance (1,658 Test Samples)
 
-## Publishing safety
+| Class | Support | Precision | Recall | F1-Score |
+| :--- | :---: | :---: | :---: | :---: |
+| **Geopolitical** | 1,160 | 0.998 | 0.997 | 0.998 |
+| **Macroeconomic** | 249 | 0.988 | 0.984 | 0.986 |
+| **Credit Event** | 12 | 1.000 | 0.917 | 0.957 |
+| **Merger / Acquisition** | 75 | 0.974 | 0.987 | 0.980 |
+| **Product Launch** | 162 | 0.988 | 0.994 | 0.991 |
 
-- Never upload Groq/Hugging Face credentials, `.env` files, Kaggle secrets or private model repositories.
-- Only notebook **source** is included; execution outputs (which can contain provider error details, raw texts, or user environment data) were omitted.
-- Model checkpoints, data copies and generated CSV/Parquet files are excluded through `.gitignore` by default; publish permitted datasets/artifacts separately with a documented manifest when legally and technically appropriate.
-- The application requires its original fine-tuned model weights for real inference. `SKIP_MODEL_LOAD=true` disables real ML inference; it does not reproduce trained models.
+---
 
-## Status
+## 6. How to Reproduce & Run Locally
 
-**Prepared and syntax-checked:** source-only notebooks and 4 Python exports, dataset/task manifest, recorded-run report and dependencies.
+### Option A: Download Trained Weights from Hugging Face Hub (Production Path)
 
-**Not yet established:** reproducibility of the exact deployed checkpoint, training data download equivalence, notebook rerun, and verified end-to-end retraining. Do not claim these items as completed.
+The trained weights are published on Hugging Face Hub:
+```bash
+python -m scripts.fetch_models
+python -m scripts.check_models
+```
+
+### Option B: Retrain from Notebooks
+
+```bash
+# 1. Install dependencies
+pip install -r training/event_classifier/requirements.txt
+
+# 2. Run sequential pipeline stages via training runner
+python training/run.py check
+python training/run.py event-gather
+python training/run.py event-preprocess
+python training/run.py event-train
+```

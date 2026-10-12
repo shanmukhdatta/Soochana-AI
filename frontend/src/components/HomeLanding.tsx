@@ -929,7 +929,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
               </div>
 
               <div className="mode-representation">
-                <strong>What it represents:</strong> Built for Quantitative Analysts, Risk Engineers, and Hackathon Evaluators who demand mathematical transparency, inspectable model confidence distributions, and direct control over risk parameters.
+                <strong>What it represents:</strong> Built for Quantitative Analysts, Risk Engineers, and Portfolio Managers who demand mathematical transparency, inspectable model confidence distributions, and direct control over risk parameters.
               </div>
 
               <ul className="mode-features-list">
@@ -1305,7 +1305,7 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
               </div>
               <div className="footer-dev-info">
                 <span className="footer-dev-name">Developed by Shanmukh Datta</span>
-                <span className="footer-dev-sub">National Institute of Technology (NIT), Jalandhar · S&amp;P Global &amp; CRISIL Hackathon 2026</span>
+                <span className="footer-dev-sub">National Institute of Technology (NIT), Jalandhar · Financial Risk Intelligence</span>
               </div>
             </div>
             <div className="footer-dev-links">

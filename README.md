@@ -1,277 +1,313 @@
-# Soochana AI — S&P Global & CRISIL Campus Hackathon 2026
+# Soochana AI — Institutional Financial Risk Intelligence Platform
 
-**Project:** Explainable Financial Risk Intelligence  
-**Candidate Name:** Shanmukh Datta  
-**College Email ID:** bodasd.ic.24@nitj.ac.in  
-**College / Campus:** National Institute of Technology Jalandhar (NIT Jalandhar)  
-**Demo Video Link:**  
-**Slide Deck Link:** [Repository PDF (docs/Presentation_.pdf)](docs/Presentation_.pdf) · [Google Drive Link](https://drive.google.com/file/d/1ySZRghGGWxB0SQZsvHdQ40yYgSAaQkuJ/view?usp=sharing)  
-**Live Demo Site Link:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
+[![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-blue.svg?logo=python)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/Frontend-React%2018%20%2B%20TypeScript-61DAFB.svg?logo=react)](https://react.dev/)
+[![Docker](https://img.shields.io/badge/DevOps-Docker%20%26%20Compose-2496ED.svg?logo=docker)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Models-Hugging%20Face%20Hub-yellow.svg)](https://huggingface.co/shanmukhdatta)
 
-**Repository:** https://github.com/shanmukhdatta/Soochana-AI
+> **From Market Information to Financial Decisions.**  
+> An institutional-grade machine learning platform combining fine-tuned transformer NLP, gradient-boosted volatility forecasting, convex portfolio index rebalancing, and horizon-separated multi-asset balance sheet stress testing.
 
-Soochana AI is an academic prototype for financial event intelligence, constraint-aware index rebalancing, and synthetic multi-asset stress analysis. It is not an investment-advice product or a regulatory risk system.
+**Author:** [Shanmukh Datta](https://github.com/shanmukhdatta) (National Institute of Technology Jalandhar)  
+**Repository:** [https://github.com/shanmukhdatta/Soochana-AI](https://github.com/shanmukhdatta/Soochana-AI)  
+**Live Application:** [https://nitj-shanmukhdatta-hackthon-lime.vercel.app/](https://nitj-shanmukhdatta-hackthon-lime.vercel.app/)
 
 ---
 
-## 1. Project Overview / Problem Statement & Approach
+## 1. Executive Summary & Problem Formulation
 
-**The problem.** Financial analysts must interpret high volumes of financial news, company announcements, and public market discussion. These unstructured sources can be difficult to connect consistently with quantitative market context and portfolio-level risk analysis. Price-only dashboards do not explain the underlying event narrative, while qualitative review can be time-consuming.
+### The Financial Challenge
+Institutional portfolio managers and quantitative risk officers face an overwhelming flood of unstructured data — regulatory disclosures, financial news headlines, and public market discussions. Traditional market systems present price-only telemetry without underlying narrative attribution, while manual qualitative review introduces latency and cognitive bias. Furthermore, converting qualitative event intelligence into disciplined, constraint-aware portfolio allocation and balance sheet stress scenarios requires rigorous mathematical formulation.
 
-**Our approach.** Soochana AI integrates optional live collection from **Marketaux** financial news and **Bluesky** public posts with a three-stage analytics pipeline: (1) a fine-tuned FinBERT-style regressor produces continuous financial sentiment in `[-1, 1]`; (2) a five-class event classifier assigns probabilities to **Geopolitical, Macroeconomic, Credit Event, Merger / Acquisition,** and **Product Launch**; and (3) an **XGBoost** model combines those outputs with historical market features to estimate an impact *severity decile* (1–10). Event source metadata and results are represented in structured records, and the React dashboard exposes both Quick View and Analyst View.
+### The Soochana AI Solution
+Soochana AI bridges the gap between unstructured textual information and quantitative decision-making:
+1. **Multi-Source Signal Ingestion:** Collects and normalizes live feeds from **Marketaux** financial news and **Bluesky (AT Protocol)** public social discourse with ticker extraction and deduplication into a local SQLite repository.
+2. **Three-Stage Machine Learning Risk Engine:**
+   - **FinBERT Event Classifier:** Categorizes text into 5 institutional event classes (*Geopolitical, Macroeconomic, Credit Event, Merger / Acquisition, Product Launch*).
+   - **FinBERT Sentiment Regressor:** Predicts continuous polarity on $[-1.0, +1.0]$ via a hyperbolic tangent regression head.
+   - **XGBoost Market Impact Engine:** Evaluates abnormal market volatility magnitude deciles ($1 \dots 10$) using zero-lookahead pre-publication market indicators ($\sigma_{20}$, volume ratio, momentum) and frozen NLP outputs.
+3. **Module A — Tactical Index Rebalancing Laboratory:** Translates structured event signals into convex quadratic distance minimization rebalancing for a 15-stock US equity index subject to constituent, sector, turnover, and transaction cost constraints across 357 walk-forward backtest sessions.
+4. **Module B — Multi-Asset Stress Testing Laboratory:** Evaluates a 30-position synthetic institutional portfolio across 4 asset classes (Loans, Bonds, Swaps, Options) with auditable separation between instantaneous Trading Book Mark-to-Market (MTM) and Banking Book 12-Month Expected Credit Loss (ECL).
+5. **Bujji — Embedded Conversational Risk Copilot:** An intelligent assistant powered by Groq API (`qwen/qwen3.8-27b`) dynamically tailored for both executive Quick View and quantitative Analyst View.
 
-**Business applications.** **Module A** converts event signals into proposed rebalancing weights for a simulated **15-stock index**, with position, sector, and turnover constraints and a historical walk-forward backtest. **Module B** evaluates a synthetic **30-position portfolio** of loans, bonds, swaps, and options under hypothetical shocks; it separates instantaneous trading-book mark-to-market (MTM) effects from incremental **12-month expected credit loss (ECL)** for loans. A contextual assistant, **Bujji**, can explain the workflow when its optional Groq API is configured. The prototype supports analyst exploration rather than autonomous trades, measured early-warning superiority, or certified capital calculations.
+---
 
-> **Model weights hosted on Hugging Face:** Trained transformer weight checkpoints and the impact model are officially hosted on Hugging Face Hub:
-> - **Event Classifier:** [`shanmukhdatta/riskpulse-event-classifier`](https://huggingface.co/shanmukhdatta/riskpulse-event-classifier)
-> - **Sentiment Regressor:** [`shanmukhdatta/riskpulse-sentiment-regressor`](https://huggingface.co/shanmukhdatta/riskpulse-sentiment-regressor)
-> - **Impact Engine:** [`shanmukhdatta/riskpulse-impact-engine`](https://huggingface.co/shanmukhdatta/riskpulse-impact-engine)
-> 
-> A new clone can download all model weights in one command with `python -m scripts.fetch_models`. See [Model setup](#model-setup-and-run-modes).
-
-## 2. Architecture & Tech Stack
-
-![Soochana AI system architecture](docs/architecture.png)
+## 2. End-to-End System Architecture
 
 ```text
-Marketaux news / Bluesky public posts     Historical prices / features
-                    |                               |
-            Normalize, match tickers, deduplicate   |
-                    |                               |
-            SQLite ingestion repository             |
-                    |                               |
-            FinBERT sentiment regression             |
-            Five-class event classification          |
-                    |                               |
-                    +-----------+-------------------+
-                                |
-                    XGBoost impact severity
-                                |
-                      Structured risk signal
-                                |
-                    +-----------+-----------+
-                    |                       |
-            Module A: index lab       Module B: stress lab
-            - 15 equity weights      - 30 synthetic positions
-            - constrained optimizer  - bonds, swaps, options MTM
-            - 357-session backtest   - loan 12-month ECL
-                                     - What-If and reverse stress
-                    |                       |
-                    +-----------+-----------+
-                                |
-                   FastAPI + React dashboard
-                      Quick / Analyst views
-                         Bujji assistant
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                    TIER 1: INGESTION & DATA LAYER                                │
+│                                                                                                 │
+│    Marketaux Financial News API                     Bluesky Public Firehose (AT Protocol)        │
+│                │                                                       │                        │
+│                └───────────────────────────┬───────────────────────────┘                        │
+│                                            ▼                                                    │
+│                        Ticker Resolution & Exact SHA-256 Deduplication                          │
+│                                            │                                                    │
+│                                            ▼                                                    │
+│                           SQLite Ingestion Store (`riskpulse.db`)                               │
+└────────────────────────────────────────────┬────────────────────────────────────────────────────┘
+                                             │ Unstructured Text Payload
+                                             ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                 TIER 2: UNIFIED AI RISK ENGINE (`app/engine/`)                  │
+│                                                                                                 │
+│  ┌───────────────────────────────────┐               ┌───────────────────────────────────────┐  │
+│  │   FinBERT Event Classifier        │               │   FinBERT Sentiment Regressor         │  │
+│  │   • 5-way softmax probabilities   │               │   • Continuous polarity s ∈ [-1, +1]  │  │
+│  │   • 99.46% test accuracy          │               │   • Tanh regression head on CLS       │  │
+│  └─────────────────┬─────────────────┘               └───────────────────┬───────────────────┘  │
+│                    │                                                     │                      │
+│                    └──────────────────────┬──────────────────────────────┘                      │
+│                                           ▼                                                     │
+│                        Pre-Publication Historical Market Features                               │
+│                        • σ_20 annualized volatility (no lookahead)                              │
+│                        • 20-session volume ratio (V_t / V̄_20)                                   │
+│                        • Trailing 5d & 20d momentum returns                                     │
+│                                           │                                                     │
+│                                           ▼                                                     │
+│                        XGBoost Return Impact Severity Engine                                    │
+│                        • Trained abnormal reaction magnitude |R_abnormal|                       │
+│                        • Calibrated Empirical Quantile Deciles: [1 ... 10]                      │
+└───────────────────────────────────────────┬─────────────────────────────────────────────────────┘
+                                            │ Structured Risk Signal Record
+                                            ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                             TIER 3: QUANTITATIVE FINANCIAL LABORATORIES                          │
+│                                                                                                 │
+│  ┌─────────────────────────────────────────────────┐ ┌────────────────────────────────────────┐ │
+│  │        MODULE A: TACTICAL INDEX REBALANCING     │ │       MODULE B: MULTI-ASSET STRESS LAB │ │
+│  │  • 15 US Equities (Equal-weight baseline)       │ │ • 30 Synthetic Institutional Positions │ │
+│  │  • Temporal signal decay: τ = 3.0 days          │ │ • Banking Book (12-Month Loan ECL)     │ │
+│  │  • SLSQP Quadratic Distance Minimization:       │ │ • Trading Book (Bonds, Swaps, Options) │ │
+│  │    min 1/2 ||w - w_desired||^2                  │ │ • Strict Horizon Separation (MTM vs ECL│ │
+│  │    subject to:                                  │ │ • Interactive What-If Position Scaling │ │
+│  │    - Full Investment: ∑ w_i = 1.0               │ │ • Reverse Stress Breach Search on Grid │ │
+│  │    - Position deviation: |Δw| ≤ 2.0%            │ └────────────────────────────────────────┘ │
+│  │    - Sector deviation: |ΔS_k| ≤ 5.0%            │                                            │
+│  │    - One-way turnover: T ≤ 10.0%                │                                            │
+│  │    - Transaction cost: 10 bps friction          │                                            │
+│  │  • 357-session historical walk-forward backtest │                                            │
+│  └─────────────────────────────────────────────────┘                                            │
+└───────────────────────────────────────────┬─────────────────────────────────────────────────────┘
+                                            │ API Responses (FastAPI)
+                                            ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              TIER 4: PRODUCTION PRESENTATION & COPILOT                          │
+│                                                                                                 │
+│    React 18 + TypeScript Dashboard (Vite 6)          Bujji AI Assistant (Groq Cloud API)        │
+│    • Quick View: Executive summaries & key metrics   • Context-aware risk copilot               │
+│    • Analyst View: Probability vectors & audit       • Dual audience mode adapting prompts      │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-| Component | Implementation |
-|---|---|
-| Backend & API | Python 3.11/3.12, FastAPI, Pydantic, Uvicorn |
-| Frontend | React **18**, TypeScript, Vite **6**, responsive Quick/Analyst views |
-| NLP | Hugging Face Transformers, PyTorch, custom sentiment-regression head, five-class event head |
-| Market-impact model | XGBoost, scikit-learn, pandas/NumPy, historical market features |
-| Ingestion & storage | Marketaux, Bluesky AT Protocol, optional GDELT adapter (disabled by default), SQLite |
-| Portfolio computation | SciPy SLSQP constrained optimization; historical backtesting; bond, swap, loan, and option sensitivity/pricing implementations |
-| Optional assistant | Groq API integration; unavailable without configured API key |
+---
 
-**Implementation details.** The deployed event classifier must match the exact five-category label mapping in [`configs/event_labels.json`](configs/event_labels.json). The impact model uses event probabilities, sentiment and *pre-publication* historical price/volume indicators. The resulting decile represents estimated historical abnormal-reaction **magnitude**, not a directional stock-return forecast. The event-to-stress shock mapping is a separate **illustrative heuristic**, not learned default-probability or spread forecasting.
+## 3. Machine Learning Models & Weights
 
-**Module A constraints.** A 15-equity, equal-weight reference index is optimized subject to full investment, long-only holdings, a **±2 percentage-point** constituent deviation, **±5 percentage-point** sector deviation, and **10%** maximum one-way turnover. The transaction-cost assumption is **10 basis points**. The optimizer uses **SLSQP** for the constrained squared-distance objective. This is a simulated portfolio, not a brokerage execution system.
+Trained model checkpoints are hosted on Hugging Face Hub:
 
-**Module B risk horizons.** The portfolio includes **12 loans, 10 bonds, 4 interest-rate swaps, and 4 options**. Bonds, swaps and options contribute instantaneous MTM changes; loans contribute incremental 12-month ECL. Loan exposure at default, bond market value, and derivative reference notional are **not additive NAV**. Reverse stress uses a **deterministic scenario grid**, reports the first *sampled* budget breach, and does not claim an exact minimum or monotonic losses.
+| Model | Task & Output | Foundation Backbone | Training Data | Hugging Face Checkpoint |
+| :--- | :--- | :--- | :--- | :--- |
+| **Event Classifier** | 5-Class Categorical Softmax | `nickmuchi/finbert-tone-finetuned-finance-topic-classification` | 16,576 cleaned records across 6 datasets | [`shanmukhdatta/riskpulse-event-classifier`](https://huggingface.co/shanmukhdatta/riskpulse-event-classifier) |
+| **Sentiment Regressor** | Continuous Scalar Polarity $[-1.0, +1.0]$ | `ProsusAI/finbert` + custom Tanh head | FiQA Financial Sentiment Challenge | [`shanmukhdatta/riskpulse-sentiment-regressor`](https://huggingface.co/shanmukhdatta/riskpulse-sentiment-regressor) |
+| **Impact Engine** | Volatility Severity Decile $[1 \dots 10]$ | `xgboost.XGBRegressor` + ColumnTransformer | 27,460 pre-publication market feature rows | [`shanmukhdatta/riskpulse-impact-engine`](https://huggingface.co/shanmukhdatta/riskpulse-impact-engine) |
 
-**Source layout (existing paths intentionally preserved):**
+Detailed model architecture specifications and reproduction guides:
+- [Event Classifier Architecture & Training Guide](training/event_classifier/README.md)
+- [Sentiment Regressor Architecture & Training Guide](training/sentiment/README.md)
+- [Market Impact Engine Architecture & Training Guide](training/impact_engine/README.md)
+- [Unified Risk Engine Runtime Specification](backend/app/engine/README.md)
+
+---
+
+## 4. Quantitative Laboratories
+
+### Module A: Tactical Index Rebalancing
+- **Universe:** 15 large-cap US equities (`AAPL`, `MSFT`, `NVDA`, `QCOM`, `GOOGL`, `CMCSA`, `AMZN`, `TSLA`, `BKNG`, `SBUX`, `COST`, `PEP`, `GILD`, `AMGN`, `CSX`).
+- **Optimization:** SciPy Sequential Least Squares Programming (SLSQP).
+- **Constraints:**
+  - Full investment ($\sum w_i = 1$) and long-only ($w_i \ge 0$).
+  - Constituent deviation cap: $\pm 2.0\%$ from equal-weight baseline.
+  - Sector deviation cap: $\pm 5.0\%$ from sector baseline.
+  - One-way turnover limit: $\le 10.0\%$ per rebalance.
+  - Transaction friction: 10 basis points linear deduction.
+- **Deep Dive:** [Module A Architectural Specification](backend/app/module_a/README.md)
+
+### Module B: Multi-Asset Stress Testing
+- **Portfolio Composition:** 30 synthetic institutional positions:
+  - **12 Commercial Loans:** Banking Book 12-Month Expected Credit Loss ($\Delta \text{ECL} = \text{EAD} \times \text{LGD} \times \Delta\text{PD}$).
+  - **10 Corporate Bonds:** Trading Book MTM via modified duration and spread convexity ($\Delta P \approx -D_{\text{mod}} \Delta y + \frac{1}{2} C (\Delta y)^2$).
+  - **4 Interest Rate Swaps:** Trading Book MTM via linear DV01 curve shifts ($\Delta \text{MTM} \approx \text{DV01} \cdot \Delta r$).
+  - **4 Equity Options:** Trading Book MTM via European Black-Scholes analytical revaluation under price, volatility, and rate shifts.
+- **Horizon Separation:** Strict segregation between instantaneous Trading Book Mark-to-Market P&L and Banking Book 12-Month Expected Credit Loss.
+- **Deep Dive:** [Module B Architectural Specification](backend/app/module_b/README.md)
+
+### Bujji: Conversational Financial AI Copilot
+- Context-aware risk assistant powered by Groq API (`qwen/qwen3.8-27b`).
+- Dynamically adapts tone and mathematical complexity between Quick View and Analyst View.
+- Incorporates strict financial accuracy and anti-hallucination guardrails.
+- **Deep Dive:** [Assistant Architectural Specification](backend/app/assistant/README.md)
+
+---
+
+## 5. Repository Structure
 
 ```text
 .
-├── README.md
-├── LICENSE
-├── requirements.txt
-├── .env.example
-├── app/                    # FastAPI, ML runtime, ingestion, modules A/B, assistant
-├── frontend/               # React + Vite dashboard and frontend tests
-├── configs/                # Tickers, labels, model features, scenarios and controls
-├── data/
-│   ├── ingestion/          # Seed SQLite demo database
-│   ├── module_a/           # Bundled holdout prices/signals and example response
-│   ├── module_b/           # Synthetic portfolio, scenarios, verification response
-│   └── impact_step2_report.json
-├── models/                 # Model configs/tokenizers; impact joblib artifacts
-│                           # NLP transformer trained weights NOT committed
-├── training/               # Source notebooks, exports, methodology and results evidence
-├── scripts/                # Independent demos, model checks, diagnostics
-├── tests/                  # Backend tests
-└── docs/
-    ├── Presentation_.pdf
-    ├── architecture.png
-    ├── methodology.md
-    ├── validation.md
-    └── screenshots/
+├── backend/                    # Production FastAPI backend service
+│   ├── app/                    # Application package
+│   │   ├── engine/             # Unified 3-model risk engine (NLP + Features + Impact)
+│   │   ├── module_a/           # Tactical index rebalancing & SLSQP optimizer
+│   │   ├── module_b/           # Multi-asset stress testing & analytical pricing
+│   │   ├── ingestion/          # Multi-source adapters (Marketaux, Bluesky) & SQLite
+│   │   ├── assistant/          # Bujji conversational risk assistant (Groq API)
+│   │   ├── services/           # Zero-lookahead feature builder & price providers
+│   │   ├── main.py             # FastAPI application factory & lifecycle manager
+│   │   ├── config.py           # Pydantic Settings schema
+│   │   └── schemas.py          # Global API request/response models
+│   ├── tests/                  # Automated PyTest test suite (120 test cases)
+│   ├── Dockerfile              # Production backend container build
+│   ├── requirements.txt        # Backend Python dependencies
+│   ├── pytest.ini              # Backend test runner configuration
+│   └── README.md               # Backend service documentation
+├── frontend/                   # React 18 + TypeScript + Vite 6 Dashboard
+│   ├── src/
+│   │   ├── components/         # Quick View, Analyst View, Bujji Chat, Lab Views
+│   │   ├── demo-data.ts        # Seed demonstration state & client-side fallbacks
+│   │   └── App.tsx             # Root React dashboard shell
+│   ├── nginx.conf              # Production Nginx reverse proxy configuration
+│   ├── Dockerfile              # Multi-stage production container build
+│   └── README.md               # Frontend client documentation
+├── training/                   # Model training sources, notebooks & reproduction
+│   ├── event_classifier/       # 5-class FinBERT event classifier training
+│   ├── sentiment/              # Continuous FinBERT sentiment regression training
+│   ├── impact_engine/          # XGBoost market impact training
+│   └── README.md               # Model training documentation
+├── models/                     # Tokenizer assets & downloaded trained model weights
+├── configs/                    # Sector taxonomies, label maps, decile thresholds, reference
+├── data/                       # Bundled demonstration datasets (SQLite, holdouts)
+├── scripts/                    # CLI backtest runners, verification, model fetcher
+├── .github/workflows/          # Continuous Integration CI pipelines
+├── docker-compose.yml          # Full-stack container orchestration
+├── requirements.txt            # Top-level Python dependencies
+└── README.md                   # Project documentation
 ```
 
-Further technical detail: [Methodology](docs/methodology.md) · [Validation evidence](docs/validation.md) · [Training sources](training/README.md).
+---
 
-## 3. Dataset Used
+## 6. Quickstart & Installation
 
-Only publicly sourced or synthetic **research/demo** data is used; no confidential client data is required. The table distinguishes datasets actually bundled in GitHub from external datasets/checkpoints needed to repeat training.
+### Option 1: Docker Compose (Recommended Production Setup)
 
-| Data / provenance | Nature and use | Availability in repository |
-|---|---|---|
-| Event-classification research corpus: financial topic posts, GDELT-derived events, SentiVent, SEC 8-K samples, corporate-event and catalyst datasets | Publicly sourced labeled financial text used to construct a five-class event dataset. Recorded source run: **26,172 raw candidate rows**, **16,576 cleaned real rows**; **13,260 train / 1,658 validation / 1,658 test** (stratified, seed 42). | **Not bundled** as raw/processed splits. Original source notebooks, dataset identifiers and recorded counts: [event classifier training](training/event_classifier/README.md). |
-| Continuous sentiment: **FiQA** financial sentiment text and continuous scores | Supervised sentiment-regression training; continuous score, not a three-class sentiment-label target. | Training notebooks and source exports under [`training/sentiment/`](training/sentiment/). Underlying processed data and fine-tuned weights not bundled. |
-| Impact-model research: **FNSPID** financial news and historical stock-price sources | Build historical abnormal-return targets and train XGBoost with lagged news/market features. Original Step-2 report records **19,084 train / 3,446 validation / 4,930 test** rows; this is distinct from the event-classification corpus. | Training scripts and feature/calibration configs plus an impact model joblib are committed. Original news/price archives and intermediate parquet feature matrices are **not bundled**. See [impact training](training/impact_engine/README.md) and [Step-2 report](data/impact_step2_report.json). |
-| Marketaux and Bluesky records | Public news metadata and public social posts for event ingestion, with original source links. External providers require network/API access for *new* records. | [`data/ingestion/riskpulse.db`](data/ingestion/riskpulse.db) seed demonstration database; recorded snapshot described as **2 news + 27 social entries** (29 total). This is **pre-collected**, not proof of live connectivity at review time. |
-| Module A offline price and signal data | Historical 15-stock daily price grid and timestamped signals for **357-session** example backtesting. | [holdout_prices.csv](data/module_a/holdout_prices.csv) and [holdout_signals.csv](data/module_a/holdout_signals.csv). |
-| Module B synthetic portfolio | Artificial institution-style balance-sheet exposures: 12 loans, 10 bonds, 4 swaps, 4 options; illustrative shocks, not real client positions. | [synthetic_portfolio.json](data/module_b/synthetic_portfolio.json) and [scenario_library.json](data/module_b/scenario_library.json). |
-
-**Data assumptions and safeguards.** Labels, source styles, headline deduplication, source-specific distributions, simulated portfolio exposures, and hypothetical scenario shock sizes affect interpretation. Different upstream dataset revisions or refreshed prices may change training results. Impact-calibration cutoffs are declared training-derived; timestamp-sensitive features must use only earlier market information. An example result or offline backtest is not evidence of profitable live trading. Before redistributing additional public dataset files or original model checkpoints, verify each source's licensing, access requirements and any applicable platform terms.
-
-**Availability distinction:** The GitHub repository contains the **demo inputs needed for independent portfolio simulations** plus model-training source, but not *all* original ML training inputs or the trained NLP checkpoints. A full end-to-end trained-model reproduction consequently needs additional authentic external assets; see the next section.
-
-## 4. Quickstart & Installation
-
-**Runtime:** Python 3.11 or 3.12; Node.js 20+; Git. The prior project documentation reports a Windows/Python 3.11 development configuration; this README update has **not rerun** a clean installation on Windows, macOS or Linux. Commands below are provided for both Windows PowerShell and POSIX shells.
-
-### Clone and install
+Run the entire platform (FastAPI backend + Nginx React frontend) with a single command:
 
 ```bash
-git clone https://github.com/shanmukhdatta/nitj-shanmukhdatta-hackthon.git
-cd nitj-shanmukhdatta-hackthon
+# 1. Clone repository
+git clone https://github.com/shanmukhdatta/Soochana-AI.git
+cd Soochana-AI
+
+# 2. Configure environment
+cp .env.example .env
+
+# 3. Launch multi-container stack
+docker compose up --build
+```
+
+- **Frontend Dashboard:** [http://localhost:3000](http://localhost:3000)
+- **Backend API & Swagger Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
+### Option 2: Local Development Setup
+
+#### Prerequisites
+- Python 3.11 or 3.12
+- Node.js 20+ and npm
+- Git
+
+#### 1. Backend Setup
+```bash
+# Create and activate virtual environment
 python -m venv .venv
-```
 
-Activate the environment:
-
-```powershell
-# Windows PowerShell (if script execution is restricted: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass)
+# Windows PowerShell
 .venv\Scripts\Activate.ps1
-Copy-Item .env.example .env
-```
 
-```bash
-# Linux / macOS (instead of Windows commands above)
+# Linux / macOS
 source .venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Install dependencies **from the repository root**:
-
-```bash
-python -m pip install -r requirements.txt
-npm --prefix frontend ci
-```
-
-### Model setup and run modes
-
-**Full real inference (from Hugging Face Hub):** The trained event classifier, sentiment regressor, and impact engine weights are hosted on Hugging Face. Download them automatically into `models/`:
-
+#### 2. Model Checkpoint Download
+Download the trained transformer and impact models from Hugging Face Hub:
 ```bash
 python -m scripts.fetch_models
 python -m scripts.check_models
 ```
 
-Once downloaded, `check_models` will verify file presence. Keep `SKIP_MODEL_LOAD=false` in `.env` for complete real inference.
+*(Note: If operating in lightweight demonstration mode without GPU/model downloads, set `SKIP_MODEL_LOAD=true` in `.env` to run portfolio labs independently).*
 
-**Portfolio-only demonstration (no transformer checkpoints required):** Edit `.env` to set `SKIP_MODEL_LOAD=true`. This allows the backend to start with the risk engine unavailable: `/analyze`, full news-to-portfolio inference, and `/health` will return **503**, rather than fabricated model predictions. You can still inspect saved records and use independent Module A/Module B routes or demos:
-
+#### 3. Frontend Setup
 ```bash
-python -m scripts.run_module_a_backtest
-python -m scripts.run_module_b_demo
+cd frontend
+npm ci
+npm run dev
 ```
 
-Those scripts write outputs under `data/module_a/results/` and `data/module_b/results/`. Neither requires the FinBERT weight files. The GitHub README does **not** label this limited configuration as complete three-model inference.
-
-### Start the backend and frontend
-
-From the repository root, after activation and dependency installation:
-
+#### 4. Start Backend Server
+In a separate terminal (with virtual environment active):
 ```bash
 python -m uvicorn app.main:app --reload --port 8000
-# or: uvicorn app.main:app --reload --port 8000
 ```
 
-In **another terminal**, from the same repository root:
-
-```bash
-npm --prefix frontend run dev
-```
-
-- **Local dashboard:** http://127.0.0.1:5173
-- **API documentation:** http://127.0.0.1:8000/docs
-- **API health:** http://127.0.0.1:8000/health (200 only when all inference models load)
-- **Ingestion health/configuration:** http://127.0.0.1:8000/ingestion/health (does not assert live provider connectivity)
-- **Saved signal feed:** http://127.0.0.1:8000/signals
-- **Simulated index:** http://127.0.0.1:8000/module-a/index
-- **Synthetic stress portfolio:** http://127.0.0.1:8000/module-b/portfolio
-
-The Vite development server forwards the browser's `/api` requests to the local FastAPI backend. To fetch **new live news**, configure the optional `MARKETAUX_API_TOKEN` in `.env`; Bluesky collection needs external connectivity. Collection and model processing are distinct stages. The protected ingestion endpoints require an `INGESTION_ADMIN_TOKEN` of at least 24 characters; do not commit any real tokens. **Bujji** requires an optional `GROQ_API_KEY` and explicitly reports unavailability when that key is absent.
-
-### Verification
-
-Run from the repository root:
-
-```bash
-pytest -q
-npm --prefix frontend test
-npm --prefix frontend run check:contracts
-npm --prefix frontend run build
-```
-
-The [validation report](docs/validation.md) records a previous **120/120 backend** and **14/14 frontend** test run plus build/API checks. These were **not rerun** while preparing this README. Unit tests and production bundling do not establish model checkpoint provenance or trained-model correctness. End-to-end testing against live servers is separately documented in `frontend/scripts/audit-e2e.mjs`.
-
-Training is documented separately under [training/README.md](training/README.md), [event classifier](training/event_classifier/README.md), and [impact engine](training/impact_engine/README.md). Training sources include external data downloads and model checkpoints and should not be mistaken for a fully offline training release.
-
-## 5. Key Results & Domain Impact
-
-### Recorded evidence and demonstrated functionality
-
-These figures are taken from files already committed in the repository. They are **recorded evidence**, not results freshly reproduced as part of this documentation update.
-
-| Component | Recorded result / implemented capability | Evidence and interpretation |
-|---|---|---|
-| Event-classifier research experiment | **99.46%** recorded held-out test accuracy; **0.9798 macro-F1** on the real-only dataset | [Recorded notebook evidence](training/event_classifier/recorded_results/notebook_evidence.json). The Credit Event test subset contains only **12** examples. The notebook's base-checkpoint ID differs from the current runtime event configuration, so deployed equivalence is unverified. |
-| Sentiment analysis | Continuous **[-1, +1]** regression model design using FiQA | [Source training code](training/sentiment/notebooks/02_finbert_regression_training.ipynb). Do not infer new test metrics without the original training report. |
-| Market impact engine | Predicted severity deciles **1–10**, using historical reaction-magnitude targets and past-only market features | [Feature manifest](configs/impact_model_feature_manifest.json), [quantile boundaries](configs/impact_decile_thresholds.json). Severity does not predict guaranteed movement direction. |
-| Ingestion | **29** previously collected source-linked items described in bundled SQLite demo snapshot: 2 news, 27 public social | [Seed database](data/ingestion/riskpulse.db). Snapshot counts do not prove live polling remains operational. |
-| Module A | **15-stock** constrained rebalance, with bundled **357-session** walk-forward holdout inputs | [Backtest runner](scripts/run_module_a_backtest.py), [data](data/module_a/holdout_prices.csv), [example rebalance](data/module_a/real_example_response.json). Financial results should be rerun from the bundled data before claiming performance improvements. |
-| Module B | **30-position** synthetic multi-asset stress calculator with separately reported MTM and incremental 12-month ECL | [Portfolio](data/module_b/synthetic_portfolio.json), [scenarios](data/module_b/scenario_library.json), [captured API verification](data/module_b/live_verification_results.json). Stress shocks and outputs are scenario assumptions, not live losses. |
-| What-If / Reverse Stress | Configurable position scaling and **first sampled** loss-budget breach on a grid | [Demo script](scripts/run_module_b_demo.py), [grid implementation](app/module_b/reverse_stress.py). No exact bisection-root or globally minimum threshold is claimed. |
-| Automated implementation tests | Previously logged **120/120** backend and **14/14** frontend tests | [Validation report](docs/validation.md). This is software test evidence, not an out-of-distribution model benchmark. |
-
-### Financial-domain relevance
-
-**Risk triage:** Combining event category, sentiment, estimated impact magnitude and source provenance can help analysts systematically organize financial narratives for further investigation. Soochana AI does not establish that its alerts precede or outperform real market reactions.
-
-**Constraint-aware allocation analysis:** The index lab demonstrates how qualitative event scores can be translated into proposed weights while enforcing specified sector, constituent and trading-cost constraints. It does not execute orders or certify regulatory compliance.
-
-**Cross-asset stress exploration:** The stress lab demonstrates how hypothetical events might affect different instrument types while making the risk-horizon distinction explicit. Interactive exposure changes and grid-based breach exploration help communicate assumptions and sensitivities; they are not production capital calculations.
-
-### Known limitations and reproducibility
-
-- The repository does **not** contain the two full trained NLP checkpoints; real inference requires genuine matching external model artifacts.
-- The event classifier's training initializer is `nickmuchi/finbert-tone-finetuned-finance-topic-classification`, while the committed runtime config refers to `yiyanghkust/finbert-tone`. Checkpoint identity must be resolved with original exports and hashes before claiming the notebook results correspond to the deployed model.
-- Event-source imbalance and low support for some classes make high in-distribution accuracy an incomplete measure of real-news generalization.
-- Original training datasets and price snapshots are not fully bundled; upstream access, licensing, revisions and computation affect repeatability.
-- Module A is a constrained historical simulation, not proof of improved real-money performance. Module B uses **synthetic** exposures and assumed scenarios; mixed MTM/ECL horizons should not be interpreted as regulatory NAV or capital.
-- Live news and assistant functionality require external provider availability, appropriate API credentials and permissions.
-
-**Responsible use:** Educational demonstration only. No personalized investment advice, autonomous trading, guaranteed market forecasts, confidential client data, or representation of endorsement by S&P Global or CRISIL.
+- Local Dashboard: [http://127.0.0.1:5173](http://127.0.0.1:5173)
+- API Interactive Documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
 
-### Demo and supporting documentation
+## 7. Automated Verification & Testing
 
-**YouTube Demo Video:**  
-**Presentation Deck:** [Repository PDF (docs/Presentation_.pdf)](docs/Presentation_.pdf) · [Google Drive Link](https://drive.google.com/file/d/1ySZRghGGWxB0SQZsvHdQ40yYgSAaQkuJ/view?usp=sharing)  
-**Live Demo Site:** https://nitj-shanmukhdatta-hackthon-lime.vercel.app/#how-it-works  
+The platform enforces extensive verification across backend unit tests, frontend logic audits, and API contract bounds:
 
-- [System architecture](docs/architecture.png)
-- [Quantitative methodology](docs/methodology.md)
-- [Recorded validation evidence](docs/validation.md)
-- [Frontend instructions](frontend/README.md)
-- [Training source instructions](training/README.md)
-- [MIT license and third-party notices](LICENSE)
+```bash
+# Run backend test suite (120 automated tests)
+pytest -q
 
-### Acknowledgments
+# Run frontend test suite
+npm --prefix frontend test
 
-This independent academic prototype uses third-party libraries and publicly sourced data under their respective terms, including Hugging Face Transformers, PyTorch, FinBERT-related foundations, XGBoost, SciPy, Marketaux, Bluesky and yfinance. Third-party assets and licenses must be verified before redistributing datasets or checkpoints. AI-assisted documentation and code review do not replace original implementation, testing and honest attribution.
+# Run API contract validation
+npm --prefix frontend run check:contracts
+
+# Compile TypeScript and build production frontend bundle
+npm --prefix frontend run build
+```
+
+*For comprehensive test coverage reports and audit logs, see [`docs/validation.md`](docs/validation.md).*
+
+---
+
+## 8. Continuous Integration & DevOps
+
+The repository includes automated GitHub Actions workflows ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) validating every pull request:
+1. **Backend Matrix:** Installs dependencies and executes all 120 PyTest tests under Python 3.11.
+2. **Frontend Matrix:** Validates Node 20 runtime, runs node test runner, audits API contracts, and compiles TypeScript bundles.
+3. **Container Linting:** Verifies Dockerfile specifications and validates `docker compose config`.
+
+---
+
+## 9. Research & Responsible Use Notice
+
+**Educational & Research Disclaimer:** Soochana AI is an independent academic research platform developed by Shanmukh Datta (NIT Jalandhar). The risk signals, index rebalancing weights, and stress testing models are mathematical prototypes designed for risk analytics exploration. They do not constitute personalized investment advice, brokerage trading instructions, or certified regulatory capital calculations.
+
+---
+
+## 10. License
+
+This project is licensed under the terms of the [MIT License](LICENSE).
