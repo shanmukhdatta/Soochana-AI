@@ -40,4 +40,7 @@ export const api = {
   whatIf: (scenario:unknown, changes:Array<{position_id:string;scale:number}>) => post<{before:StressResult;after:StressResult;net_effect_change_usd:number;warning:string}>('/module-b/what-if',{scenario,changes}),
   reverseStress: (scenario:unknown, loss_budget_usd:number) => post<{found_breach:boolean;first_breach_on_grid?:{multiplier:number;loss_usd:number}|null;method:string;warning:string;truncated_at_multiplier?:number|null}>('/module-b/reverse-stress',{scenario,loss_budget_usd,max_multiplier:4,steps:81}),
   assistantChat: (input:{message:string;history?:Array<{role:'user'|'assistant';content:string}>;mode?:'quick'|'analyst';selected_signal_id?:string|null}) => post<{reply:string;status:'ok'|'unavailable'|'rate_limited'|'error';mode:string;disclaimer:string}>('/assistant/chat',input),
+  customPortfolioPresets: () => request<{ presets: any[] }>('/portfolio/custom/presets'),
+  analyzeCustomPortfolio: (payload: { positions: Array<{ ticker: string; weight: number }>; total_capital?: number; currency?: string }) => post<any>('/portfolio/custom/analyze', payload),
 };
+

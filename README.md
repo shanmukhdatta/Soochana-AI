@@ -31,6 +31,7 @@ Soochana AI bridges the gap between unstructured textual information and quantit
 3. **Module A — Tactical Index Rebalancing Laboratory:** Translates structured event signals into convex quadratic distance minimization rebalancing for a 15-stock US equity index subject to constituent, sector, turnover, and transaction cost constraints across 357 walk-forward backtest sessions.
 4. **Module B — Multi-Asset Stress Testing Laboratory:** Evaluates a 30-position synthetic institutional portfolio across 4 asset classes (Loans, Bonds, Swaps, Options) with auditable separation between instantaneous Trading Book Mark-to-Market (MTM) and Banking Book 12-Month Expected Credit Loss (ECL).
 5. **Bujji — Embedded Conversational Risk Copilot:** An intelligent assistant powered by Groq API (`qwen/qwen3.8-27b`) dynamically tailored for both executive Quick View and quantitative Analyst View.
+6. **Custom Portfolio Studio & Retail Investor Shield:** Empowers individual investors to input their personal stock holdings ($ / ₹), stream live ticker news, filter emotional clickbait chatter from genuine balance sheet threats, receive convex quadratic rebalancing recommendations, and simulate everyday macroeconomic crisis stress scenarios with an institutional-grade 0–100 Portfolio Health Score.
 
 ---
 

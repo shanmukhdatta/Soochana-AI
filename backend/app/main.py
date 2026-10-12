@@ -104,7 +104,7 @@ def metrics():
         'total_requests_served': REQUEST_COUNTER,
         'model_pipeline_ready': is_ready,
         'device': getattr(settings, 'model_device', 'cpu') if settings else 'cpu',
-        'modules': ['engine', 'module_a', 'module_b', 'ingestion', 'assistant'],
+        'modules': ['engine', 'module_a', 'module_b', 'ingestion', 'assistant', 'portfolio'],
     }
 
 
@@ -150,3 +150,8 @@ app.include_router(ingestion_router)
 # Bujji Financial Copilot Assistant
 from app.assistant.router import router as assistant_router
 app.include_router(assistant_router)
+
+# Custom Portfolio Studio & Retail Investor Shield
+from app.portfolio.router import router as portfolio_router
+app.include_router(portfolio_router)
+

@@ -618,6 +618,13 @@ export function HomeLanding({ onStart, onTab, onMode }: HomeLandingProps) {
             </div>
 
             <div className="branch-destinations">
+              <div className="destination-card" onClick={() => onTab('customStudio')}>
+                <div className="dest-tag" style={{ background: '#0284c7', color: '#fff' }}>RETAIL SHIELD</div>
+                <h3>Custom Portfolio Studio</h3>
+                <p>Input your own stocks &amp; capital. Live news scoring, panic filters &amp; loss shielding.</p>
+                <span className="dest-action">Launch Custom Studio →</span>
+              </div>
+
               <div className="destination-card" onClick={() => onTab('moduleA')}>
                 <div className="dest-tag">MODULE A</div>
                 <h3>Tactical Index Rebalancing</h3>

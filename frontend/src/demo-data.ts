@@ -448,6 +448,135 @@ export async function demoRequest<T>(path: string, options: RequestInit = {}): P
       method: 'Evaluated 81-step multiplier grid across multi-asset portfolio.',
       warning: 'Demonstration reverse-stress estimation (Cloud demo mode).'
     };
+  } else if (route === '/portfolio/custom/presets') {
+    value = {
+      presets: [
+        {
+          id: 'mag_seven',
+          name: 'Big Tech & AI Leaders (Mag 7)',
+          description: 'High growth tech giants powering generative AI and cloud infrastructure.',
+          total_capital: 10000.0,
+          currency: 'USD',
+          positions: [
+            { ticker: 'NVDA', weight: 0.25 },
+            { ticker: 'MSFT', weight: 0.20 },
+            { ticker: 'AAPL', weight: 0.20 },
+            { ticker: 'AMZN', weight: 0.15 },
+            { ticker: 'GOOGL', weight: 0.10 },
+            { ticker: 'META', weight: 0.10 },
+          ],
+        },
+        {
+          id: 'balanced_core',
+          name: 'All-Weather Balanced Core',
+          description: 'Resilient mix of technology, financials, consumer essentials, and healthcare.',
+          total_capital: 25000.0,
+          currency: 'USD',
+          positions: [
+            { ticker: 'MSFT', weight: 0.25 },
+            { ticker: 'JPM', weight: 0.20 },
+            { ticker: 'PG', weight: 0.20 },
+            { ticker: 'JNJ', weight: 0.15 },
+            { ticker: 'XOM', weight: 0.10 },
+            { ticker: 'COST', weight: 0.10 },
+          ],
+        },
+        {
+          id: 'india_global_tech',
+          name: 'Global Tech & Indian Inflows',
+          description: 'Top-tier portfolio tailored for cross-border and emerging tech investors.',
+          total_capital: 100000.0,
+          currency: 'INR',
+          positions: [
+            { ticker: 'AAPL', weight: 0.30 },
+            { ticker: 'MSFT', weight: 0.25 },
+            { ticker: 'NVDA', weight: 0.25 },
+            { ticker: 'GOOGL', weight: 0.20 },
+          ],
+        },
+      ]
+    };
+  } else if (route === '/portfolio/custom/analyze') {
+    const rawPos = bodyData?.positions || [{ ticker: 'NVDA', weight: 0.5 }, { ticker: 'AAPL', weight: 0.5 }];
+    const capital = Number(bodyData?.total_capital) || 10000.0;
+    const cur = (bodyData?.currency || 'USD').toUpperCase();
+    const curSym = cur === 'INR' ? '₹' : '$';
+    const sumW = rawPos.reduce((a: number, b: any) => a + Number(b.weight || 0), 0) || 1.0;
+    const orders = rawPos.map((p: any) => {
+      const currPct = Number(((p.weight / sumW) * 100).toFixed(1));
+      const isHigh = currPct > 35;
+      const targPct = isHigh ? Number((currPct - 6.5).toFixed(1)) : Number((currPct + 3.2).toFixed(1));
+      const diffCash = Math.round(((targPct - currPct) / 100) * capital);
+      return {
+        ticker: p.ticker.toUpperCase(),
+        sector: p.ticker === 'JPM' ? 'Financials' : 'Technology',
+        current_weight_pct: currPct,
+        target_weight_pct: targPct,
+        change_percentage_points: Number((targPct - currPct).toFixed(1)),
+        current_cash: `${curSym}${Math.round((currPct / 100) * capital).toLocaleString()}`,
+        target_cash: `${curSym}${Math.round((targPct / 100) * capital).toLocaleString()}`,
+        trade_cash_delta: `${diffCash > 0 ? '+' : ''}${curSym}${diffCash.toLocaleString()}`,
+        trade_cash_raw: diffCash,
+        annual_volatility_pct: 28.5,
+        ai_signal_score: isHigh ? -0.32 : 0.45,
+        action: isHigh ? 'TRIM / SELL' : 'EXPAND / BUY',
+        action_color: isHigh ? 'rose' : 'emerald',
+        reason: isHigh ? 'Downside risk reduction from elevated event volatility' : 'Positive growth catalyst tilt'
+      };
+    });
+    value = {
+      status: 'success',
+      currency: cur,
+      currency_symbol: curSym,
+      total_capital: capital,
+      summary: `Your portfolio demonstrates active tech concentration with a Health Score of 74/100. Our 3-stage AI evaluated current corporate signals and recommends rebalancing to lower annual volatility and protect ${curSym}${Math.round(capital * 0.042).toLocaleString()} in capital.`,
+      health_score: {
+        before: { score: 74, rating: 'Moderate Risk', color: 'yellow' },
+        after: { score: 86, rating: 'Resilient & Shielded', color: 'green' },
+        points_gained: 12
+      },
+      volatility_comparison: {
+        before_pct: 31.4,
+        after_pct: 24.2,
+        volatility_reduction_pct: 7.2,
+        daily_var_95_pct_before: 3.25,
+        daily_var_95_pct_after: 2.51,
+        daily_var_95_cash_before: `${curSym}${Math.round(capital * 0.0325).toLocaleString()}`,
+        daily_var_95_cash_after: `${curSym}${Math.round(capital * 0.0251).toLocaleString()}`
+      },
+      execution_orders: orders,
+      scored_news_feed: rawPos.slice(0, 3).map((p: any) => ({
+        ticker: p.ticker.toUpperCase(),
+        headline: `${p.ticker.toUpperCase()} navigates macroeconomic rate outlook and strategic product execution.`,
+        event_class: 'Corporate Update',
+        impact_decile: 5,
+        sentiment_score: 0.15,
+        fud_type: 'ROUTINE_UPDATE',
+        fud_message: 'Routine Market Flow / Sector Neutral'
+      })),
+      stress_scenarios: [
+        {
+          scenario_id: 'recession_rate_spike',
+          name: 'Global Recession & Rate Spike (+150 bps)',
+          description: 'Borrowing costs rise; high-multiple tech contracts, credit spreads widen.',
+          current_portfolio_loss_pct: -12.4,
+          optimized_portfolio_loss_pct: -7.8,
+          current_dollar_impact: `-${curSym}${Math.round(capital * 0.124).toLocaleString()}`,
+          optimized_dollar_impact: `-${curSym}${Math.round(capital * 0.078).toLocaleString()}`,
+          capital_shielded: `${curSym}${Math.round(capital * 0.046).toLocaleString()}`
+        },
+        {
+          scenario_id: 'tech_antitrust_clampdown',
+          name: 'Big Tech & AI Regulatory Clampdown',
+          description: 'Antitrust scrutiny, hardware export caps, and AI capex revisions.',
+          current_portfolio_loss_pct: -18.2,
+          optimized_portfolio_loss_pct: -11.5,
+          current_dollar_impact: `-${curSym}${Math.round(capital * 0.182).toLocaleString()}`,
+          optimized_dollar_impact: `-${curSym}${Math.round(capital * 0.115).toLocaleString()}`,
+          capital_shielded: `${curSym}${Math.round(capital * 0.067).toLocaleString()}`
+        }
+      ]
+    };
   } else if (route === '/assistant/chat') {
     value = await queryBujjiWithGroq(
       bodyData?.message || '',
@@ -461,3 +590,4 @@ export async function demoRequest<T>(path: string, options: RequestInit = {}): P
 
   return value as T;
 }
+

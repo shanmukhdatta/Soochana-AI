@@ -1,4 +1,4 @@
-export type Page = 'home' | 'overview' | 'events' | 'moduleA' | 'moduleB';
+export type Page = 'home' | 'overview' | 'events' | 'customStudio' | 'moduleA' | 'moduleB';
 export interface Sentiment { score: number; label: string }
 export interface ModelEvent { class_name: string; confidence: number; probabilities: Record<string, number> }
 export interface Impact { score: number; predicted_realized_impact: number; target_definition?: string }
